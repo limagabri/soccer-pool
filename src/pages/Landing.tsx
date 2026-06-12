@@ -50,17 +50,12 @@ export function Landing() {
       <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 py-5 md:px-12">
         <Logo />
         <nav className="flex items-center gap-3">
+          <span className="hidden text-xs text-zinc-600 sm:block">Acesso por convite</span>
           <Link
             to="/login"
-            className="rounded-lg px-4 py-2 text-sm font-medium text-zinc-300 transition hover:text-brasil-yellow"
-          >
-            Entrar
-          </Link>
-          <Link
-            to="/cadastro"
             className="btn-gradient rounded-lg px-4 py-2 text-sm font-semibold text-black"
           >
-            Criar conta
+            Entrar
           </Link>
         </nav>
       </header>
@@ -102,25 +97,18 @@ export function Landing() {
 
         <motion.div
           variants={item}
-          className="mt-12 flex w-full max-w-md flex-col gap-4 sm:flex-row sm:justify-center"
+          className="mt-12 flex flex-col items-center gap-4"
         >
           <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
             <Link
-              to="/cadastro"
-              className="btn-gradient group flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-lg font-bold text-black"
+              to="/login"
+              className="btn-gradient group flex items-center justify-center gap-2 rounded-xl px-10 py-4 text-lg font-bold text-black"
             >
-              Criar conta
+              Entrar no Bolão
               <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
             </Link>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
-            <Link
-              to="/login"
-              className="glass flex items-center justify-center px-8 py-4 text-lg font-semibold text-zinc-200 transition hover:border-brasil-yellow/50 hover:text-brasil-yellow"
-            >
-              Entrar
-            </Link>
-          </motion.div>
+          <p className="text-sm text-zinc-600">Acesso exclusivo por convite</p>
         </motion.div>
 
         <motion.div

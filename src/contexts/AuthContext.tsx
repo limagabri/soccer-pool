@@ -14,6 +14,9 @@ interface Profile {
   username: string
   avatar_url: string | null
   created_at: string
+  is_admin: boolean
+  primeiro_acesso: boolean
+  senha_trocada: boolean
 }
 
 interface AuthContextType {
@@ -21,6 +24,9 @@ interface AuthContextType {
   user: User | null
   profile: Profile | null
   loading: boolean
+  profileLoading: boolean
+  isAdmin: boolean
+  primeiroAcesso: boolean
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signUp: (
     email: string,
@@ -37,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [profileLoading, setProfileLoading] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -47,8 +54,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      // SIGNED_IN (inclusive via link de confirmação de e-mail),
-      // TOKEN_REFRESHED e SIGNED_OUT atualizam a sessão global
       if (
         event === 'SIGNED_IN' ||
         event === 'TOKEN_REFRESHED' ||
@@ -68,12 +73,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   async function fetchProfile(userId: string) {
+    setProfileLoading(true)
     const { data } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single()
     if (data) setProfile(data as Profile)
+    setProfileLoading(false)
   }
 
   useEffect(() => {
@@ -89,10 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signIn(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
     return { error: error?.message ?? null }
   }
 
@@ -102,7 +106,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password,
       options: {
         data: { username },
-        // Link de confirmação de e-mail redireciona para a página de callback
         emailRedirectTo: `${window.location.origin}${import.meta.env.BASE_URL.replace(/\/$/, '')}/auth/callback`,
       },
     })
@@ -121,6 +124,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user: session?.user ?? null,
         profile,
         loading,
+        profileLoading,
+        isAdmin: profile?.is_admin ?? false,
+        primeiroAcesso: profile?.primeiro_acesso ?? false,
         signIn,
         signUp,
         signOut,
@@ -134,8 +140,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider')
-  }
+  if (!context) throw new Error('useAuth deve ser usado dentro de um AuthProvider')
   return context
 }

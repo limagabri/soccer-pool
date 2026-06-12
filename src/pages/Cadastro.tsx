@@ -1,57 +1,139 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState, type FormEvent } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Mail, Lock, User, Loader2, CheckCircle } from 'lucide-react'
-import { useAuth } from '../contexts/AuthContext'
+import { Mail, Lock, User, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 import { Logo } from '../components/Logo'
 import { AuthBackground } from '../components/AuthBackground'
 
+interface ConviteInfo {
+  id: string
+  email: string
+  nome: string
+  token: string
+}
+
 export function Cadastro() {
-  const { signUp } = useAuth()
   const navigate = useNavigate()
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
+  const [searchParams] = useSearchParams()
+  const token = searchParams.get('token')
+
+  const [convite, setConvite] = useState<ConviteInfo | null>(null)
+  const [conviteStatus, setConviteStatus] = useState<'carregando' | 'valido' | 'invalido' | 'sem-token'>('carregando')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [confirmationSent, setConfirmationSent] = useState(false)
 
+  useEffect(() => {
+    if (!token) { setConviteStatus('sem-token'); return }
+
+    supabase
+      .from('convites')
+      .select('id, email, nome, token')
+      .eq('token', token)
+      .eq('usado', false)
+      .gt('expires_at', new Date().toISOString())
+      .single()
+      .then(({ data, error }) => {
+        if (error || !data) { setConviteStatus('invalido'); return }
+        setConvite(data as ConviteInfo)
+        setConviteStatus('valido')
+      })
+  }, [token])
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    if (!convite) return
     setError(null)
 
     if (password.length < 6) {
       setError('A senha precisa ter pelo menos 6 caracteres.')
       return
     }
-    if (username.trim().length < 3) {
-      setError('O nome de usuário precisa ter pelo menos 3 caracteres.')
-      return
-    }
 
     setLoading(true)
-    const { error, needsConfirmation } = await signUp(
-      email,
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: convite.email,
       password,
-      username.trim()
-    )
+      options: {
+        data: { username: convite.nome },
+        emailRedirectTo: `${window.location.origin}${import.meta.env.BASE_URL.replace(/\/$/, '')}/auth/callback`,
+      },
+    })
     setLoading(false)
 
-    if (error) {
+    if (signUpError) {
       setError(
-        error.includes('already registered')
+        signUpError.message.includes('already registered')
           ? 'Este e-mail já está cadastrado.'
           : 'Não foi possível criar a conta. Tente novamente.'
       )
       return
     }
 
-    if (needsConfirmation) {
+    // Marca convite como usado independente da confirmação de e-mail
+    await supabase.rpc('marcar_convite_usado', { p_token: convite.token, p_email: convite.email })
+
+    if (!data.session) {
       setConfirmationSent(true)
       return
     }
+    navigate('/primeiro-acesso')
+  }
 
-    navigate('/dashboard')
+  // ── Estados de tela ───────────────────────────────────────────────────────
+
+  if (conviteStatus === 'carregando') {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-brasil-green border-t-transparent" />
+      </div>
+    )
+  }
+
+  if (conviteStatus === 'sem-token') {
+    return (
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
+        <AuthBackground />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="glass relative z-10 w-full max-w-md p-8 text-center"
+        >
+          <AlertCircle className="mx-auto mb-4 h-12 w-12 text-brasil-yellow" />
+          <h1 className="font-display text-4xl tracking-wide">Acesso por convite</h1>
+          <p className="mt-3 text-zinc-400">
+            O BolãoCopa 2026 é um bolão fechado. Para participar, você precisa de um convite enviado pelo organizador.
+          </p>
+          <Link to="/login" className="mt-6 inline-block text-sm text-brasil-green hover:underline">
+            Já tenho conta — fazer login →
+          </Link>
+        </motion.div>
+      </div>
+    )
+  }
+
+  if (conviteStatus === 'invalido') {
+    return (
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
+        <AuthBackground />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="glass relative z-10 w-full max-w-md p-8 text-center"
+        >
+          <AlertCircle className="mx-auto mb-4 h-12 w-12 text-red-400" />
+          <h1 className="font-display text-4xl tracking-wide">Convite inválido</h1>
+          <p className="mt-3 text-zinc-400">
+            Este link de convite é inválido, já foi utilizado ou expirou. Peça um novo convite ao organizador.
+          </p>
+          <Link to="/login" className="mt-6 inline-block text-sm text-zinc-500 hover:text-zinc-300">
+            Voltar para o login
+          </Link>
+        </motion.div>
+      </div>
+    )
   }
 
   if (confirmationSent) {
@@ -66,7 +148,7 @@ export function Cadastro() {
           <CheckCircle className="mx-auto mb-4 h-12 w-12 text-brasil-green" />
           <h1 className="font-display text-4xl tracking-wide">Confirme seu e-mail</h1>
           <p className="mt-2 text-zinc-400">
-            Enviamos um link de confirmação para <strong>{email}</strong>.
+            Enviamos um link de confirmação para <strong>{convite?.email}</strong>.
             Depois de confirmar, é só fazer login!
           </p>
           <Link
@@ -79,6 +161,8 @@ export function Cadastro() {
       </div>
     )
   }
+
+  // ── Formulário de cadastro ────────────────────────────────────────────────
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
@@ -94,46 +178,36 @@ export function Cadastro() {
           <Logo size="lg" />
         </div>
 
-        <h1 className="text-center font-display text-4xl tracking-wide">
-          Crie sua conta
-        </h1>
+        <h1 className="text-center font-display text-4xl tracking-wide">Criar conta</h1>
         <p className="mt-1 text-center text-sm text-zinc-400">
-          Entre na disputa pelo título de craque dos palpites
+          Você foi convidado para o BolãoCopa 2026!
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
-            <label htmlFor="username" className="mb-1.5 block text-sm font-medium text-zinc-300">
+            <label className="mb-1.5 block text-sm font-medium text-zinc-300">
               Nome de usuário
             </label>
             <div className="relative">
               <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
               <input
-                id="username"
                 type="text"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="craque_do_bolao"
-                className="input-glow"
+                readOnly
+                value={convite?.nome ?? ''}
+                className="input-glow cursor-not-allowed opacity-60"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-300">
-              E-mail
-            </label>
+            <label className="mb-1.5 block text-sm font-medium text-zinc-300">E-mail</label>
             <div className="relative">
               <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
               <input
-                id="email"
                 type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="voce@email.com"
-                className="input-glow"
+                readOnly
+                value={convite?.email ?? ''}
+                className="input-glow cursor-not-allowed opacity-60"
               />
             </div>
           </div>

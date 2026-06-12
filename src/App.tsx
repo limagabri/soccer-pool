@@ -4,6 +4,8 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { Landing } from './pages/Landing'
 import { Login } from './pages/Login'
 import { Cadastro } from './pages/Cadastro'
+import { EsqueciSenha } from './pages/EsqueciSenha'
+import { NovaSenha } from './pages/NovaSenha'
 import { Dashboard } from './pages/Dashboard'
 import { AuthCallback } from './pages/AuthCallback'
 import { Grupos } from './pages/Grupos'
@@ -11,9 +13,14 @@ import { Palpites } from './pages/Palpites'
 import { Simulador } from './pages/Simulador'
 import { Ranking } from './pages/Ranking'
 import { Perfil } from './pages/Perfil'
+import { PrimeiroAcesso } from './pages/PrimeiroAcesso'
+import { AdminLogin } from './pages/admin/AdminLogin'
+import { AdminLayout } from './pages/admin/AdminLayout'
+import { AdminJogos } from './pages/admin/AdminJogos'
+import { AdminUsuarios } from './pages/admin/AdminUsuarios'
+import { AdminConvites } from './pages/admin/AdminConvites'
 import { usePontuacao } from './hooks/usePontuacao'
 
-/* Watcher global: recalcula pontos quando um jogo é encerrado */
 function PontuacaoGlobal() {
   usePontuacao()
   return null
@@ -28,37 +35,48 @@ function App() {
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
         <Routes>
+          {/* Públicas */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+          <Route path="/nova-senha" element={<NovaSenha />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/grupos" element={<Grupos />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/simulador" element={<Simulador />} />
+
+          {/* Protegidas */}
           <Route
-            path="/perfil"
+            path="/primeiro-acesso"
             element={
-              <ProtectedRoute>
-                <Perfil />
+              <ProtectedRoute skipPrimeiroAcesso>
+                <PrimeiroAcesso />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/perfil"
+            element={<ProtectedRoute><Perfil /></ProtectedRoute>}
           />
           <Route
             path="/palpites"
-            element={
-              <ProtectedRoute>
-                <Palpites />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute><Palpites /></ProtectedRoute>}
           />
           <Route
             path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
+            element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
           />
+
+          {/* Admin */}
+          <Route path="/admin">
+            <Route index element={<AdminLogin />} />
+            <Route element={<AdminLayout />}>
+              <Route path="jogos" element={<AdminJogos />} />
+              <Route path="usuarios" element={<AdminUsuarios />} />
+              <Route path="convites" element={<AdminConvites />} />
+            </Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -105,12 +105,14 @@ export function Login() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-zinc-400">
-          Ainda não tem conta?{' '}
-          <Link to="/cadastro" className="font-semibold text-brasil-yellow hover:underline">
-            Cadastre-se
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <Link
+            to="/esqueci-senha"
+            className="text-sm text-zinc-500 hover:text-zinc-300"
+          >
+            Esqueci minha senha
           </Link>
-        </p>
+        </div>
       </motion.div>
     </div>
   )
