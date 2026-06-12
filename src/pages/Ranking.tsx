@@ -27,7 +27,7 @@ export function Ranking() {
   const carregar = useCallback(async () => {
     const [{ data: dataPalpites }, { data: dataProfiles }] = await Promise.all([
       supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora'),
-      supabase.from('profiles').select('id, username'),
+      supabase.from('profiles').select('id, username').eq('is_admin', false),
     ])
     setPalpites((dataPalpites as PalpiteResumo[]) ?? [])
     const nomes: Record<string, string> = {}
@@ -57,9 +57,10 @@ export function Ranking() {
   const linhas: LinhaRanking[] = useMemo(() => {
     const stats = agregarEstatisticas(palpites, jogos)
     return [...stats.values()]
+      .filter((s) => s.user_id in usernames)
       .map((s) => ({
         ...s,
-        username: usernames[s.user_id] ?? 'Torcedor',
+        username: usernames[s.user_id],
       }))
       .sort(
         (a, b) =>

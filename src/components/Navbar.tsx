@@ -31,7 +31,7 @@ export function Navbar() {
     navigate('/')
   }
 
-  const links = LINKS.filter((l) => !l.protegido || user)
+  const links = isAdmin ? [] : LINKS.filter((l) => !l.protegido || user)
 
   return (
     <>
@@ -41,47 +41,56 @@ export function Navbar() {
 
           {/* Desktop nav */}
           <nav className="hidden flex-1 gap-1 sm:flex">
-            {links.map((l) => (
+            {isAdmin ? (
               <NavLink
-                key={l.to}
-                to={l.to}
+                to="/admin/jogos"
                 className={({ isActive }) =>
                   `rounded-lg px-3 py-1.5 text-sm font-medium whitespace-nowrap transition ${
                     isActive
-                      ? 'bg-brasil-green/15 text-brasil-green'
-                      : 'text-zinc-400 hover:text-zinc-100'
+                      ? 'bg-green-700/20 text-green-400'
+                      : 'text-green-500 hover:text-green-300'
                   }`
                 }
               >
-                {l.label}
+                Painel Admin
               </NavLink>
-            ))}
+            ) : (
+              links.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  className={({ isActive }) =>
+                    `rounded-lg px-3 py-1.5 text-sm font-medium whitespace-nowrap transition ${
+                      isActive
+                        ? 'bg-brasil-green/15 text-brasil-green'
+                        : 'text-zinc-400 hover:text-zinc-100'
+                    }`
+                  }
+                >
+                  {l.label}
+                </NavLink>
+              ))
+            )}
           </nav>
 
           {/* Desktop actions */}
           <div className="ml-auto hidden items-center gap-3 sm:flex">
             {user ? (
               <>
-                {isAdmin && (
+                {!isAdmin && (
                   <Link
-                    to="/admin/jogos"
-                    className="rounded-lg border border-green-700/50 px-3 py-1.5 text-xs font-semibold text-green-500 transition hover:bg-green-700/20"
+                    to="/perfil"
+                    title="Meu perfil"
+                    className="flex items-center gap-2.5 rounded-lg px-1.5 py-1 transition hover:bg-white/5"
                   >
-                    Admin
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brasil-green to-brasil-yellow text-xs font-bold text-black">
+                      {initials}
+                    </div>
+                    <span className="hidden text-sm font-medium text-zinc-300 md:block">
+                      {username}
+                    </span>
                   </Link>
                 )}
-                <Link
-                  to="/perfil"
-                  title="Meu perfil"
-                  className="flex items-center gap-2.5 rounded-lg px-1.5 py-1 transition hover:bg-white/5"
-                >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brasil-green to-brasil-yellow text-xs font-bold text-black">
-                    {initials}
-                  </div>
-                  <span className="hidden text-sm font-medium text-zinc-300 md:block">
-                    {username}
-                  </span>
-                </Link>
                 <button
                   onClick={handleLogout}
                   title="Sair"
@@ -142,49 +151,52 @@ export function Navbar() {
               </div>
 
               <nav className="flex-1 overflow-y-auto p-4">
-                {links.map((l) => (
-                  <NavLink
-                    key={l.to}
-                    to={l.to}
-                    onClick={() => setMenuAberto(false)}
-                    className={({ isActive }) =>
-                      `mb-1 flex rounded-xl px-4 py-3 text-base font-medium transition ${
-                        isActive
-                          ? 'bg-brasil-green/15 text-brasil-green'
-                          : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
-                      }`
-                    }
-                  >
-                    {l.label}
-                  </NavLink>
-                ))}
-                {isAdmin && (
+                {isAdmin ? (
                   <NavLink
                     to="/admin/jogos"
                     onClick={() => setMenuAberto(false)}
-                    className="mb-1 flex rounded-xl px-4 py-3 text-base font-medium text-green-500 transition hover:bg-green-700/10"
+                    className="mb-1 flex rounded-xl px-4 py-3 text-base font-medium text-green-400 transition hover:bg-green-700/10"
                   >
-                    Admin
+                    Painel Admin
                   </NavLink>
+                ) : (
+                  links.map((l) => (
+                    <NavLink
+                      key={l.to}
+                      to={l.to}
+                      onClick={() => setMenuAberto(false)}
+                      className={({ isActive }) =>
+                        `mb-1 flex rounded-xl px-4 py-3 text-base font-medium transition ${
+                          isActive
+                            ? 'bg-brasil-green/15 text-brasil-green'
+                            : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
+                        }`
+                      }
+                    >
+                      {l.label}
+                    </NavLink>
+                  ))
                 )}
               </nav>
 
               <div className="border-t border-white/5 p-4">
                 {user ? (
                   <div className="flex flex-col gap-3">
-                    <Link
-                      to="/perfil"
-                      onClick={() => setMenuAberto(false)}
-                      className="flex items-center gap-3 rounded-xl p-3 hover:bg-white/5"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brasil-green to-brasil-yellow text-sm font-bold text-black">
-                        {initials}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-zinc-200">{username}</p>
-                        <p className="text-xs text-zinc-500">Meu perfil</p>
-                      </div>
-                    </Link>
+                    {!isAdmin && (
+                      <Link
+                        to="/perfil"
+                        onClick={() => setMenuAberto(false)}
+                        className="flex items-center gap-3 rounded-xl p-3 hover:bg-white/5"
+                      >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brasil-green to-brasil-yellow text-sm font-bold text-black">
+                          {initials}
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-zinc-200">{username}</p>
+                          <p className="text-xs text-zinc-500">Meu perfil</p>
+                        </div>
+                      </Link>
+                    )}
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm font-medium text-zinc-400 transition hover:border-red-500/50 hover:text-red-400"

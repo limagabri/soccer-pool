@@ -21,6 +21,8 @@ export function ProtectedRoute({ children, skipPrimeiroAcesso = false }: Props) 
 
   if (!session) return <Navigate to="/login" replace />
 
+  if (profile?.is_admin) return <Navigate to="/admin/jogos" replace />
+
   if (
     !skipPrimeiroAcesso &&
     profile?.primeiro_acesso === true &&
