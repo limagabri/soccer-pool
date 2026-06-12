@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle2, Clock, Loader2, Pencil, X } from 'lucide-react'
+import { CheckCircle2, Clock, Loader2, Pencil, Plus, Trash2, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { formatarData } from '../../lib/utils'
 import { GRUPOS } from '../../lib/classificacao'
@@ -13,6 +13,28 @@ interface ModalState {
   gols_casa: string
   gols_fora: string
   encerrado: boolean
+}
+
+interface EventoJogo {
+  id: string
+  jogo_id: string
+  tipo: 'gol' | 'gol_contra' | 'assistencia'
+  jogador: string
+  selecao: string
+  minuto: number | null
+}
+
+interface EventoForm {
+  tipo: EventoJogo['tipo']
+  jogador: string
+  selecao: string
+  minuto: string
+}
+
+const TIPO_LABEL: Record<EventoJogo['tipo'], string> = {
+  gol: '⚽ Gol',
+  gol_contra: '🥅 Gol Contra',
+  assistencia: '🎯 Assistência',
 }
 
 function BadgeStatus({ encerrado }: { encerrado: boolean }) {
@@ -35,6 +57,12 @@ export function AdminJogos() {
   const [salvando, setSalvando] = useState(false)
   const [feedbackId, setFeedbackId] = useState<string | null>(null)
 
+  // eventos
+  const [eventos, setEventos] = useState<EventoJogo[]>([])
+  const [carregandoEventos, setCarregandoEventos] = useState(false)
+  const [eventoForm, setEventoForm] = useState<EventoForm>({ tipo: 'gol', jogador: '', selecao: '', minuto: '' })
+  const [salvandoEvento, setSalvandoEvento] = useState(false)
+
   useEffect(() => {
     supabase
       .from('jogos')
@@ -53,13 +81,29 @@ export function AdminJogos() {
     return jogos
   }, [jogos, filtro])
 
-  function abrirModal(jogo: Jogo) {
+  async function abrirModal(jogo: Jogo) {
     setModal({
       jogo,
       gols_casa: jogo.gols_casa != null ? String(jogo.gols_casa) : '',
       gols_fora: jogo.gols_fora != null ? String(jogo.gols_fora) : '',
       encerrado: jogo.encerrado,
     })
+    setCarregandoEventos(true)
+    setEventos([])
+    setEventoForm({ tipo: 'gol', jogador: '', selecao: '', minuto: '' })
+    const { data } = await supabase
+      .from('eventos_jogo')
+      .select('*')
+      .eq('jogo_id', jogo.id)
+      .order('minuto', { nullsFirst: false })
+    setEventos((data as EventoJogo[]) ?? [])
+    setCarregandoEventos(false)
+  }
+
+  function fecharModal() {
+    setModal(null)
+    setEventos([])
+    setEventoForm({ tipo: 'gol', jogador: '', selecao: '', minuto: '' })
   }
 
   async function salvarResultado() {
@@ -81,8 +125,33 @@ export function AdminJogos() {
       setJogos((prev) => prev.map((j) => (j.id === modal.jogo.id ? (data as Jogo) : j)))
       setFeedbackId(modal.jogo.id)
       setTimeout(() => setFeedbackId(null), 2000)
-      setModal(null)
     }
+  }
+
+  async function adicionarEvento() {
+    if (!modal || !eventoForm.jogador.trim() || !eventoForm.selecao.trim()) return
+    setSalvandoEvento(true)
+    const { data } = await supabase
+      .from('eventos_jogo')
+      .insert({
+        jogo_id: modal.jogo.id,
+        tipo: eventoForm.tipo,
+        jogador: eventoForm.jogador.trim(),
+        selecao: eventoForm.selecao.trim(),
+        minuto: eventoForm.minuto ? parseInt(eventoForm.minuto) : null,
+      })
+      .select()
+      .single()
+    if (data) {
+      setEventos((prev) => [...prev, data as EventoJogo])
+      setEventoForm((f) => ({ ...f, jogador: '', minuto: '' }))
+    }
+    setSalvandoEvento(false)
+  }
+
+  async function removerEvento(id: string) {
+    await supabase.from('eventos_jogo').delete().eq('id', id)
+    setEventos((prev) => prev.filter((e) => e.id !== id))
   }
 
   const FILTROS: { id: Filtro; label: string }[] = [
@@ -181,7 +250,7 @@ export function AdminJogos() {
                       className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-zinc-700 hover:text-zinc-100"
                     >
                       <Pencil className="h-3 w-3" />
-                      Resultado
+                      Editar
                     </button>
                   </td>
                 </motion.tr>
@@ -198,81 +267,165 @@ export function AdminJogos() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+            className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 px-4 py-8"
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-sm rounded-xl border border-zinc-700 bg-zinc-900 p-6"
+              className="w-full max-w-lg rounded-xl border border-zinc-700 bg-zinc-900"
             >
-              <div className="mb-4 flex items-start justify-between">
+              {/* Header */}
+              <div className="flex items-start justify-between border-b border-zinc-800 p-5">
                 <div>
-                  <h2 className="font-semibold text-zinc-100">Inserir Resultado</h2>
-                  <p className="mt-0.5 text-sm text-zinc-500">
-                    {modal.jogo.time_casa} × {modal.jogo.time_fora}
+                  <h2 className="font-semibold text-zinc-100">
+                    {modal.jogo.emoji_casa} {modal.jogo.time_casa} × {modal.jogo.time_fora} {modal.jogo.emoji_fora}
+                  </h2>
+                  <p className="mt-0.5 text-xs text-zinc-500">
+                    Grupo {modal.jogo.grupo} · {formatarData(modal.jogo.data_jogo)}
                   </p>
                 </div>
-                <button onClick={() => setModal(null)} className="text-zinc-600 hover:text-zinc-300">
+                <button onClick={fecharModal} className="text-zinc-600 hover:text-zinc-300">
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-4 py-4">
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-3xl">{modal.jogo.emoji_casa}</span>
-                  <span className="text-xs text-zinc-400">{modal.jogo.time_casa}</span>
-                  <input
-                    type="number"
-                    min={0}
-                    max={20}
-                    value={modal.gols_casa}
-                    onChange={(e) => setModal((m) => m && { ...m, gols_casa: e.target.value })}
-                    className="h-14 w-16 rounded-lg border border-zinc-700 bg-zinc-800 text-center text-2xl font-bold text-zinc-100 outline-none focus:border-green-600"
-                  />
+              <div className="p-5 space-y-5">
+                {/* Resultado */}
+                <div>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Resultado</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="flex flex-col items-center gap-2">
+                      <span className="text-2xl">{modal.jogo.emoji_casa}</span>
+                      <span className="text-xs text-zinc-400">{modal.jogo.time_casa}</span>
+                      <input
+                        type="number" min={0} max={20} value={modal.gols_casa}
+                        onChange={(e) => setModal((m) => m && { ...m, gols_casa: e.target.value })}
+                        className="h-12 w-14 rounded-lg border border-zinc-700 bg-zinc-800 text-center text-xl font-bold text-zinc-100 outline-none focus:border-green-600"
+                      />
+                    </div>
+                    <span className="text-xl font-bold text-zinc-600">×</span>
+                    <div className="flex flex-col items-center gap-2">
+                      <span className="text-2xl">{modal.jogo.emoji_fora}</span>
+                      <span className="text-xs text-zinc-400">{modal.jogo.time_fora}</span>
+                      <input
+                        type="number" min={0} max={20} value={modal.gols_fora}
+                        onChange={(e) => setModal((m) => m && { ...m, gols_fora: e.target.value })}
+                        className="h-12 w-14 rounded-lg border border-zinc-700 bg-zinc-800 text-center text-xl font-bold text-zinc-100 outline-none focus:border-green-600"
+                      />
+                    </div>
+                  </div>
+
+                  <label className="mt-3 flex cursor-pointer items-center gap-3 rounded-lg bg-zinc-800 px-4 py-2.5">
+                    <input
+                      type="checkbox" checked={modal.encerrado}
+                      onChange={(e) => setModal((m) => m && { ...m, encerrado: e.target.checked })}
+                      className="h-4 w-4 rounded accent-green-500"
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-zinc-200">Marcar como encerrado</p>
+                      <p className="text-xs text-zinc-500">Pontos calculados automaticamente pelo trigger</p>
+                    </div>
+                  </label>
+
+                  <button
+                    onClick={salvarResultado}
+                    disabled={salvando}
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-green-700 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600 disabled:opacity-60"
+                  >
+                    {salvando && <Loader2 className="h-4 w-4 animate-spin" />}
+                    Salvar resultado
+                  </button>
                 </div>
-                <span className="text-2xl font-bold text-zinc-600">×</span>
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-3xl">{modal.jogo.emoji_fora}</span>
-                  <span className="text-xs text-zinc-400">{modal.jogo.time_fora}</span>
-                  <input
-                    type="number"
-                    min={0}
-                    max={20}
-                    value={modal.gols_fora}
-                    onChange={(e) => setModal((m) => m && { ...m, gols_fora: e.target.value })}
-                    className="h-14 w-16 rounded-lg border border-zinc-700 bg-zinc-800 text-center text-2xl font-bold text-zinc-100 outline-none focus:border-green-600"
-                  />
+
+                {/* Divisor */}
+                <div className="border-t border-zinc-800" />
+
+                {/* Eventos */}
+                <div>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Eventos do jogo</p>
+
+                  {carregandoEventos ? (
+                    <div className="flex justify-center py-4">
+                      <Loader2 className="h-5 w-5 animate-spin text-zinc-600" />
+                    </div>
+                  ) : (
+                    <>
+                      {/* Lista */}
+                      {eventos.length > 0 && (
+                        <div className="mb-3 space-y-1.5 max-h-40 overflow-y-auto">
+                          {eventos.map((ev) => (
+                            <div key={ev.id} className="flex items-center justify-between rounded-lg bg-zinc-800 px-3 py-2 text-sm">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs text-zinc-500">{ev.minuto ? `${ev.minuto}'` : '—'}</span>
+                                <span className="text-zinc-400">{TIPO_LABEL[ev.tipo]}</span>
+                                <span className="font-medium text-zinc-200">{ev.jogador}</span>
+                                <span className="text-xs text-zinc-500">({ev.selecao})</span>
+                              </div>
+                              <button
+                                onClick={() => removerEvento(ev.id)}
+                                className="ml-2 rounded p-1 text-zinc-600 transition hover:text-red-400"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Formulário novo evento */}
+                      <div className="rounded-lg border border-zinc-700 bg-zinc-800/50 p-3 space-y-2">
+                        <p className="text-xs text-zinc-500">Adicionar evento</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          <select
+                            value={eventoForm.tipo}
+                            onChange={(e) => setEventoForm((f) => ({ ...f, tipo: e.target.value as EventoJogo['tipo'] }))}
+                            className="rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600"
+                          >
+                            <option value="gol">⚽ Gol</option>
+                            <option value="gol_contra">🥅 Gol Contra</option>
+                            <option value="assistencia">🎯 Assistência</option>
+                          </select>
+                          <input
+                            type="number" min={1} max={120} placeholder="Minuto"
+                            value={eventoForm.minuto}
+                            onChange={(e) => setEventoForm((f) => ({ ...f, minuto: e.target.value }))}
+                            className="rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600 placeholder:text-zinc-600"
+                          />
+                        </div>
+                        <input
+                          type="text" placeholder="Jogador"
+                          value={eventoForm.jogador}
+                          onChange={(e) => setEventoForm((f) => ({ ...f, jogador: e.target.value }))}
+                          className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600 placeholder:text-zinc-600"
+                        />
+                        <input
+                          type="text" placeholder="Seleção"
+                          value={eventoForm.selecao}
+                          onChange={(e) => setEventoForm((f) => ({ ...f, selecao: e.target.value }))}
+                          className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600 placeholder:text-zinc-600"
+                        />
+                        <button
+                          onClick={adicionarEvento}
+                          disabled={salvandoEvento || !eventoForm.jogador.trim() || !eventoForm.selecao.trim()}
+                          className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-zinc-600 py-1.5 text-sm font-medium text-zinc-300 transition hover:border-green-600 hover:text-green-400 disabled:opacity-40"
+                        >
+                          {salvandoEvento ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Plus className="h-3.5 w-3.5" />}
+                          Adicionar
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
-              <label className="mt-2 flex cursor-pointer items-center gap-3 rounded-lg bg-zinc-800 px-4 py-3">
-                <input
-                  type="checkbox"
-                  checked={modal.encerrado}
-                  onChange={(e) => setModal((m) => m && { ...m, encerrado: e.target.checked })}
-                  className="h-4 w-4 rounded accent-green-500"
-                />
-                <div>
-                  <p className="text-sm font-medium text-zinc-200">Marcar como encerrado</p>
-                  <p className="text-xs text-zinc-500">Pontos serão calculados automaticamente pelo trigger</p>
-                </div>
-              </label>
-
-              <div className="mt-5 flex gap-3">
+              {/* Footer */}
+              <div className="border-t border-zinc-800 px-5 py-3">
                 <button
-                  onClick={() => setModal(null)}
-                  className="flex-1 rounded-lg border border-zinc-700 py-2.5 text-sm font-medium text-zinc-400 transition hover:border-zinc-600"
+                  onClick={fecharModal}
+                  className="w-full rounded-lg border border-zinc-700 py-2 text-sm font-medium text-zinc-400 transition hover:border-zinc-600"
                 >
-                  Cancelar
-                </button>
-                <button
-                  onClick={salvarResultado}
-                  disabled={salvando}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-700 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600 disabled:opacity-60"
-                >
-                  {salvando && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Salvar
+                  Fechar
                 </button>
               </div>
             </motion.div>

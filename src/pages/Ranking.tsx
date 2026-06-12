@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
+import { Star } from 'lucide-react'
 import { Navbar } from '../components/Navbar'
 import { useAuth } from '../contexts/AuthContext'
 import { useJogos } from '../hooks/useJogos'
@@ -15,6 +16,8 @@ interface LinhaRanking {
   exatos: number
   vencedor: number
   pontos: number
+  ptsEspeciais: number
+  total: number
 }
 
 export function Ranking() {
@@ -22,18 +25,23 @@ export function Ranking() {
   const { jogos } = useJogos()
   const [palpites, setPalpites] = useState<PalpiteResumo[]>([])
   const [usernames, setUsernames] = useState<Record<string, string>>({})
+  const [pontosEspeciais, setPontosEspeciais] = useState<Record<string, number>>({})
   const [loading, setLoading] = useState(true)
 
   const carregar = useCallback(async () => {
     const [{ data: dataPalpites }, { data: dataProfiles }] = await Promise.all([
       supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora'),
-      supabase.from('profiles').select('id, username').eq('is_admin', false),
+      supabase.from('profiles').select('id, username, pontos_especiais').eq('is_admin', false),
     ])
     setPalpites((dataPalpites as PalpiteResumo[]) ?? [])
     const nomes: Record<string, string> = {}
-    for (const p of (dataProfiles as { id: string; username: string }[]) ?? [])
+    const especiais: Record<string, number> = {}
+    for (const p of (dataProfiles as { id: string; username: string; pontos_especiais: number }[]) ?? []) {
       nomes[p.id] = p.username
+      especiais[p.id] = p.pontos_especiais ?? 0
+    }
     setUsernames(nomes)
+    setPontosEspeciais(especiais)
     setLoading(false)
   }, [])
 
@@ -58,18 +66,20 @@ export function Ranking() {
     const stats = agregarEstatisticas(palpites, jogos)
     return [...stats.values()]
       .filter((s) => s.user_id in usernames)
-      .map((s) => ({
-        ...s,
-        username: usernames[s.user_id],
-      }))
+      .map((s) => {
+        const ptsEspeciais = pontosEspeciais[s.user_id] ?? 0
+        return { ...s, username: usernames[s.user_id], ptsEspeciais, total: s.pontos + ptsEspeciais }
+      })
       .sort(
         (a, b) =>
-          b.pontos - a.pontos ||
+          b.total - a.total ||
           b.exatos - a.exatos ||
           b.vencedor - a.vencedor ||
           a.username.localeCompare(b.username)
       )
-  }, [palpites, jogos, usernames])
+  }, [palpites, jogos, usernames, pontosEspeciais])
+
+  const temEspeciais = linhas.some((l) => l.ptsEspeciais > 0)
 
   return (
     <div className="min-h-screen">
@@ -96,7 +106,7 @@ export function Ranking() {
           </p>
         ) : (
           <div className="glass mt-8 overflow-x-auto">
-            <table className="w-full min-w-[36rem] text-sm">
+            <table className="w-full min-w-[38rem] text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left text-xs tracking-wider text-zinc-500 uppercase">
                   <th className="px-4 py-3">#</th>
@@ -108,7 +118,9 @@ export function Ranking() {
                   <th className="px-2 py-3 text-center" title="Vencedor/empate (5 pts)">
                     ✓ Vencedor
                   </th>
-                  <th className="px-4 py-3 text-right">Pontos</th>
+                  <th className="px-2 py-3 text-center">Palpites</th>
+                  {temEspeciais && <th className="px-2 py-3 text-center">⭐ Bônus</th>}
+                  <th className="px-4 py-3 text-right">Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -147,8 +159,21 @@ export function Ranking() {
                       <td className="px-2 py-3 text-center text-zinc-400">{linha.palpites}</td>
                       <td className="px-2 py-3 text-center text-zinc-400">{linha.exatos}</td>
                       <td className="px-2 py-3 text-center text-zinc-400">{linha.vencedor}</td>
+                      <td className="px-2 py-3 text-center text-zinc-400">{linha.pontos}</td>
+                      {temEspeciais && (
+                        <td className="px-2 py-3 text-center">
+                          {linha.ptsEspeciais > 0 ? (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-brasil-yellow/20 px-2 py-0.5 text-xs font-semibold text-brasil-yellow">
+                              <Star className="h-3 w-3" />
+                              +{linha.ptsEspeciais}
+                            </span>
+                          ) : (
+                            <span className="text-zinc-600">—</span>
+                          )}
+                        </td>
+                      )}
                       <td className="px-4 py-3 text-right font-display text-2xl text-brasil-yellow">
-                        {linha.pontos}
+                        {linha.total}
                       </td>
                     </motion.tr>
                   )

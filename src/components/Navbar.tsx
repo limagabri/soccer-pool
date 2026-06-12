@@ -9,6 +9,7 @@ const LINKS = [
   { to: '/dashboard', label: 'Dashboard', protegido: true },
   { to: '/palpites', label: 'Palpites', protegido: true },
   { to: '/grupos', label: 'Grupos', protegido: false },
+  { to: '/estatisticas', label: 'Estatísticas', protegido: false },
   { to: '/ranking', label: 'Ranking', protegido: false },
   { to: '/simulador', label: 'Simulador', protegido: false },
 ]

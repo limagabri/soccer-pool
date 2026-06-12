@@ -19,6 +19,9 @@ import { AdminLayout } from './pages/admin/AdminLayout'
 import { AdminJogos } from './pages/admin/AdminJogos'
 import { AdminUsuarios } from './pages/admin/AdminUsuarios'
 import { AdminConvites } from './pages/admin/AdminConvites'
+import { AdminEspeciais } from './pages/admin/AdminEspeciais'
+import { Estatisticas } from './pages/Estatisticas'
+import { Regulamento } from './pages/Regulamento'
 import { usePontuacao } from './hooks/usePontuacao'
 
 function PontuacaoGlobal() {
@@ -43,8 +46,10 @@ function App() {
           <Route path="/nova-senha" element={<NovaSenha />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/grupos" element={<Grupos />} />
+          <Route path="/estatisticas" element={<Estatisticas />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/simulador" element={<Simulador />} />
+          <Route path="/regulamento" element={<Regulamento />} />
 
           {/* Protegidas */}
           <Route
@@ -75,6 +80,7 @@ function App() {
               <Route path="jogos" element={<AdminJogos />} />
               <Route path="usuarios" element={<AdminUsuarios />} />
               <Route path="convites" element={<AdminConvites />} />
+              <Route path="especiais" element={<AdminEspeciais />} />
             </Route>
           </Route>
         </Routes>

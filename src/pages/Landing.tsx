@@ -158,9 +158,15 @@ export function Landing() {
       <footer className="relative z-10 border-t border-white/5 px-6 py-8">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
           <Logo />
-          <p className="text-sm text-zinc-600">
-            BolãoCopa 2026 — feito com ⚽ e ☕
-          </p>
+          <div className="flex items-center gap-4">
+            <Link to="/regulamento" className="text-sm text-zinc-600 transition hover:text-zinc-400">
+              Regulamento
+            </Link>
+            <span className="text-zinc-800">·</span>
+            <p className="text-sm text-zinc-600">
+              BolãoCopa 2026 — feito com ⚽ e ☕
+            </p>
+          </div>
         </div>
       </footer>
     </div>

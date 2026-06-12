@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { ClipboardList, LogOut, Mail, Menu, Trophy, Users, X } from 'lucide-react'
+import { Award, ClipboardList, LogOut, Mail, Menu, Trophy, Users, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 
 const LINKS = [
   { to: '/admin/jogos', label: 'Jogos', icon: ClipboardList },
   { to: '/admin/usuarios', label: 'Usuários', icon: Users },
   { to: '/admin/convites', label: 'Convites', icon: Mail },
+  { to: '/admin/especiais', label: 'Especiais', icon: Award },
 ]
 
 export function AdminLayout() {

@@ -100,8 +100,7 @@ interface Escolhas {
   vice_campeao: string
   terceiro: string
   artilheiro: string
-  melhor_goleiro: string
-  melhor_defesa: string
+  melhor_jogador: string
 }
 
 export function PrimeiroAcesso() {
@@ -118,7 +117,7 @@ export function PrimeiroAcesso() {
   // Step 2: escolhas especiais
   const [escolhas, setEscolhas] = useState<Escolhas>({
     campeao: '', vice_campeao: '', terceiro: '',
-    artilheiro: '', melhor_goleiro: '', melhor_defesa: '',
+    artilheiro: '', melhor_jogador: '',
   })
 
   const username =
@@ -275,11 +274,10 @@ export function PrimeiroAcesso() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <CampoSelecao label="Campeão" emoji="🏆" value={escolhas.campeao} onChange={(v) => setEscolhas((e) => ({ ...e, campeao: v }))} />
                     <CampoSelecao label="Vice-campeão" emoji="🥈" value={escolhas.vice_campeao} onChange={(v) => setEscolhas((e) => ({ ...e, vice_campeao: v }))} />
-                    <CampoSelecao label="3º lugar" emoji="🥉" value={escolhas.terceiro} onChange={(v) => setEscolhas((e) => ({ ...e, terceiro: v }))} />
-                    <CampoSelecao label="Melhor defesa" emoji="🛡️" value={escolhas.melhor_defesa} onChange={(v) => setEscolhas((e) => ({ ...e, melhor_defesa: v }))} />
                   </div>
+                  <CampoSelecao label="3º lugar" emoji="🥉" value={escolhas.terceiro} onChange={(v) => setEscolhas((e) => ({ ...e, terceiro: v }))} />
                   <CampoSelecao label="Artilheiro" emoji="⚽" value={escolhas.artilheiro} onChange={(v) => setEscolhas((e) => ({ ...e, artilheiro: v }))} livre />
-                  <CampoSelecao label="Melhor goleiro" emoji="🧤" value={escolhas.melhor_goleiro} onChange={(v) => setEscolhas((e) => ({ ...e, melhor_goleiro: v }))} livre />
+                  <CampoSelecao label="Melhor jogador da Copa" emoji="🌟" value={escolhas.melhor_jogador} onChange={(v) => setEscolhas((e) => ({ ...e, melhor_jogador: v }))} livre />
 
                   {erro && <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400">{erro}</p>}
 
@@ -317,12 +315,8 @@ export function PrimeiroAcesso() {
                         <span className="font-semibold text-zinc-200">{escolhas.artilheiro}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-zinc-500">🧤 Melhor goleiro</span>
-                        <span className="font-semibold text-zinc-200">{escolhas.melhor_goleiro}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-zinc-500">🛡️ Melhor defesa</span>
-                        <span className="font-semibold text-zinc-200">{escolhas.melhor_defesa}</span>
+                        <span className="text-zinc-500">🌟 Melhor jogador</span>
+                        <span className="font-semibold text-zinc-200">{escolhas.melhor_jogador}</span>
                       </div>
                     </div>
                   </div>
