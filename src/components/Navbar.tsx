@@ -9,12 +9,13 @@ import { SUPPORTED_LANGS } from '../i18n'
 import { Logo } from './Logo'
 
 const LINKS = [
-  { to: '/dashboard', key: 'nav.dashboard', protegido: true },
-  { to: '/palpites', key: 'nav.predictions', protegido: true },
-  { to: '/grupos', key: 'nav.groups', protegido: false },
-  { to: '/estatisticas', key: 'nav.statistics', protegido: false },
-  { to: '/ranking', key: 'nav.ranking', protegido: false },
-  { to: '/simulador', key: 'nav.simulator', protegido: false },
+  { to: '/dashboard',   key: 'nav.dashboard',   protegido: true },
+  { to: '/palpites',    key: 'nav.predictions', protegido: true },
+  { to: '/grupos',      key: 'nav.groups',      protegido: false },
+  { to: '/estatisticas',key: 'nav.statistics',  protegido: false },
+  { to: '/ranking',     key: 'nav.ranking',     protegido: false },
+  { to: '/simulador',   key: 'nav.simulator',   protegido: false },
+  { to: '/regulamento', key: 'nav.rules',       protegido: false },
 ]
 
 function LangToggle({ className = '' }: { className?: string }) {
