@@ -7,12 +7,12 @@
 @layer base {
   html {
     @apply transition-colors duration-300;
-    overflow-x: hidden;
   }
 
   /* ── Light mode (default) ───────────────────────────────────────── */
   body {
     background-color: #f0f2f5;
+    overflow-x: hidden;
     @apply text-gray-900 antialiased;
     background-image: radial-gradient(
       ellipse 80% 50% at 50% -20%,

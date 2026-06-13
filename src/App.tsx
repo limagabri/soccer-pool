@@ -68,14 +68,16 @@ function App() {
                 <Route path="/esqueci-senha" element={<EsqueciSenha />} />
                 <Route path="/nova-senha" element={<NovaSenha />} />
                 <Route path="/auth/callback" element={<AuthCallback />} />
-                <Route path="/grupos" element={<Grupos />} />
-                <Route path="/estatisticas" element={<Estatisticas />} />
-                <Route path="/ranking" element={<Ranking />} />
-                <Route path="/simulador" element={<Simulador />} />
-                <Route path="/regulamento" element={<Regulamento />} />
-                <Route path="/comentarios" element={<Comentarios />} />
-                <Route path="/stories" element={<Stories />} />
-                <Route path="/stories-preview" element={<StoriesPreview />} />
+
+                {/* Protegidas — requerem login */}
+                <Route path="/grupos"        element={<ProtectedRoute><Grupos /></ProtectedRoute>} />
+                <Route path="/estatisticas"  element={<ProtectedRoute><Estatisticas /></ProtectedRoute>} />
+                <Route path="/ranking"       element={<ProtectedRoute><Ranking /></ProtectedRoute>} />
+                <Route path="/simulador"     element={<ProtectedRoute><Simulador /></ProtectedRoute>} />
+                <Route path="/regulamento"   element={<ProtectedRoute><Regulamento /></ProtectedRoute>} />
+                <Route path="/comentarios"   element={<ProtectedRoute><Comentarios /></ProtectedRoute>} />
+                <Route path="/stories"       element={<ProtectedRoute><Stories /></ProtectedRoute>} />
+                <Route path="/stories-preview" element={<ProtectedRoute><StoriesPreview /></ProtectedRoute>} />
 
                 {/* Protegidas */}
                 <Route
