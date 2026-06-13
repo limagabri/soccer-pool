@@ -9,14 +9,14 @@ export default defineConfig(({ command }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['pwa-icon.svg', 'favicon.svg'],
       manifest: {
-        name: 'BolãoCopa 2026',
-        short_name: 'BolãoCopa',
-        description: 'Bolão da Copa do Mundo 2026',
+        name: 'Soccer Pool 2026',
+        short_name: 'SoccerPool',
+        description: 'World Cup 2026 Prediction Game',
         theme_color: '#00c853',
         background_color: '#0a0a0a',
         display: 'standalone',
-        start_url: '/bolao-copa/',
-        scope: '/bolao-copa/',
+        start_url: '/soccer-pool/',
+        scope: '/soccer-pool/',
         icons: [
           {
             src: 'pwa-icon.svg',
@@ -57,7 +57,7 @@ export default defineConfig(({ command }) => ({
       },
     }),
   ],
-  base: command === 'build' ? '/bolao-copa/' : '/',
+  base: command === 'build' ? '/soccer-pool/' : '/',
   build: {
     rollupOptions: {
       output: {

@@ -1,95 +1,107 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to Soccer Pool are documented here.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [1.5.0] - 2026-06-12
+---
 
-### Added
-- Internationalization (i18n) with pt-BR, English, and Spanish support
-- Language toggle in Navbar cycling through all supported locales
-- `src/config/torneio.ts` with all 48 Copa do Mundo 2026 teams, 12 groups, key dates, and scoring config
-- `src/config/app.ts` centralized configuration replacing all hardcoded strings
-- `scripts/setup.ts` — interactive one-command project setup with VAPID key generation
-- `scripts/migrate.ts` — idempotent migration runner with `_migrations` tracking table
-- GitHub Actions: `pr-check.yml` (lint + build on PRs), `dependabot.yml` (weekly npm, monthly Actions)
-- Added lint step to `deploy.yml` before build
-- `supabase/migrations/` directory with 9 numbered migration files + seed data
-- `.env.example` with all required variables and documentation
+## [1.0.0] - 2026-06-13 — Open Source Release
 
-### Changed
-- All hardcoded `BolãoCopa 2026` strings replaced with `APP_FULL_NAME` / `APP_CONFIG`
-- `deploy.yml` now passes `VITE_APP_NAME`, `VITE_APP_YEAR`, `VITE_BASE_URL`, `VITE_VAPID_PUBLIC_KEY`
-- `Navbar` supports both dark and light mode with `dark:` Tailwind variants
+**Soccer Pool v1.0.0** — World Cup 2026 Edition.
+Full-featured prediction game, free to host on GitHub Pages.
 
-### Security
-- `SUPABASE_SERVICE_ROLE_KEY` confirmed as server-only (Edge Function only)
-- `.env.local` added to `.gitignore`; no real credentials in `.env.example`
+### Added — Sprint 12: Open Source Release
+- Renamed project to `soccer-pool` for GitHub Pages hosting
+- `npm run setup` interactive wizard: configures env, generates VAPID keys, runs migrations, sets GitHub Secrets, creates admin user
+- `scripts/delete-test-users.ts` — removes seed test accounts via service_role
+- `MANUAL_SETUP.md` — complete step-by-step fallback guide
+- `CONTRIBUTING.md` — contributor guidelines in English
+- `supabase/migrations/013_cleanup_test_data.sql` — removes test data before production
+- GitHub Actions: automatic database migrations before each deploy (`SUPABASE_DB_URL` secret)
+- `.env.example` now includes `SUPABASE_DB_URL` for CI/CD migrations
+- `.gitignore` hardened with explicit `.env.local` and `.env*.local` entries
 
-## [1.4.0] - 2026-06-05
+### Added — Sprint 11: Stories (v0.11.0)
+- AI-generated tournament recap stories via `gerar-story` Edge Function
+- `stories` table with scheduling and admin publish flow
+- `/stories` route with animated story viewer
+- Admin panel page `/admin/stories` for story management
 
-### Added
-- PWA support via `vite-plugin-pwa` with full offline capability
-- Web Push notifications with VAPID key pair and Edge Function `enviar-push`
-- `useNotificacoes` hook — requests push permission, registers service worker, schedules local reminders
-- `ConfigNotificacoes` component on `/perfil` page
-- `push_subscriptions` table with RLS in Supabase
-- Dark / light / system theme support via `ThemeContext`
-- `ThemeToggle` component in Navbar with animated Sun/Moon icon
-- `NotFound.tsx` — 404 page with navigation back to home
-- `LoadingGlobal.tsx` — fullscreen loading spinner
-- SEO meta tags in `index.html` (og:*, twitter:card, theme-color)
-- `ScrollToTop` component resetting scroll position on route change
-- `InstalarPWA` banner for iOS/Android install prompt
+### Added — Sprint 10: AI Commentary (v0.10.0)
+- "Seu Zé" AI comic commentator powered by GPT
+- `comentarios_ia` table storing per-event reactions
+- `gerar-comentarista` Edge Function — reacts to goals, cards, and final whistles
+- `/comentarios` page with animated commentary feed
+- Admin panel page `/admin/comentarista` to trigger manual generation
+- `eventos_jogo` table for tracking match events
 
-### Changed
-- `body`, `.glass`, `.input-glow` updated for light mode compatibility in `index.css`
-- `tailwind.config.js` — added `darkMode: 'class'`
-- `index.html` — `<html class="dark">` as default
+### Added — Sprint 9: Push Notifications (v0.9.0)
+- Web Push notifications (VAPID) via `enviar-push` Edge Function
+- `push_subscriptions` table with RLS
+- `useNotificacoes` hook — requests permission, registers service worker
+- Push notification configuration on `/perfil` page
+- Admin broadcast: send push to all subscribers from admin panel
 
-## [1.3.0] - 2026-05-29
+### Added — Sprint 8: Chat & Ranking History (v0.8.0)
+- Real-time per-game chat (`ChatJogo.tsx`) via Supabase Realtime
+- `comentarios` table with RLS
+- Admin chat moderation page at `/admin/chat`
+- `ranking_historico` table for daily ranking snapshots
+- `useRankingHistorico` hook with recharts `LineChart` evolution graph
+- Share card (Canvas API, 1080×1080 PNG) on `/palpites`
 
-### Added
-- Chat per game card in `Palpites.tsx` — collapsible with comment count badge
-- Share card (Canvas API 1080×1080) component `CompartilharCard` in `Palpites.tsx`
-- Ranking evolution chart (`GraficoRanking` with recharts `LineChart`) in `Ranking.tsx`
-- Chat management page at `/admin/chat` with link in `AdminLayout`
-
-### Fixed
-- Ranking header showed duplicate "Palpites" column; corrected to "Pts"
-
-## [1.2.0] - 2026-05-22
-
-### Added
-- Real-time chat per game (`ChatJogo.tsx`) powered by Supabase Realtime
-- `ranking_historico` table + `useRankingHistorico` hook for historical snapshots
-- Special picks (`escolhas_especiais`) — champion, top scorer, best keeper predictions
-- Invite system (`convites`) with unique codes and usage tracking
-
-### Changed
-- Points recalculation triggered automatically via Postgres function on score update
-
-## [1.1.0] - 2026-05-15
-
-### Added
+### Added — Sprint 7: Statistics & Simulator (v0.7.0)
 - Statistics page with team win/draw/loss breakdown and top scorers
-- Simulator page for running hypothetical group stage outcomes
+- Simulator page for hypothetical group stage outcomes
 - Groups page showing all 12 Copa 2026 groups with flags
-- Admin panel: game management, user management, results entry
 
-### Changed
-- Profile page now shows full prediction history and points breakdown
+### Added — Sprint 6: Admin Panel (v0.6.0)
+- Admin panel at `/admin` (isAdmin guard via `is_user_admin()` SECURITY DEFINER)
+- Game result entry with automatic points recalculation trigger
+- User management: view, promote to admin, reset password
+- Invite code management
+- Special picks management (champion, top scorer, keeper)
+- `admin-upsert-palpites` Edge Function for bulk prediction imports
+- `criar-usuario` Edge Function for service-role user creation
 
-## [1.0.0] - 2026-05-08
+### Added — Sprint 5: Special Picks & Invites (v0.5.0)
+- Special picks (`escolhas_especiais`) — champion, top scorer, best keeper
+- Invite system (`convites`) with unique codes and usage tracking
+- Admin Convites page and Especiais page
+- Invite-only registration flow
 
-### Added
-- Initial release
-- Authentication (sign up / sign in) via Supabase Auth
-- Predictions (`palpites`) for all 48 group stage matches
-- Points system: 10 pts exact score, 7 pts correct result, 5 pts correct winner
-- Ranking with real-time updates
+### Added — Sprint 4: Authentication & First Access (v0.4.0)
+- Email + password auth via Supabase Auth
+- First-access flow: username setup on first login
+- Password reset (forgot password + reset link)
+- Auth callback page for OAuth-style redirect handling
+- `profiles` table with `primeiro_acesso` and `senha_trocada` flags
+
+### Added — Sprint 3: PWA & Themes (v0.3.0)
+- PWA support via `vite-plugin-pwa` with full offline capability
+- Dark / light / system theme via `ThemeContext` and `ThemeToggle`
+- Installable on iOS and Android (`InstalarPWA` banner)
+- SEO meta tags (`og:*`, `twitter:card`, `theme-color`)
+- `ScrollToTop` on route change
+
+### Added — Sprint 2: i18n & Config (v0.2.0)
+- Internationalization (i18n) with pt-BR, English, and Spanish
+- Language toggle in Navbar cycling all locales
+- `src/config/torneio.ts` — all 48 Copa 2026 teams, 12 groups, key dates, scoring
+- `src/config/app.ts` — centralized env-driven configuration
+- `scripts/migrate.ts` — idempotent migration runner with `_migrations` tracking table
+- `supabase/migrations/` directory with numbered SQL files + seed data
+
+### Added — Sprint 1: Core Game (v0.1.0)
+- Score predictions for all 48 group stage matches
+- Points system: 10 pts exact, 7 pts correct result, 5 pts correct winner
+- Live ranking with Supabase Realtime subscriptions
 - Dashboard with upcoming games and user stats
-- Admin-only game result entry with automatic points recalculation
-- RLS policies on all tables using `is_user_admin()` SECURITY DEFINER function
+- `/palpites`, `/ranking`, `/dashboard`, `/simulador`, `/grupos`, `/estatisticas`
+- Postgres trigger for automatic point recalculation on result entry
+- RLS policies on all tables
+
+---
+
+*Previous pre-release versions (0.1.x – 0.11.x) are archived in git history.*

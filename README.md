@@ -1,151 +1,173 @@
-# BolãoCopa 2026
+# ⚽ Soccer Pool
 
-A full-stack FIFA World Cup 2026 betting pool app. Players submit score predictions for all 48 group-stage matches, earn points based on accuracy, and compete on a live-updating leaderboard.
+[![Deploy](https://github.com/YOUR_USERNAME/soccer-pool/actions/workflows/deploy.yml/badge.svg)](https://github.com/YOUR_USERNAME/soccer-pool/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres-3ecf8e?logo=supabase&logoColor=white)](https://supabase.com)
 
-![Built with React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-Postgres-3ecf8e?logo=supabase&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-green)
+> A full-featured World Cup 2026 prediction game.
+> Free to host on GitHub Pages. Powered by React + Supabase + AI commentary.
 
-## Features
+## ✨ Features
 
-- **Score predictions** — pick exact scores for all 48 group-stage matches
-- **Live ranking** — real-time leaderboard with Supabase Realtime subscriptions
-- **Ranking evolution chart** — track position changes over time
-- **Special picks** — predict champion, top scorer, and best goalkeeper
-- **Real-time chat** — per-game comment section with live updates
-- **Share card** — generate a 1080×1080 PNG of your predictions
-- **Admin panel** — enter results, manage users, send push notifications
-- **Push notifications** — Web Push reminders before each match
-- **PWA** — installable on iOS and Android, offline-capable
-- **Dark / light theme** — system default with manual override
-- **i18n** — Portuguese (pt-BR), English, and Spanish
+- ⚽ **Score predictions** — pick exact scores for all 48 group-stage matches
+- 🏆 **Live ranking** — real-time leaderboard with instant updates
+- 📈 **Ranking evolution chart** — track position changes over time
+- 🌟 **Special picks** — predict champion, top scorer, and best goalkeeper
+- 💬 **Real-time chat** — per-game comment section with live updates
+- 🤖 **AI comic commentary** — GPT-powered "Seu Zé" reacts to every goal
+- 📸 **Stories** — AI-generated tournament recap stories
+- 📤 **Share card** — generate a 1080×1080 PNG of your predictions
+- 🔔 **Push notifications** — Web Push reminders before each match
+- 🛡️ **Admin panel** — enter results, manage users, send push notifications
+- 📱 **PWA** — installable on iOS and Android, offline-capable
+- 🌙 **Dark / light theme** — system default with manual override
+- 🌐 **i18n** — Portuguese (pt-BR), English, and Spanish
+- 🔐 **Invite system** — control who can join your pool
 
-## Quick start
-
-### Prerequisites
-
-- Node 18+
-- A [Supabase](https://supabase.com) project
-
-### 1. Clone and install
+## 🚀 Quick Start (5 minutes)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/bolao-copa.git
-cd bolao-copa
+git clone https://github.com/YOUR_USERNAME/soccer-pool.git
+cd soccer-pool
 npm install
-```
-
-### 2. Configure environment
-
-```bash
-cp .env.example .env.local
-```
-
-Fill in `.env.local`:
-
-```env
-VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-VITE_SUPABASE_ANON_KEY=your_anon_key
-```
-
-Run the automated setup (generates VAPID keys, runs migrations, configures GitHub Secrets):
-
-```bash
-npm run setup
-```
-
-Or run migrations manually:
-
-```bash
-npm run migrate          # schema only
-npm run migrate -- --seed  # schema + 72 Copa 2026 matches
-```
-
-### 3. Deploy the Edge Function
-
-```bash
-supabase functions deploy enviar-push
-supabase secrets set VAPID_PRIVATE_KEY=your_vapid_private_key
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-```
-
-### 4. Start development
-
-```bash
+npm run setup    # interactive wizard: configures env, runs migrations, sets GitHub Secrets
 npm run dev
 ```
 
-## Environment variables
+Open http://localhost:5173 — done.
 
-| Variable | Required | Description |
-|---|---|---|
-| `VITE_SUPABASE_URL` | Yes | Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Yes | Supabase anon (public) key |
-| `VITE_APP_NAME` | No | App display name (default: `BolãoCopa`) |
-| `VITE_APP_YEAR` | No | Tournament year (default: `2026`) |
-| `VITE_BASE_URL` | No | Deployment base path (default: `/`) |
-| `VITE_VAPID_PUBLIC_KEY` | Push | VAPID public key for Web Push |
+For manual setup without the wizard, see [MANUAL_SETUP.md](MANUAL_SETUP.md).
 
-> **Never commit** `SUPABASE_SERVICE_ROLE_KEY`, `VAPID_PRIVATE_KEY`, or `SUPABASE_DB_PASSWORD`.
-> `.env.local` is in `.gitignore` — use it for all secrets.
+## 🏗️ Architecture
 
-## Architecture
+```
+Browser (React 19 + Vite + Tailwind CSS)
+    │
+    │ HTTPS (static files)
+    ▼
+GitHub Pages (free hosting)
+    │
+    │ REST + Realtime WebSocket
+    ▼
+Supabase (PostgreSQL + Auth + Realtime + Edge Functions)
+    │
+    ├── OpenAI GPT (AI comic commentary — "Seu Zé")
+    └── football-data.org API (automatic match result sync)
+```
 
 ```
 src/
-├── components/       Shared UI (Navbar, Logo, ChatJogo, CompartilharCard …)
-├── config/           app.ts (env), torneio.ts (teams/groups/scoring)
-├── contexts/         AuthContext, ThemeContext
-├── hooks/            useNotificacoes, useRankingHistorico …
-├── i18n/             i18next init + locales (pt-BR / en / es)
-├── pages/            Route-level components
-│   └── admin/        Admin-only pages behind isAdmin guard
-└── supabase/         Client singleton
+├── components/     Shared UI (Navbar, ChatJogo, CompartilharCard …)
+├── config/         app.ts (env), torneio.ts (teams/groups/scoring)
+├── contexts/       AuthContext, ThemeContext, JogosContext
+├── hooks/          useNotificacoes, useRankingHistorico …
+├── i18n/           i18next init + locales (pt-BR / en / es)
+├── pages/          Route-level components
+│   └── admin/      Admin-only pages behind isAdmin guard
+└── lib/            Supabase client singleton
 
 supabase/
-├── functions/        Edge Functions (enviar-push)
-└── migrations/       000_seed … 009_push_notifications
+├── functions/      Edge Functions (sync-resultados, gerar-comentarista …)
+└── migrations/     000_seed … 013_cleanup_test_data
 
 scripts/
-├── setup.ts          One-command project setup
-└── migrate.ts        Idempotent migration runner
+├── setup.ts        Interactive project setup wizard
+├── migrate.ts      Idempotent migration runner
+└── delete-test-users.ts  Removes test data before production
 ```
 
-### Database tables
+## ⚙️ Environment Variables
+
+| Variable | Required | Description | Where to get |
+|---|---|---|---|
+| `VITE_SUPABASE_URL` | ✅ | Supabase project URL | Dashboard → Settings → API |
+| `VITE_SUPABASE_ANON_KEY` | ✅ | Supabase anon key | Dashboard → Settings → API |
+| `VITE_APP_NAME` | — | App display name (default: `Soccer Pool`) | — |
+| `VITE_APP_YEAR` | — | Tournament year (default: `2026`) | — |
+| `VITE_BASE_URL` | — | Deployment URL (e.g. `https://user.github.io/soccer-pool`) | — |
+| `VITE_VAPID_PUBLIC_KEY` | Push | VAPID public key | Auto-generated by `npm run setup` |
+| `OPENAI_API_KEY` | AI | OpenAI API key for "Seu Zé" commentary | platform.openai.com |
+| `VITE_FOOTBALL_API_KEY` | Sync | football-data.org API key | football-data.org |
+| `SUPABASE_SERVICE_ROLE_KEY` | Scripts | Admin operations (never in frontend) | Dashboard → Settings → API |
+| `SUPABASE_PROJECT_REF` | Scripts | Project ref (in your Supabase URL) | Dashboard → Settings |
+| `SUPABASE_DB_PASSWORD` | Scripts | Database password | Dashboard → Database |
+| `SUPABASE_DB_URL` | CI/CD | Full connection string for migrations | Build from ref + password |
+
+> **Security:** Never commit `SUPABASE_SERVICE_ROLE_KEY`, `VAPID_PRIVATE_KEY`, or `SUPABASE_DB_PASSWORD`.
+> `.env.local` is in `.gitignore`. See `.env.example` for the full template.
+
+## 🗄️ Database
+
+### Automated (recommended)
+
+```bash
+npm run setup           # runs migrations + seed automatically
+```
+
+### Manual
+
+```bash
+npm run migrate         # schema only (001–013)
+npm run migrate -- --seed  # schema + 72 Copa 2026 matches
+```
+
+See [MANUAL_SETUP.md](MANUAL_SETUP.md) for step-by-step SQL Editor instructions.
+
+### Tables
 
 | Table | Description |
 |---|---|
-| `profiles` | User display names and admin flag |
-| `jogos` | Match schedule with results |
-| `palpites` | User score predictions |
+| `profiles` | Display names, admin flag, first-access flow |
+| `jogos` | Match schedule with results and status |
+| `palpites` | User score predictions with point calculation |
 | `escolhas_especiais` | Champion / top scorer / keeper picks |
-| `convites` | Invite codes |
-| `comentarios` | Per-game chat messages |
-| `ranking_historico` | Daily ranking snapshots |
-| `push_subscriptions` | Web Push endpoint subscriptions |
+| `convites` | Invite codes with usage tracking |
+| `comentarios` | Per-game real-time chat messages |
+| `comentarios_ia` | AI "Seu Zé" commentary per match event |
+| `stories` | AI-generated tournament recap stories |
+| `ranking_historico` | Daily ranking snapshots for evolution chart |
+| `push_subscriptions` | Web Push endpoint registrations |
+| `eventos_jogo` | Match events (goals, cards) for Seu Zé reactions |
 
 ### Points system
 
 | Result | Group stage | Knockout |
 |---|---|---|
 | Exact score | 10 pts | 15 pts |
-| Correct winner + GD | 7 pts | 10 pts |
+| Correct winner + goal difference | 7 pts | 10 pts |
 | Correct winner only | 5 pts | 5 pts |
 
-## Customization
+## 🎮 Customizing for Your Tournament
 
-To run your own edition of BolãoCopa for a different tournament:
+1. **Teams & groups** — Edit `src/config/torneio.ts`
+2. **Match schedule** — Edit `supabase/migrations/000_seed.sql`
+3. **App name & year** — Set `VITE_APP_NAME` and `VITE_APP_YEAR` in `.env.local`
+4. **Points rules** — Edit scoring config in `src/config/torneio.ts`
+5. **Languages** — Add locale files to `src/i18n/locales/`
 
-1. Edit `src/config/torneio.ts` — replace teams, groups, and key dates
-2. Edit `supabase/migrations/000_seed.sql` — replace match schedule
-3. Update `VITE_APP_NAME` and `VITE_APP_YEAR` in `.env.local`
-4. Rebuild and redeploy
+## 🚢 Deploying
 
-## Contributing
+Push to `main` — GitHub Actions builds and deploys automatically.
+
+**Required GitHub Secrets** (Settings → Secrets and variables → Actions):
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_VAPID_PUBLIC_KEY`
+- `VITE_FOOTBALL_API_KEY` (optional)
+- `SUPABASE_DB_URL` (optional — enables auto-migrations on deploy)
+
+`npm run setup` configures these automatically if you have `gh` CLI installed.
+
+**GitHub Pages setup** (first deploy only):
+- Repository → Settings → Pages → Source: `gh-pages` branch
+
+## 🤝 Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## License
+## 📝 License
 
-[MIT](LICENSE) — Gabriel Lima, 2026
+[MIT](LICENSE)

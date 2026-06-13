@@ -24,6 +24,16 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Run database migrations
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -n "$SUPABASE_DB_URL" ]; then
+            npm run migrate
+          else
+            echo "⚠️  SUPABASE_DB_URL not set, skipping migrations"
+          fi
+
       - name: Build
         run: npm run build
         env:
@@ -31,7 +41,7 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_VAPID_PUBLIC_KEY: ${{ secrets.VITE_VAPID_PUBLIC_KEY }}
           VITE_FOOTBALL_API_KEY: ${{ secrets.VITE_FOOTBALL_API_KEY }}
-          VITE_APP_NAME: ${{ vars.VITE_APP_NAME || 'BolãoCopa' }}
+          VITE_APP_NAME: ${{ vars.VITE_APP_NAME || 'Soccer Pool' }}
           VITE_APP_YEAR: ${{ vars.VITE_APP_YEAR || '2026' }}
           VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
           # OPENAI_API_KEY is a Supabase Edge Function secret — NOT exposed in the build.

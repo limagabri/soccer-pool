@@ -7,13 +7,17 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies and build output
 node_modules
 dist
 dist-ssr
-*.local
-!.env.example
+
+# Environment files — never commit real credentials
+.env.local
+.env*.local
 .env.production
 .env.staging
+!.env.example
 
 # Claude Code
 .claude/
