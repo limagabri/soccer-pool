@@ -70,6 +70,11 @@ export function AdminStories() {
       return
     }
     const data = await res.json()
+    if (!data.conteudo_ia) {
+      setErro('IA retornou texto vazio — tente novamente.')
+      setGerando(null)
+      return
+    }
     const novo: StoryData = {
       id: data.id,
       template,
@@ -131,16 +136,21 @@ export function AdminStories() {
         <div className="rounded-xl border border-zinc-700 bg-zinc-900/60 p-5 space-y-4">
           <h2 className="text-sm font-semibold text-zinc-300">Preview — {preview.titulo}</h2>
           <div className="flex justify-center">
-            <div className="scale-75 origin-top">
-              <PreviewCard story={{ ...preview, conteudo_ia: editando }} />
+            <div className="overflow-hidden rounded-2xl" style={{ width: 300, height: 300 }}>
+              <div style={{ transform: 'scale(0.75)', transformOrigin: 'top left', width: 400, height: 400 }}>
+                <PreviewCard story={{ ...preview, conteudo_ia: editando }} />
+              </div>
             </div>
           </div>
-          <textarea
-            value={editando}
-            onChange={e => setEditando(e.target.value)}
-            rows={4}
-            className="w-full resize-none rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-200 outline-none focus:border-green-600"
-          />
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-zinc-500">Texto gerado (editável antes de publicar)</label>
+            <textarea
+              value={editando}
+              onChange={e => setEditando(e.target.value)}
+              rows={5}
+              className="w-full resize-none rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-200 outline-none focus:border-green-600"
+            />
+          </div>
           <div className="flex gap-3">
             <button
               onClick={() => publicar(preview.id, editando)}

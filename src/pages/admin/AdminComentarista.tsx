@@ -136,13 +136,18 @@ export function AdminComentarista() {
         {preview && (
           <div className="space-y-3">
             <ComentaristaCard conteudo={editando} publicado_em={null} />
-            <textarea
-              value={editando}
-              onChange={e => setEditando(e.target.value)}
-              rows={6}
-              className="w-full resize-none rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-200 outline-none focus:border-green-600"
-              placeholder="Edite o texto antes de publicar…"
-            />
+            <details className="group">
+              <summary className="cursor-pointer select-none text-xs text-zinc-600 hover:text-zinc-400">
+                ✏️ Ajustar texto manualmente
+              </summary>
+              <textarea
+                value={editando}
+                onChange={e => setEditando(e.target.value)}
+                rows={5}
+                className="mt-2 w-full resize-none rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs text-zinc-400 outline-none focus:border-zinc-600"
+                placeholder="Edite o texto antes de publicar…"
+              />
+            </details>
             <div className="flex gap-3">
               <button
                 onClick={() => publicar(preview.id, editando)}

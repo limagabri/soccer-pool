@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Award, BarChart2, ClipboardList, ImagePlay, LogOut, Mail, Menu, MessageCircle, Mic2, Trophy, Users, X } from 'lucide-react'
+import { Award, BarChart2, ClipboardList, ImagePlay, LogOut, Mail, Menu, MessageCircle, Mic2, Target, Trophy, Users, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 
 const LINKS = [
   { to: '/admin/dashboard',     label: 'Dashboard',     icon: BarChart2 },
   { to: '/admin/jogos',         label: 'Jogos',          icon: ClipboardList },
+  { to: '/admin/palpites',      label: 'Palpites',       icon: Target },
   { to: '/admin/usuarios',      label: 'Usuários',       icon: Users },
   { to: '/admin/convites',      label: 'Convites',       icon: Mail },
   { to: '/admin/especiais',     label: 'Especiais',      icon: Award },

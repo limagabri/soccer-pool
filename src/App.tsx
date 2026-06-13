@@ -33,6 +33,7 @@ import { AdminEspeciais } from './pages/admin/AdminEspeciais'
 import { AdminChat } from './pages/admin/AdminChat'
 import { AdminComentarista } from './pages/admin/AdminComentarista'
 import { AdminStories } from './pages/admin/AdminStories'
+import { AdminPalpites } from './pages/admin/AdminPalpites'
 import { Estatisticas } from './pages/Estatisticas'
 import { Regulamento } from './pages/Regulamento'
 import { NotFound } from './pages/NotFound'
@@ -95,6 +96,7 @@ function App() {
                   <Route element={<AdminLayout />}>
                     <Route path="dashboard"    element={<AdminDashboard />} />
                     <Route path="jogos"        element={<AdminJogos />} />
+                    <Route path="palpites"     element={<AdminPalpites />} />
                     <Route path="usuarios"     element={<AdminUsuarios />} />
                     <Route path="convites"     element={<AdminConvites />} />
                     <Route path="especiais"    element={<AdminEspeciais />} />
