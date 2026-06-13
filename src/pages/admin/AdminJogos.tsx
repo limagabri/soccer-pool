@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle2, Clock, Loader2, Pencil, Plus, Trash2, X } from 'lucide-react'
+import { CheckCircle2, Clock, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { formatarData } from '../../lib/utils'
 import { GRUPOS } from '../../lib/classificacao'
@@ -31,6 +31,15 @@ interface EventoForm {
   minuto: string
 }
 
+const FASES_MATAMATA = [
+  { fase: '32-avos de Final', inicio: 73,  count: 16 },
+  { fase: 'Oitavas de Final', inicio: 89,  count: 8  },
+  { fase: 'Quartas de Final', inicio: 97,  count: 4  },
+  { fase: 'Semifinais',       inicio: 101, count: 2  },
+  { fase: '3º Lugar',         inicio: 103, count: 1  },
+  { fase: 'Final',            inicio: 104, count: 1  },
+]
+
 const TIPO_LABEL: Record<EventoJogo['tipo'], string> = {
   gol: '⚽ Gol',
   gol_contra: '🥅 Gol Contra',
@@ -57,6 +66,9 @@ export function AdminJogos() {
   const [salvando, setSalvando] = useState(false)
   const [feedbackId, setFeedbackId] = useState<string | null>(null)
 
+  const [sincronizando, setSincronizando] = useState(false)
+  const [syncMsg, setSyncMsg] = useState<{ ok: boolean; text: string } | null>(null)
+
   // eventos
   const [eventos, setEventos] = useState<EventoJogo[]>([])
   const [carregandoEventos, setCarregandoEventos] = useState(false)
@@ -80,6 +92,26 @@ export function AdminJogos() {
     if (GRUPOS.includes(filtro)) return jogos.filter((j) => j.grupo === filtro)
     return jogos
   }, [jogos, filtro])
+
+  async function sincronizarAgora() {
+    setSincronizando(true)
+    setSyncMsg(null)
+    try {
+      const { data, error } = await supabase.functions.invoke('sync-resultados')
+      if (error) throw error
+      const d = data as { updated?: number; errors?: string[] }
+      const txt = `${d.updated ?? 0} jogo(s) atualizado(s)${d.errors?.length ? ` · ${d.errors.length} erro(s)` : ''}`
+      setSyncMsg({ ok: true, text: txt })
+      if ((d.updated ?? 0) > 0) {
+        const { data: fresh } = await supabase.from('jogos').select('*').order('numero_jogo')
+        if (fresh) setJogos(fresh as Jogo[])
+      }
+    } catch (err) {
+      setSyncMsg({ ok: false, text: String(err) })
+    }
+    setSincronizando(false)
+    setTimeout(() => setSyncMsg(null), 6000)
+  }
 
   async function abrirModal(jogo: Jogo) {
     setModal({
@@ -163,12 +195,36 @@ export function AdminJogos() {
 
   return (
     <>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-zinc-100">Jogos</h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          {jogos.filter((j) => j.encerrado).length} de {jogos.length} jogos encerrados
-        </p>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-zinc-100">Jogos</h1>
+          <p className="mt-1 text-sm text-zinc-500">
+            {jogos.filter((j) => j.encerrado).length} de {jogos.length} jogos encerrados
+          </p>
+        </div>
+        <button
+          onClick={sincronizarAgora}
+          disabled={sincronizando}
+          className="flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:bg-zinc-700 hover:text-zinc-100 disabled:opacity-60"
+        >
+          {sincronizando ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <RefreshCw className="h-4 w-4" />
+          )}
+          Sincronizar agora
+        </button>
       </div>
+
+      {syncMsg && (
+        <div className={`mb-4 rounded-lg border px-4 py-2.5 text-sm ${
+          syncMsg.ok
+            ? 'border-green-800/50 bg-green-900/20 text-green-400'
+            : 'border-red-800/50 bg-red-900/20 text-red-400'
+        }`}>
+          {syncMsg.text}
+        </div>
+      )}
 
       {/* Filtros */}
       <div className="mb-5 flex flex-wrap gap-2">
@@ -259,6 +315,65 @@ export function AdminJogos() {
           </table>
         </div>
       )}
+
+      {/* Mata-mata — preview placeholders for J73–J104 */}
+      <div className="mt-10">
+        <h2 className="mb-5 text-xl font-bold text-zinc-100">Fase Mata-Mata</h2>
+        <div className="space-y-8">
+          {FASES_MATAMATA.map(({ fase, inicio, count }) => {
+            const numeros = Array.from({ length: count }, (_, i) => inicio + i)
+            return (
+              <div key={fase}>
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">{fase}</h3>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                  {numeros.map((num) => {
+                    const jogo = jogos.find((j) => j.numero_jogo === num)
+                    return (
+                      <div
+                        key={num}
+                        className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-xs text-zinc-600">J{num}</p>
+                          {jogo ? (
+                            <>
+                              <p className="truncate text-sm font-medium text-zinc-200">
+                                {jogo.emoji_casa} {jogo.time_casa}
+                                <span className="mx-1 text-zinc-600">×</span>
+                                {jogo.time_fora} {jogo.emoji_fora}
+                              </p>
+                              {jogo.encerrado ? (
+                                <p className="text-xs text-green-500">
+                                  {jogo.gols_casa}–{jogo.gols_fora} · Encerrado
+                                </p>
+                              ) : (
+                                <p className="text-xs text-zinc-500">{formatarData(jogo.data_jogo)}</p>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-sm text-zinc-500">A definir × A definir</p>
+                              <p className="text-xs text-zinc-700">Aguardando classificação</p>
+                            </>
+                          )}
+                        </div>
+                        {jogo && (
+                          <button
+                            onClick={() => abrirModal(jogo)}
+                            className="ml-2 shrink-0 rounded-lg bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-400 transition hover:bg-zinc-700 hover:text-zinc-100"
+                          >
+                            <Pencil className="h-3 w-3" />
+                          </button>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
 
       {/* Modal */}
       <AnimatePresence>

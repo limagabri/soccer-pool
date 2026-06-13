@@ -44,7 +44,7 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-zinc-950">
       {/* Overlay mobile */}
       {sidebarOpen && (
         <div
@@ -53,9 +53,9 @@ export function AdminLayout() {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar — always fixed, never scrolls with content */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 flex w-60 flex-col border-r border-zinc-800 bg-zinc-900 transition-transform lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 flex w-60 flex-col border-r border-zinc-800 bg-zinc-900 transition-transform lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -103,8 +103,8 @@ export function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      {/* Main — offset by sidebar width on desktop */}
+      <div className="flex min-h-screen flex-col lg:ml-60">
         {/* Top bar (mobile) */}
         <header className="flex h-16 items-center border-b border-zinc-800 bg-zinc-900 px-4 lg:hidden">
           <button
@@ -116,7 +116,7 @@ export function AdminLayout() {
           <span className="font-semibold text-zinc-200">Painel Admin</span>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>
