@@ -1,3 +1,5 @@
+import { StoryConteudo } from './StoryConteudo'
+
 interface Props {
   titulo: string
   conteudo: string
@@ -26,8 +28,8 @@ export function StoryZebraDia({ titulo, conteudo, dados }: Props) {
         {detalhes && (
           <p className="text-sm text-zinc-300">{detalhes}</p>
         )}
-        <div className="mt-3 w-full rounded-xl border border-white/20 bg-black/50 p-4">
-          <p className="text-sm leading-relaxed text-zinc-200">{conteudo}</p>
+        <div className="mt-3 w-full overflow-y-auto rounded-xl border border-white/20 bg-black/50 p-4 max-h-28">
+          <StoryConteudo conteudo={conteudo} className="text-zinc-200" />
         </div>
         <p className="mt-3 text-xs tracking-widest text-zinc-500 uppercase">BolãoCopa 2026</p>
       </div>

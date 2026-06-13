@@ -1,3 +1,5 @@
+import { StoryConteudo } from './StoryConteudo'
+
 interface Props {
   titulo: string
   conteudo: string
@@ -25,8 +27,8 @@ export function StoryCovarde({ titulo, conteudo, dados }: Props) {
           </>
         )}
 
-        <div className="mt-3 w-full rounded-xl border border-yellow-900/40 bg-black/25 p-4">
-          <p className="text-sm leading-relaxed text-yellow-50">{conteudo}</p>
+        <div className="mt-3 w-full overflow-y-auto rounded-xl border border-yellow-900/40 bg-black/25 p-4 max-h-28">
+          <StoryConteudo conteudo={conteudo} className="text-yellow-50" />
         </div>
         <p className="mt-2 text-xs tracking-widest text-yellow-900 uppercase">BolãoCopa 2026</p>
       </div>

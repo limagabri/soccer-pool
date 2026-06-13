@@ -1,3 +1,5 @@
+import { StoryConteudo } from './StoryConteudo'
+
 interface Props {
   titulo: string
   conteudo: string
@@ -44,8 +46,8 @@ export function StorySubiuAfundou({ titulo, conteudo, dados }: Props) {
           </div>
         </div>
 
-        <div className="mt-4 w-full rounded-xl border border-white/10 bg-black/40 p-4">
-          <p className="text-sm leading-relaxed text-zinc-300">{conteudo}</p>
+        <div className="mt-4 w-full overflow-y-auto rounded-xl border border-white/10 bg-black/40 p-4 max-h-24">
+          <StoryConteudo conteudo={conteudo} className="text-zinc-300" />
         </div>
         <p className="mt-3 text-xs tracking-widest text-zinc-600 uppercase">BolãoCopa 2026</p>
       </div>

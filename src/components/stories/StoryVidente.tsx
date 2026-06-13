@@ -1,3 +1,5 @@
+import { StoryConteudo } from './StoryConteudo'
+
 interface Props {
   titulo: string
   conteudo: string
@@ -38,8 +40,8 @@ export function StoryVidente({ titulo, conteudo, dados }: Props) {
           )}
         </div>
 
-        <div className="mt-2 w-full rounded-xl border border-purple-700/30 bg-black/30 p-4">
-          <p className="text-sm leading-relaxed text-zinc-300">{conteudo}</p>
+        <div className="mt-2 w-full overflow-y-auto rounded-xl border border-purple-700/30 bg-black/30 p-4 max-h-24">
+          <StoryConteudo conteudo={conteudo} className="text-zinc-300" />
         </div>
         <p className="mt-2 text-xs tracking-widest text-purple-700 uppercase">BolãoCopa 2026</p>
       </div>

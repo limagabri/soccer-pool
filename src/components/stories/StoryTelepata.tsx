@@ -1,3 +1,5 @@
+import { StoryConteudo } from './StoryConteudo'
+
 interface Props {
   titulo: string
   conteudo: string
@@ -33,8 +35,8 @@ export function StoryTelepata({ titulo, conteudo, dados }: Props) {
           </>
         )}
 
-        <div className="mt-3 w-full rounded-xl border border-yellow-700/30 bg-black/20 p-4">
-          <p className="text-sm leading-relaxed text-yellow-900">{conteudo}</p>
+        <div className="mt-3 w-full overflow-y-auto rounded-xl border border-yellow-700/30 bg-black/20 p-4 max-h-28">
+          <StoryConteudo conteudo={conteudo} className="text-yellow-900" />
         </div>
         <p className="mt-2 text-xs tracking-widest text-yellow-800 uppercase">BolãoCopa 2026</p>
       </div>
