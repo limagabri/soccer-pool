@@ -9,16 +9,21 @@
     @apply transition-colors duration-300;
   }
 
+  /* ── Light mode (default) ───────────────────────────────────────── */
   body {
-    @apply bg-gray-50 text-gray-900 antialiased dark:bg-pitch dark:text-zinc-100;
+    background-color: #f0f2f5;
+    @apply text-gray-900 antialiased;
     background-image: radial-gradient(
       ellipse 80% 50% at 50% -20%,
-      rgba(0, 200, 83, 0.06),
+      rgba(0, 200, 83, 0.05),
       transparent
     );
   }
 
+  /* ── Dark mode ───────────────────────────────────────────────────── */
   .dark body {
+    background-color: #0a0a0a;
+    @apply text-zinc-100;
     background-image: radial-gradient(
       ellipse 80% 50% at 50% -20%,
       rgba(0, 200, 83, 0.08),
@@ -26,24 +31,29 @@
     );
   }
 
+  /* Noise texture overlay (subtle in both modes) */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.02;
+    opacity: 0.015;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
 
 @layer components {
-  /* Card — dark: vidro fosco / light: cartão branco */
+  /* ── Glass card ─────────────────────────────────────────────────── */
+  /* Light: white card with subtle shadow                              */
+  /* Dark:  frosted glass (translucent white on dark bg)              */
   .glass {
-    @apply rounded-xl border border-gray-200 bg-white shadow-sm backdrop-blur-xl
+    @apply rounded-xl border border-gray-200 bg-white
+           shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)]
            dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none;
   }
 
+  /* ── Gradient button ─────────────────────────────────────────────── */
   .btn-gradient {
     background-image: linear-gradient(110deg, #00c853 0%, #00e676 45%, #00c853 90%);
     background-size: 200% 100%;
@@ -56,7 +66,9 @@
     box-shadow: 0 0 32px rgba(0, 200, 83, 0.45);
   }
 
-  /* Input — dark: fundo transparente / light: fundo branco */
+  /* ── Input ───────────────────────────────────────────────────────── */
+  /* Light: white bg, gray border, dark text                          */
+  /* Dark:  translucent bg, white/10 border, light text               */
   .input-glow {
     @apply w-full rounded-lg border border-gray-300 bg-white py-2.5 pr-3 pl-10
            text-sm text-gray-900 outline-none transition
@@ -67,6 +79,28 @@
 
   .input-glow:focus {
     border-color: #00c853;
-    box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.15), 0 0 20px rgba(0, 200, 83, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.15);
+  }
+
+  /* ── Light-mode table header & alternating rows ──────────────────── */
+  .table-light thead tr {
+    background-color: #f9fafb;
+  }
+
+  .table-light tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+  }
+
+  .table-light tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+
+  /* ── Muted text helpers (light / dark aware) ─────────────────────── */
+  .text-muted {
+    @apply text-gray-500 dark:text-zinc-400;
+  }
+
+  .text-main {
+    @apply text-gray-900 dark:text-zinc-100;
   }
 }

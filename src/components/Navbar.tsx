@@ -75,7 +75,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="relative z-20 border-b border-gray-200 bg-white/90 backdrop-blur-xl dark:border-white/5 dark:bg-white/[0.02]">
+      <header className="relative z-20 border-b border-gray-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-white/[0.02] dark:shadow-none">
         <div className="mx-auto flex max-w-6xl items-center gap-x-6 px-4 py-3 sm:px-6">
           <Logo />
 

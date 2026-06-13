@@ -298,52 +298,72 @@ export function Dashboard() {
         </div>
 
         {/* Seu Zé — último comentário */}
-        {ultimoComentario && (
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-10"
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-display text-2xl tracking-wide">
-                Seu Zé <span className="text-brasil-green">fala</span>
-              </h2>
-              <Link to="/comentarios" className="text-xs font-semibold text-brasil-green hover:underline">
-                Ver todos →
-              </Link>
-            </div>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-10"
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-display text-2xl tracking-wide">
+              👴🏽 Seu Zé <span className="text-brasil-green">Comentou</span>
+            </h2>
+            <Link to="/comentarios" className="text-xs font-semibold text-brasil-green hover:underline">
+              Ver todos →
+            </Link>
+          </div>
+          {ultimoComentario ? (
             <ComentaristaCard
               conteudo={ultimoComentario.conteudo}
               publicado_em={ultimoComentario.publicado_em}
               compact
             />
-          </motion.section>
-        )}
+          ) : (
+            <div className="glass flex items-center gap-3 px-4 py-5">
+              <span className="text-3xl opacity-40">🎙️</span>
+              <p className="text-sm text-gray-500 dark:text-zinc-500">
+                Seu Zé ainda não comentou nada. Quando o admin gerar um comentário,
+                ele aparece aqui.
+              </p>
+            </div>
+          )}
+        </motion.section>
 
         {/* Stories do dia */}
-        {stories.length > 0 && (
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mt-10"
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-display text-2xl tracking-wide">
-                Stories do <span className="text-brasil-yellow">Dia</span>
-              </h2>
-              <Link to="/stories" className="text-xs font-semibold text-brasil-yellow hover:underline">
-                Ver todos →
-              </Link>
-            </div>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-10"
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-display text-2xl tracking-wide">
+              📱 Stories do <span className="text-brasil-yellow">Dia</span>
+            </h2>
+            <Link to="/stories" className="text-xs font-semibold text-brasil-yellow hover:underline">
+              Ver todos →
+            </Link>
+          </div>
+          {stories.length > 0 ? (
             <div className="flex gap-3">
               {stories.map((s, i) => (
                 <MiniStory key={s.id} story={s} onClick={() => setViewerIdx(i)} />
               ))}
             </div>
-          </motion.section>
-        )}
+          ) : (
+            <div className="glass flex items-center gap-3 px-4 py-5">
+              <span className="text-3xl opacity-40">📸</span>
+              <p className="text-sm text-gray-500 dark:text-zinc-500">
+                Nenhum story publicado ainda. O admin pode gerar stories
+                cômicos em{' '}
+                <Link to="/admin/stories" className="text-brasil-yellow hover:underline">
+                  Admin → Stories
+                </Link>
+                .
+              </p>
+            </div>
+          )}
+        </motion.section>
       </main>
 
       <AnimatePresence>

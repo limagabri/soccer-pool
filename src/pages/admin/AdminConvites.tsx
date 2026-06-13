@@ -95,6 +95,19 @@ export function AdminConvites() {
         <p className="mt-1 text-sm text-zinc-500">Gere links de acesso para novos participantes.</p>
       </div>
 
+      {/* Instrução */}
+      <div className="mb-6 flex items-start gap-3 rounded-xl border border-brasil-green/20 bg-brasil-green/5 p-4">
+        <span className="text-2xl">📲</span>
+        <div>
+          <p className="text-sm font-semibold text-green-400">Como funciona</p>
+          <p className="mt-0.5 text-sm text-zinc-400">
+            Gere um link de convite abaixo e envie para o seu amigo pelo WhatsApp.
+            Ele acessa o link e se cadastra com o nome de usuário já pré-definido.
+            Cada link é válido por <strong className="text-zinc-300">7 dias</strong> e pode ser usado <strong className="text-zinc-300">uma única vez</strong>.
+          </p>
+        </div>
+      </div>
+
       {/* Formulário */}
       <div className="mb-6 rounded-xl border border-zinc-800 bg-zinc-900 p-5">
         <h2 className="mb-4 text-sm font-semibold text-zinc-300 uppercase tracking-wider">Novo convite</h2>

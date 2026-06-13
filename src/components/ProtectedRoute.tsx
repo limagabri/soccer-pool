@@ -8,12 +8,15 @@ interface Props {
 }
 
 export function ProtectedRoute({ children, skipPrimeiroAcesso = false }: Props) {
-  const { session, loading, profile, profileLoading } = useAuth()
+  const { session, loading, profile } = useAuth()
   const location = useLocation()
 
-  if (loading || (session && profileLoading && !profile)) {
+  // Spin while: auth loading, OR session exists but profile hasn't arrived yet.
+  // The (session && !profile) guard closes the brief race between loading→false
+  // and profileLoading→true, preventing admins from briefly seeing user pages.
+  if (loading || (session && !profile)) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-zinc-950">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-brasil-green border-t-transparent" />
       </div>
     )
