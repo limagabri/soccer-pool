@@ -5,6 +5,11 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
 const ESPN_BASE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard'
 
 interface EspnTeam {
@@ -72,9 +77,17 @@ const TEAM_NAME_MAP: Record<string, string> = {
   'Turkey': 'Turquia',
   'Sweden': 'Suécia',
   'Norway': 'Noruega',
-  'Bosnia-Herzegovina': 'Bósnia e Herzegovina',
-  'Bosnia and Herzegovina': 'Bósnia e Herzegovina',
+  // Names must match exactly what's stored in the DB (from seed SQL)
+  'Bosnia-Herzegovina': 'Bósnia-Herzegóvina',
+  'Bosnia and Herzegovina': 'Bósnia-Herzegóvina',
   'Paraguay': 'Paraguai',
+  'Czech Republic': 'Rep. Tcheca',
+  'Czechia': 'Rep. Tcheca',
+  'Haiti': 'Haiti',
+  'Curacao': 'Curaçao',
+  'Curaçao': 'Curaçao',
+  'Jordan': 'Jordânia',
+  'Uzbekistan': 'Uzbequistão',
   'Venezuela': 'Venezuela',
   'Chile': 'Chile',
   'Honduras': 'Honduras',
@@ -86,8 +99,6 @@ const TEAM_NAME_MAP: Record<string, string> = {
   'Trinidad and Tobago': 'Trinidad e Tobago',
   'Slovenia': 'Eslovênia',
   'Slovakia': 'Eslováquia',
-  'Czech Republic': 'República Tcheca',
-  'Czechia': 'República Tcheca',
   'Hungary': 'Hungria',
   'Scotland': 'Escócia',
   'Wales': 'País de Gales',
@@ -112,6 +123,10 @@ function toPT(name: string): string {
 }
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!
   const serviceKey  = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
   const supabase = createClient(supabaseUrl, serviceKey)
@@ -194,6 +209,6 @@ Deno.serve(async (req) => {
 
   return new Response(
     JSON.stringify({ updated, checked: allEvents.length, datesToFetch, errors }),
-    { headers: { 'Content-Type': 'application/json' } }
+    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
   )
 })
