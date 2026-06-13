@@ -33,6 +33,8 @@ export default defineConfig(({ command }) => ({
         ],
       },
       workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         runtimeCaching: [
           {
@@ -56,4 +58,18 @@ export default defineConfig(({ command }) => ({
     }),
   ],
   base: command === 'build' ? '/bolao-copa/' : '/',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('/react-dom') || id.includes('/react-router-dom') || (id.includes('/react/') && !id.includes('/react-i18next'))) return 'react-vendor'
+          if (id.includes('/@supabase/')) return 'supabase'
+          if (id.includes('/framer-motion/')) return 'framer'
+          if (id.includes('/recharts/') || id.includes('/d3-') || id.includes('/victory-')) return 'charts'
+          if (id.includes('/i18next') || id.includes('/react-i18next')) return 'i18n'
+          if (id.includes('/html2canvas/') || id.includes('/canvas-confetti/')) return 'canvas'
+        },
+      },
+    },
+  },
 }))

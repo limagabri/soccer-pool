@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { JogosProvider } from './contexts/JogosContext'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { ScrollToTop } from './components/ScrollToTop'
 import { InstalarPWA } from './components/InstalarPWA'
@@ -42,75 +44,72 @@ function PontuacaoGlobal() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <PontuacaoGlobal />
-        <AnimacaoGol />
-        <BrowserRouter
-          basename={import.meta.env.BASE_URL}
-          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-        >
-          <ScrollToTop />
-          <InstalarPWA />
-          <Routes>
-            {/* Públicas */}
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/cadastro" element={<Cadastro />} />
-            <Route path="/esqueci-senha" element={<EsqueciSenha />} />
-            <Route path="/nova-senha" element={<NovaSenha />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/grupos" element={<Grupos />} />
-            <Route path="/estatisticas" element={<Estatisticas />} />
-            <Route path="/ranking" element={<Ranking />} />
-            <Route path="/simulador" element={<Simulador />} />
-            <Route path="/regulamento" element={<Regulamento />} />
-            <Route path="/comentarios" element={<Comentarios />} />
-            <Route path="/stories" element={<Stories />} />
+    <ErrorBoundary label="App">
+      <ThemeProvider>
+        <AuthProvider>
+          <JogosProvider>
+            <PontuacaoGlobal />
+            <ErrorBoundary label="AnimacaoGol" fallback={null}>
+              <AnimacaoGol />
+            </ErrorBoundary>
+            <BrowserRouter
+              basename={import.meta.env.BASE_URL}
+              future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+            >
+              <ScrollToTop />
+              <InstalarPWA />
+              <Routes>
+                {/* Públicas */}
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/cadastro" element={<Cadastro />} />
+                <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+                <Route path="/nova-senha" element={<NovaSenha />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
+                <Route path="/grupos" element={<Grupos />} />
+                <Route path="/estatisticas" element={<Estatisticas />} />
+                <Route path="/ranking" element={<Ranking />} />
+                <Route path="/simulador" element={<Simulador />} />
+                <Route path="/regulamento" element={<Regulamento />} />
+                <Route path="/comentarios" element={<Comentarios />} />
+                <Route path="/stories" element={<Stories />} />
 
-            {/* Protegidas */}
-            <Route
-              path="/primeiro-acesso"
-              element={
-                <ProtectedRoute skipPrimeiroAcesso>
-                  <PrimeiroAcesso />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/perfil"
-              element={<ProtectedRoute><Perfil /></ProtectedRoute>}
-            />
-            <Route
-              path="/palpites"
-              element={<ProtectedRoute><Palpites /></ProtectedRoute>}
-            />
-            <Route
-              path="/dashboard"
-              element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
-            />
+                {/* Protegidas */}
+                <Route
+                  path="/primeiro-acesso"
+                  element={
+                    <ProtectedRoute skipPrimeiroAcesso>
+                      <PrimeiroAcesso />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/perfil"    element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
+                <Route path="/palpites"  element={<ProtectedRoute><Palpites /></ProtectedRoute>} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
-            {/* Admin */}
-            <Route path="/admin">
-              <Route index element={<AdminLogin />} />
-              <Route element={<AdminLayout />}>
-                <Route path="dashboard"    element={<AdminDashboard />} />
-                <Route path="jogos"        element={<AdminJogos />} />
-                <Route path="usuarios"     element={<AdminUsuarios />} />
-                <Route path="convites"     element={<AdminConvites />} />
-                <Route path="especiais"    element={<AdminEspeciais />} />
-                <Route path="chat"         element={<AdminChat />} />
-                <Route path="comentarista" element={<AdminComentarista />} />
-                <Route path="stories"      element={<AdminStories />} />
-              </Route>
-            </Route>
+                {/* Admin */}
+                <Route path="/admin">
+                  <Route index element={<AdminLogin />} />
+                  <Route element={<AdminLayout />}>
+                    <Route path="dashboard"    element={<AdminDashboard />} />
+                    <Route path="jogos"        element={<AdminJogos />} />
+                    <Route path="usuarios"     element={<AdminUsuarios />} />
+                    <Route path="convites"     element={<AdminConvites />} />
+                    <Route path="especiais"    element={<AdminEspeciais />} />
+                    <Route path="chat"         element={<AdminChat />} />
+                    <Route path="comentarista" element={<AdminComentarista />} />
+                    <Route path="stories"      element={<AdminStories />} />
+                  </Route>
+                </Route>
 
-            {/* 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </ThemeProvider>
+                {/* 404 */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </JogosProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }
 
