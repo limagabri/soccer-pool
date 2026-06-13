@@ -59,7 +59,7 @@ export function Stories() {
     <div className="min-h-screen">
       <Navbar />
       <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
-        <h1 className="font-display text-5xl tracking-wide">
+        <h1 className="font-display text-4xl tracking-wide sm:text-5xl">
           Stories do <span className="text-brasil-yellow">Bolão</span>
         </h1>
         <p className="mt-3 text-zinc-400">

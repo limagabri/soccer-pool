@@ -174,7 +174,7 @@ export function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="font-display text-5xl tracking-wide md:text-6xl">
+          <h1 className="font-display text-4xl tracking-wide sm:text-5xl md:text-6xl">
             Olá,{' '}
             <span className="bg-gradient-to-r from-brasil-green to-brasil-yellow bg-clip-text text-transparent">
               {username}

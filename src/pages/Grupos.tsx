@@ -35,7 +35,7 @@ function LinhaJogo({ jogo }: { jogo: Jogo }) {
           {placar.casa} x {placar.fora}
         </span>
       ) : (
-        <span className="min-w-[8rem] text-center text-xs text-zinc-500">
+        <span className="min-w-[6rem] text-center text-xs text-zinc-500 sm:min-w-[8rem]">
           {formatarData(jogo.data_jogo)}
         </span>
       )}

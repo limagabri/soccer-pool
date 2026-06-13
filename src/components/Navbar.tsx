@@ -9,12 +9,12 @@ import { SUPPORTED_LANGS } from '../i18n'
 import { Logo } from './Logo'
 
 const LINKS = [
-  { to: '/dashboard', label: 'Dashboard', protegido: true },
-  { to: '/palpites', label: 'Palpites', protegido: true },
-  { to: '/grupos', label: 'Grupos', protegido: false },
-  { to: '/estatisticas', label: 'Estatísticas', protegido: false },
-  { to: '/ranking', label: 'Ranking', protegido: false },
-  { to: '/simulador', label: 'Simulador', protegido: false },
+  { to: '/dashboard', key: 'nav.dashboard', protegido: true },
+  { to: '/palpites', key: 'nav.predictions', protegido: true },
+  { to: '/grupos', key: 'nav.groups', protegido: false },
+  { to: '/estatisticas', key: 'nav.statistics', protegido: false },
+  { to: '/ranking', key: 'nav.ranking', protegido: false },
+  { to: '/simulador', key: 'nav.simulator', protegido: false },
 ]
 
 function LangToggle({ className = '' }: { className?: string }) {
@@ -55,6 +55,7 @@ function ThemeToggle({ className = '' }: { className?: string }) {
 
 export function Navbar() {
   const { user, profile, signOut, isAdmin } = useAuth()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [menuAberto, setMenuAberto] = useState(false)
 
@@ -107,7 +108,7 @@ export function Navbar() {
                     }`
                   }
                 >
-                  {l.label}
+                  {t(l.key)}
                 </NavLink>
               ))
             )}
@@ -219,7 +220,7 @@ export function Navbar() {
                         }`
                       }
                     >
-                      {l.label}
+                      {t(l.key)}
                     </NavLink>
                   ))
                 )}

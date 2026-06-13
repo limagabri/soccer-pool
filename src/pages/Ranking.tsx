@@ -37,17 +37,16 @@ export function Ranking() {
   const carregar = useCallback(async () => {
     const [{ data: dataPalpites }, { data: dataProfiles }] = await Promise.all([
       supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora'),
-      supabase.from('profiles').select('id, username, pontos_especiais').eq('is_admin', false),
+      supabase.from('profiles').select('id, username').eq('is_admin', false),
     ])
     setPalpites((dataPalpites as PalpiteResumo[]) ?? [])
     const nomes: Record<string, string> = {}
-    const especiais: Record<string, number> = {}
-    for (const p of (dataProfiles as { id: string; username: string; pontos_especiais: number }[]) ?? []) {
+    for (const p of (dataProfiles as { id: string; username: string }[]) ?? []) {
       nomes[p.id] = p.username
-      especiais[p.id] = p.pontos_especiais ?? 0
     }
     setUsernames(nomes)
-    setPontosEspeciais(especiais)
+    // pontos_especiais not yet in DB schema — defaults to 0
+    setPontosEspeciais({})
     setLoading(false)
   }, [])
 
@@ -107,7 +106,7 @@ export function Ranking() {
       <Navbar />
 
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-        <h1 className="font-display text-5xl tracking-wide sm:text-6xl">
+        <h1 className="font-display text-4xl tracking-wide sm:text-5xl md:text-6xl">
           <span className="text-brasil-yellow">Ranking</span> Geral
         </h1>
         <p className="mt-2 text-zinc-400">

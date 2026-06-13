@@ -41,7 +41,7 @@ export function Comentarios() {
     <div className="min-h-screen">
       <Navbar />
       <main className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-        <h1 className="font-display text-5xl tracking-wide">
+        <h1 className="font-display text-4xl tracking-wide sm:text-5xl">
           Comentários do <span className="text-brasil-green">Seu Zé</span>
         </h1>
         <p className="mt-3 text-zinc-400">

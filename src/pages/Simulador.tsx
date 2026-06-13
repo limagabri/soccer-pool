@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Dices, Lock, RotateCcw, Trophy } from 'lucide-react'
 import { Navbar } from '../components/Navbar'
@@ -135,6 +135,22 @@ export function Simulador() {
   const [ko, setKo] = useState<ResultadosMataMata>({})
   const [grupoAtivo, setGrupoAtivo] = useState('A')
 
+  // Seed placares with real results from finished games on first load
+  useEffect(() => {
+    if (!jogos.length) return
+    setPlacares(prev => {
+      const next: Placares = { ...prev }
+      let changed = false
+      for (const j of jogos) {
+        if (j.encerrado && j.gols_casa != null && j.gols_fora != null && !(j.id in next)) {
+          next[j.id] = { gols_casa: j.gols_casa, gols_fora: j.gols_fora }
+          changed = true
+        }
+      }
+      return changed ? next : prev
+    })
+  }, [jogos])
+
   const tabelas = useMemo(() => calcularTodasTabelas(jogos, placares), [jogos, placares])
   const completos = useMemo(() => gruposCompletos(jogos, placares), [jogos, placares])
   const tudoCompleto = jogos.length > 0 && GRUPOS.every((g) => completos[g])
@@ -220,7 +236,14 @@ export function Simulador() {
   }
 
   function resetar() {
-    setPlacares({})
+    // Keep real results for finished games; only clear simulated ones
+    const encerrados: Placares = {}
+    for (const j of jogos) {
+      if (j.encerrado && j.gols_casa != null && j.gols_fora != null) {
+        encerrados[j.id] = { gols_casa: j.gols_casa, gols_fora: j.gols_fora }
+      }
+    }
+    setPlacares(encerrados)
     setKo({})
   }
 
@@ -233,7 +256,7 @@ export function Simulador() {
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-5xl tracking-wide sm:text-6xl">
+            <h1 className="font-display text-4xl tracking-wide sm:text-5xl md:text-6xl">
               Simulador da <span className="text-brasil-green">Copa</span>
             </h1>
             <p className="mt-2 text-zinc-400">
@@ -275,7 +298,7 @@ export function Simulador() {
           <>
             {/* ── Seção 1: Fase de grupos ───────────────────────── */}
             <section className="mt-12">
-              <h2 className="font-display text-4xl tracking-wide">
+              <h2 className="font-display text-3xl tracking-wide sm:text-4xl">
                 1 · Fase de <span className="text-brasil-green">Grupos</span>
               </h2>
 
@@ -405,7 +428,7 @@ export function Simulador() {
 
             {/* ── Melhores terceiros ────────────────────────────── */}
             <section className="mt-14">
-              <h2 className="font-display text-4xl tracking-wide">
+              <h2 className="font-display text-3xl tracking-wide sm:text-4xl">
                 2 · Melhores <span className="text-brasil-yellow">Terceiros</span>
               </h2>
               {terceiros ? (
@@ -430,7 +453,7 @@ export function Simulador() {
 
             {/* ── Seção 3: Mata-mata ────────────────────────────── */}
             <section className="mt-14">
-              <h2 className="font-display text-4xl tracking-wide">
+              <h2 className="font-display text-3xl tracking-wide sm:text-4xl">
                 3 · <span className="text-brasil-green">Mata-mata</span>
               </h2>
               <p className="mt-2 text-sm text-zinc-500">
