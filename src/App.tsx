@@ -22,6 +22,7 @@ import { Perfil } from './pages/Perfil'
 import { PrimeiroAcesso } from './pages/PrimeiroAcesso'
 import { Comentarios } from './pages/Comentarios'
 import { Stories } from './pages/Stories'
+import { StoriesPreview } from './pages/StoriesPreview'
 import { AdminLogin } from './pages/admin/AdminLogin'
 import { AdminLayout } from './pages/admin/AdminLayout'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
@@ -73,6 +74,7 @@ function App() {
                 <Route path="/regulamento" element={<Regulamento />} />
                 <Route path="/comentarios" element={<Comentarios />} />
                 <Route path="/stories" element={<Stories />} />
+                <Route path="/stories-preview" element={<StoriesPreview />} />
 
                 {/* Protegidas */}
                 <Route
