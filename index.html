@@ -32,6 +32,22 @@
     <meta name="twitter:description" content="Bolão da Copa do Mundo 2026 — palpites, pontos e ranking em tempo real." />
     <meta name="twitter:image" content="/soccer-pool/pwa-icon.svg" />
     <script>
+      // Capture the PWA install prompt as early as possible. Chrome fires
+      // `beforeinstallprompt` very early — often before React mounts — and it
+      // never re-fires, so the in-app banner would miss it. We stash it on
+      // window and broadcast a custom event the React component listens for.
+      window.__pwaInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__pwaInstallPrompt = e;
+        window.dispatchEvent(new Event('pwa-install-available'));
+      });
+      window.addEventListener('appinstalled', function () {
+        window.__pwaInstallPrompt = null;
+        window.dispatchEvent(new Event('pwa-installed'));
+      });
+    </script>
+    <script>
       // Restore path after GitHub Pages 404 redirect (see public/404.html).
       // Converts /?/auth/callback&code=abc back to /auth/callback?code=abc
       // and preserves the URL hash (needed for Supabase implicit-flow tokens).
@@ -47,7 +63,7 @@
         }
       }(window.location));
     </script>
-    <script type="module" crossorigin src="/soccer-pool/assets/index-BiwBnUlc.js"></script>
+    <script type="module" crossorigin src="/soccer-pool/assets/index-xkEFDaLB.js"></script>
     <link rel="modulepreload" crossorigin href="/soccer-pool/assets/rolldown-runtime-Cyuzqnbw.js">
     <link rel="modulepreload" crossorigin href="/soccer-pool/assets/supabase-Df-847dl.js">
     <link rel="modulepreload" crossorigin href="/soccer-pool/assets/charts-CwvxI9Xz.js">
@@ -55,7 +71,7 @@
     <link rel="modulepreload" crossorigin href="/soccer-pool/assets/canvas-mOCbBL8p.js">
     <link rel="modulepreload" crossorigin href="/soccer-pool/assets/framer-f3aPIezl.js">
     <link rel="modulepreload" crossorigin href="/soccer-pool/assets/i18n-DNRoGDLP.js">
-    <link rel="stylesheet" crossorigin href="/soccer-pool/assets/index-T35gpOM-.css">
+    <link rel="stylesheet" crossorigin href="/soccer-pool/assets/index-DtXpZyji.css">
   <link rel="manifest" href="/soccer-pool/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/soccer-pool/registerSW.js"></script></head>
   <body>
     <div id="root"></div>
