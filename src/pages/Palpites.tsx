@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Loader2, Lock, MapPin } from 'lucide-react'
+import { ChevronDown, Loader2, Lock, MapPin, MessageCircle } from 'lucide-react'
 import { Navbar } from '../components/Navbar'
 import { Toast, type ToastInfo } from '../components/Toast'
+import { ChatJogo } from '../components/ChatJogo'
+import { CompartilharCard } from '../components/CompartilharCard'
 import { useAuth } from '../contexts/AuthContext'
 import { useJogos } from '../hooks/useJogos'
 import { supabase } from '../lib/supabase'
@@ -48,6 +50,11 @@ export function Palpites() {
   const [filtro, setFiltro] = useState('todos')
   const [toast, setToast] = useState<ToastInfo | null>(null)
 
+  // chat
+  const [chatAberto, setChatAberto] = useState<Set<string>>(new Set())
+  const [contagemComentarios, setContagemComentarios] = useState<Record<string, number>>({})
+  const contagemCarregada = useRef(false)
+
   useEffect(() => {
     if (!user) return
     supabase
@@ -67,6 +74,18 @@ export function Palpites() {
       })
   }, [user])
 
+  // Carregar contagem de comentários uma vez
+  useEffect(() => {
+    if (!user || contagemCarregada.current) return
+    contagemCarregada.current = true
+    supabase.from('comentarios').select('jogo_id').then(({ data }) => {
+      const counts: Record<string, number> = {}
+      for (const c of (data as { jogo_id: string }[]) ?? [])
+        counts[c.jogo_id] = (counts[c.jogo_id] ?? 0) + 1
+      setContagemComentarios(counts)
+    })
+  }, [user])
+
   useEffect(() => {
     if (!toast) return
     const t = setTimeout(() => setToast(null), 3000)
@@ -83,6 +102,15 @@ export function Palpites() {
     setInputs((prev) => {
       const atual = prev[jogoId] ?? { c: '', f: '' }
       return { ...prev, [jogoId]: { ...atual, [lado]: valor } }
+    })
+  }
+
+  function toggleChat(jogoId: string) {
+    setChatAberto((prev) => {
+      const novo = new Set(prev)
+      if (novo.has(jogoId)) novo.delete(jogoId)
+      else novo.add(jogoId)
+      return novo
     })
   }
 
@@ -153,7 +181,6 @@ export function Palpites() {
           </p>
         )}
 
-        {/* Skeleton */}
         {loading && (
           <div className="mt-6 space-y-4">
             {Array.from({ length: 5 }, (_, i) => (
@@ -173,6 +200,8 @@ export function Palpites() {
               const palpite = palpites[jogo.id]
               const comecou = jogoComecou(jogo.data_jogo) || jogo.encerrado
               const input = inputs[jogo.id]
+              const chatEstaAberto = chatAberto.has(jogo.id)
+              const qtdComentarios = contagemComentarios[jogo.id] ?? 0
 
               return (
                 <motion.div
@@ -209,19 +238,13 @@ export function Palpites() {
                     ) : (
                       <div className="flex items-center gap-2">
                         <input
-                          type="number"
-                          min={0}
-                          max={20}
-                          value={input?.c ?? ''}
+                          type="number" min={0} max={20} value={input?.c ?? ''}
                           onChange={(e) => setInput(jogo.id, 'c', e.target.value)}
                           className="h-11 w-12 rounded-lg border border-white/10 bg-white/[0.05] text-center text-lg font-bold outline-none transition focus:border-brasil-green"
                         />
                         <span className="text-zinc-600">x</span>
                         <input
-                          type="number"
-                          min={0}
-                          max={20}
-                          value={input?.f ?? ''}
+                          type="number" min={0} max={20} value={input?.f ?? ''}
                           onChange={(e) => setInput(jogo.id, 'f', e.target.value)}
                           className="h-11 w-12 rounded-lg border border-white/10 bg-white/[0.05] text-center text-lg font-bold outline-none transition focus:border-brasil-green"
                         />
@@ -234,6 +257,7 @@ export function Palpites() {
                     </div>
                   </div>
 
+                  {/* Resultado e palpite */}
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
                     {jogo.encerrado && palpite && (
                       <>
@@ -241,12 +265,7 @@ export function Palpites() {
                           Seu palpite: <strong>{palpite.gols_casa} x {palpite.gols_fora}</strong>
                         </span>
                         <BadgePontos
-                          pontos={calcularPontos(
-                            palpite.gols_casa,
-                            palpite.gols_fora,
-                            jogo.gols_casa!,
-                            jogo.gols_fora!
-                          )}
+                          pontos={calcularPontos(palpite.gols_casa, palpite.gols_fora, jogo.gols_casa!, jogo.gols_fora!)}
                         />
                       </>
                     )}
@@ -269,6 +288,49 @@ export function Palpites() {
                       </button>
                     )}
                   </div>
+
+                  {/* Barra de ações: compartilhar + chat */}
+                  <div className="mt-3 flex items-center gap-1 border-t border-white/5 pt-3">
+                    {palpite && (
+                      <CompartilharCard jogo={jogo} palpite={palpite} />
+                    )}
+                    <button
+                      onClick={() => toggleChat(jogo.id)}
+                      className={`ml-auto flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition ${
+                        chatEstaAberto
+                          ? 'bg-brasil-green/15 text-brasil-green'
+                          : 'text-zinc-500 hover:bg-white/5 hover:text-zinc-300'
+                      }`}
+                    >
+                      <MessageCircle className="h-3.5 w-3.5" />
+                      Chat
+                      {qtdComentarios > 0 && (
+                        <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
+                          {qtdComentarios}
+                        </span>
+                      )}
+                      <ChevronDown
+                        className={`h-3 w-3 transition-transform ${chatEstaAberto ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+                  </div>
+
+                  {/* Chat expandido */}
+                  <AnimatePresence>
+                    {chatEstaAberto && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-3 border-t border-white/5 pt-3">
+                          <ChatJogo jogo_id={jogo.id} />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )
             })}

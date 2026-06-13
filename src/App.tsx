@@ -20,6 +20,7 @@ import { AdminJogos } from './pages/admin/AdminJogos'
 import { AdminUsuarios } from './pages/admin/AdminUsuarios'
 import { AdminConvites } from './pages/admin/AdminConvites'
 import { AdminEspeciais } from './pages/admin/AdminEspeciais'
+import { AdminChat } from './pages/admin/AdminChat'
 import { Estatisticas } from './pages/Estatisticas'
 import { Regulamento } from './pages/Regulamento'
 import { usePontuacao } from './hooks/usePontuacao'
@@ -81,6 +82,7 @@ function App() {
               <Route path="usuarios" element={<AdminUsuarios />} />
               <Route path="convites" element={<AdminConvites />} />
               <Route path="especiais" element={<AdminEspeciais />} />
+              <Route path="chat" element={<AdminChat />} />
             </Route>
           </Route>
         </Routes>

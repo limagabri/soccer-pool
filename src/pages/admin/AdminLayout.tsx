@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Award, ClipboardList, LogOut, Mail, Menu, Trophy, Users, X } from 'lucide-react'
+import { Award, ClipboardList, LogOut, Mail, Menu, MessageCircle, Trophy, Users, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 
 const LINKS = [
@@ -8,6 +8,7 @@ const LINKS = [
   { to: '/admin/usuarios', label: 'Usuários', icon: Users },
   { to: '/admin/convites', label: 'Convites', icon: Mail },
   { to: '/admin/especiais', label: 'Especiais', icon: Award },
+  { to: '/admin/chat', label: 'Chat', icon: MessageCircle },
 ]
 
 export function AdminLayout() {
