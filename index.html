@@ -31,6 +31,22 @@
     <meta name="twitter:title" content="BolãoCopa 2026" />
     <meta name="twitter:description" content="Bolão da Copa do Mundo 2026 — palpites, pontos e ranking em tempo real." />
     <meta name="twitter:image" content="https://limagabri.github.io/bolao-copa/pwa-icon.svg" />
+    <script>
+      // Restore path after GitHub Pages 404 redirect (see public/404.html).
+      // Converts /?/auth/callback&code=abc back to /auth/callback?code=abc
+      // and preserves the URL hash (needed for Supabase implicit-flow tokens).
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(
+            null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
   </head>
   <body>
     <div id="root"></div>
