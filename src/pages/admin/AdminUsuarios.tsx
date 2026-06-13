@@ -32,7 +32,7 @@ export function AdminUsuarios() {
   async function carregar() {
     setLoading(true)
     const { data } = await supabase.rpc('admin_listar_usuarios')
-    setUsuarios((data as UsuarioAdmin[]) ?? [])
+    setUsuarios(((data as UsuarioAdmin[]) ?? []).filter((u) => !u.is_admin))
     setLoading(false)
   }
 

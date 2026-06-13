@@ -86,7 +86,7 @@ export function Estatisticas() {
         supabase.from('eventos_jogo').select('tipo, jogador, selecao, minuto'),
         supabase
           .from('escolhas_especiais')
-          .select('user_id, campeao, vice_campeao, terceiro, artilheiro, melhor_jogador, profiles(username)'),
+          .select('user_id, campeao, vice_campeao, terceiro, artilheiro, melhor_jogador, profiles(username, is_admin)'),
         supabase
           .from('resultados_especiais')
           .select('campeao, vice_campeao, terceiro, artilheiro, melhor_jogador, finalizado')
@@ -98,15 +98,17 @@ export function Estatisticas() {
 
       if (r2.data) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setEscolhas((r2.data as any[]).map((r) => ({
-          user_id: r.user_id as string,
-          username: (r.profiles as { username: string } | null)?.username ?? 'Anônimo',
-          campeao: r.campeao as string,
-          vice_campeao: r.vice_campeao as string,
-          terceiro: r.terceiro as string,
-          artilheiro: r.artilheiro as string,
-          melhor_jogador: r.melhor_jogador as string,
-        })))
+        setEscolhas((r2.data as any[])
+          .filter((r) => !(r.profiles as { is_admin?: boolean } | null)?.is_admin)
+          .map((r) => ({
+            user_id: r.user_id as string,
+            username: (r.profiles as { username: string } | null)?.username ?? 'Anônimo',
+            campeao: r.campeao as string,
+            vice_campeao: r.vice_campeao as string,
+            terceiro: r.terceiro as string,
+            artilheiro: r.artilheiro as string,
+            melhor_jogador: r.melhor_jogador as string,
+          })))
       }
 
       if (r3.data) setResultado(r3.data as ResultadoEspecial)
