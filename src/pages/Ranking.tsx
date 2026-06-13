@@ -37,16 +37,17 @@ export function Ranking() {
   const carregar = useCallback(async () => {
     const [{ data: dataPalpites }, { data: dataProfiles }] = await Promise.all([
       supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora'),
-      supabase.from('profiles').select('id, username').eq('is_admin', false),
+      supabase.from('profiles').select('id, username, pontos_especiais').eq('is_admin', false),
     ])
     setPalpites((dataPalpites as PalpiteResumo[]) ?? [])
     const nomes: Record<string, string> = {}
-    for (const p of (dataProfiles as { id: string; username: string }[]) ?? []) {
+    const especiais: Record<string, number> = {}
+    for (const p of (dataProfiles as { id: string; username: string; pontos_especiais: number }[]) ?? []) {
       nomes[p.id] = p.username
+      especiais[p.id] = p.pontos_especiais ?? 0
     }
     setUsernames(nomes)
-    // pontos_especiais not yet in DB schema — defaults to 0
-    setPontosEspeciais({})
+    setPontosEspeciais(especiais)
     setLoading(false)
   }, [])
 
@@ -105,7 +106,7 @@ export function Ranking() {
     <div className="min-h-screen">
       <Navbar />
 
-      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <h1 className="font-display text-4xl tracking-wide sm:text-5xl md:text-6xl">
           <span className="text-brasil-yellow">Ranking</span> Geral
         </h1>

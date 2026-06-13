@@ -110,7 +110,7 @@ export function Landing() {
       </motion.section>
 
       {/* Como funciona */}
-      <section className="relative z-10 mx-auto max-w-6xl px-6 py-24">
+      <section className="relative z-10 mx-auto max-w-7xl px-6 py-24">
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -147,7 +147,7 @@ export function Landing() {
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 px-6 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row">
           <Logo />
           <div className="flex items-center gap-4">
             <Link to="/regulamento" className="text-sm text-zinc-600 transition hover:text-zinc-400">

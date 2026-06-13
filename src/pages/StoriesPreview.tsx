@@ -59,7 +59,7 @@ const PREVIEWS = [
 export function StoriesPreview() {
   return (
     <div className="min-h-screen bg-zinc-950 p-8">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-7xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-zinc-100">Preview dos Templates de Stories</h1>
           <p className="mt-2 text-sm text-zinc-500">
