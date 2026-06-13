@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { ScrollToTop } from './components/ScrollToTop'
+import { InstalarPWA } from './components/InstalarPWA'
 import { Landing } from './pages/Landing'
 import { Login } from './pages/Login'
 import { Cadastro } from './pages/Cadastro'
@@ -23,6 +26,7 @@ import { AdminEspeciais } from './pages/admin/AdminEspeciais'
 import { AdminChat } from './pages/admin/AdminChat'
 import { Estatisticas } from './pages/Estatisticas'
 import { Regulamento } from './pages/Regulamento'
+import { NotFound } from './pages/NotFound'
 import { usePontuacao } from './hooks/usePontuacao'
 
 function PontuacaoGlobal() {
@@ -32,62 +36,69 @@ function PontuacaoGlobal() {
 
 function App() {
   return (
-    <AuthProvider>
-      <PontuacaoGlobal />
-      <BrowserRouter
-        basename={import.meta.env.BASE_URL}
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
-        <Routes>
-          {/* Públicas */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/esqueci-senha" element={<EsqueciSenha />} />
-          <Route path="/nova-senha" element={<NovaSenha />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/grupos" element={<Grupos />} />
-          <Route path="/estatisticas" element={<Estatisticas />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/simulador" element={<Simulador />} />
-          <Route path="/regulamento" element={<Regulamento />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <PontuacaoGlobal />
+        <BrowserRouter
+          basename={import.meta.env.BASE_URL}
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
+          <ScrollToTop />
+          <InstalarPWA />
+          <Routes>
+            {/* Públicas */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+            <Route path="/nova-senha" element={<NovaSenha />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/grupos" element={<Grupos />} />
+            <Route path="/estatisticas" element={<Estatisticas />} />
+            <Route path="/ranking" element={<Ranking />} />
+            <Route path="/simulador" element={<Simulador />} />
+            <Route path="/regulamento" element={<Regulamento />} />
 
-          {/* Protegidas */}
-          <Route
-            path="/primeiro-acesso"
-            element={
-              <ProtectedRoute skipPrimeiroAcesso>
-                <PrimeiroAcesso />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/perfil"
-            element={<ProtectedRoute><Perfil /></ProtectedRoute>}
-          />
-          <Route
-            path="/palpites"
-            element={<ProtectedRoute><Palpites /></ProtectedRoute>}
-          />
-          <Route
-            path="/dashboard"
-            element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
-          />
+            {/* Protegidas */}
+            <Route
+              path="/primeiro-acesso"
+              element={
+                <ProtectedRoute skipPrimeiroAcesso>
+                  <PrimeiroAcesso />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/perfil"
+              element={<ProtectedRoute><Perfil /></ProtectedRoute>}
+            />
+            <Route
+              path="/palpites"
+              element={<ProtectedRoute><Palpites /></ProtectedRoute>}
+            />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+            />
 
-          {/* Admin */}
-          <Route path="/admin">
-            <Route index element={<AdminLogin />} />
-            <Route element={<AdminLayout />}>
-              <Route path="jogos" element={<AdminJogos />} />
-              <Route path="usuarios" element={<AdminUsuarios />} />
-              <Route path="convites" element={<AdminConvites />} />
-              <Route path="especiais" element={<AdminEspeciais />} />
-              <Route path="chat" element={<AdminChat />} />
+            {/* Admin */}
+            <Route path="/admin">
+              <Route index element={<AdminLogin />} />
+              <Route element={<AdminLayout />}>
+                <Route path="jogos" element={<AdminJogos />} />
+                <Route path="usuarios" element={<AdminUsuarios />} />
+                <Route path="convites" element={<AdminConvites />} />
+                <Route path="especiais" element={<AdminEspeciais />} />
+                <Route path="chat" element={<AdminChat />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+
+            {/* 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 

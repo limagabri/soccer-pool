@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Loader2, Pencil, X } from 'lucide-react'
 import { Navbar } from '../components/Navbar'
 import { Toast, type ToastInfo } from '../components/Toast'
+import { ConfigNotificacoes } from '../components/ConfigNotificacoes'
 import { useAuth } from '../contexts/AuthContext'
 import { useJogos } from '../hooks/useJogos'
 import { supabase } from '../lib/supabase'
@@ -168,6 +169,11 @@ export function Perfil() {
               <p className="mt-1 text-xs tracking-wider text-zinc-500 uppercase">{rotulo}</p>
             </motion.div>
           ))}
+        </div>
+
+        {/* Notificações */}
+        <div className="mt-6">
+          <ConfigNotificacoes />
         </div>
 
         {/* Histórico */}

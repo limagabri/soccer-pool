@@ -8,6 +8,7 @@ import {
 } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
+import { LoadingGlobal } from '../components/LoadingGlobal'
 
 interface Profile {
   id: string
@@ -116,6 +117,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signOut() {
     await supabase.auth.signOut()
   }
+
+  if (loading) return <LoadingGlobal />
 
   return (
     <AuthContext.Provider
