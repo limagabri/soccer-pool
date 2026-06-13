@@ -12,10 +12,11 @@
     "logout": "Sair"
   },
   "landing": {
-    "tagline": "O bolão mais emocionante da Copa",
-    "subtitle": "Palpite nos placares, acumule pontos e prove quem entende mais de futebol.",
-    "cta": "Quero participar",
-    "howItWorks": "Como funciona?",
+    "tagline": "A maior competição do planeta",
+    "subtitle": "Quem vai ser campeão? Faça seus palpites.",
+    "cta": "Entrar no Bolão",
+    "ctaDesc": "Acesso exclusivo por convite",
+    "howItWorks": "Como funciona",
     "inviteOnly": "Acesso por convite",
     "features": {
       "predict": { "title": "Palpite", "desc": "Dê seus palpites no placar de cada jogo da Copa antes do apito inicial." },
@@ -114,6 +115,19 @@
       "picks": "Escolhas",
       "myPicks": "Minhas escolhas"
     }
+  },
+  "dashboard": {
+    "subtitle": "A Copa está rolando. Confira seus números e não perca o próximo jogo. ⚽",
+    "myPoints": "Meus Pontos",
+    "myPosition": "Minha Posição",
+    "nextMatch": "Próximo Jogo",
+    "bestPick": "Melhor Palpite",
+    "makePicks": "Fazer palpites →",
+    "viewRanking": "Ver ranking →",
+    "noPending": "Nenhum jogo pendente.",
+    "noExact": "Nenhum placar exato ainda. Vai que o próximo sai!",
+    "inOf": "em {{done}}/{{total}} palpites",
+    "outOf": "de {{count}} participante{{s}}"
   },
   "simulator": {
     "title": "Simulador"

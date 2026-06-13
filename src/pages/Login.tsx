@@ -2,12 +2,14 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../contexts/AuthContext'
 import { Logo } from '../components/Logo'
 import { AuthBackground } from '../components/AuthBackground'
 
 export function Login() {
   const { signIn } = useAuth()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +23,7 @@ export function Login() {
     const { error } = await signIn(email, password)
     setLoading(false)
     if (error) {
-      setError('E-mail ou senha inválidos.')
+      setError(t('auth.invalidCredentials'))
       return
     }
     navigate('/dashboard')
@@ -42,16 +44,16 @@ export function Login() {
         </div>
 
         <h1 className="text-center font-display text-4xl tracking-wide">
-          Bem-vindo de volta!
+          {t('auth.welcomeBack')}
         </h1>
         <p className="mt-1 text-center text-sm text-zinc-400">
-          Entre para acompanhar seus palpites
+          {t('auth.signInSubtitle')}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-300">
-              E-mail
+              {t('auth.email')}
             </label>
             <div className="relative">
               <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
@@ -69,7 +71,7 @@ export function Login() {
 
           <div>
             <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-zinc-300">
-              Senha
+              {t('auth.password')}
             </label>
             <div className="relative">
               <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
@@ -101,7 +103,7 @@ export function Login() {
             className="btn-gradient flex w-full items-center justify-center gap-2 rounded-lg py-3 font-bold text-black disabled:opacity-60"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            Entrar
+            {t('auth.login')}
           </button>
         </form>
 
@@ -110,7 +112,7 @@ export function Login() {
             to="/esqueci-senha"
             className="text-sm text-zinc-500 hover:text-zinc-300"
           >
-            Esqueci minha senha
+            {t('auth.forgotPassword')}
           </Link>
         </div>
       </motion.div>

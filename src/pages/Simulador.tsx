@@ -253,7 +253,7 @@ export function Simulador() {
     <div className="min-h-screen">
       <Navbar />
 
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display text-4xl tracking-wide sm:text-5xl md:text-6xl">

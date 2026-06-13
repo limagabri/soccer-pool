@@ -12,10 +12,11 @@
     "logout": "Salir"
   },
   "landing": {
-    "tagline": "El pronóstico más emocionante del Mundial",
-    "subtitle": "Pronostica marcadores, acumula puntos y demuestra quién sabe más de fútbol.",
-    "cta": "Quiero participar",
-    "howItWorks": "¿Cómo funciona?",
+    "tagline": "La competición más grande del planeta",
+    "subtitle": "¿Quién va a ser campeón? Haz tus pronósticos.",
+    "cta": "Entrar al Bolão",
+    "ctaDesc": "Acceso exclusivo por invitación",
+    "howItWorks": "Cómo funciona",
     "inviteOnly": "Solo por invitación",
     "features": {
       "predict": { "title": "Pronosticar", "desc": "Da tus pronósticos del marcador para cada partido antes del pitido inicial." },
@@ -105,6 +106,19 @@
       "unsupported": "No compatible con este dispositivo",
       "loading": "Verificando…"
     }
+  },
+  "dashboard": {
+    "subtitle": "La Copa está en marcha. Consulta tus números y no te pierdas el próximo partido. ⚽",
+    "myPoints": "Mis Puntos",
+    "myPosition": "Mi Posición",
+    "nextMatch": "Próximo Partido",
+    "bestPick": "Mejor Pronóstico",
+    "makePicks": "Hacer pronósticos →",
+    "viewRanking": "Ver ranking →",
+    "noPending": "No hay partidos pendientes.",
+    "noExact": "Ningún marcador exacto aún. ¡El próximo puede ser!",
+    "inOf": "en {{done}}/{{total}} pronósticos",
+    "outOf": "de {{count}} participante{{s}}"
   },
   "statistics": { "title": "Estadísticas", "tabs": { "scorers": "Goleadores", "teams": "Por selección", "picks": "Elecciones", "myPicks": "Mis elecciones" } },
   "simulator": { "title": "Simulador" },

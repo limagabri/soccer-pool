@@ -178,7 +178,7 @@ export function Estatisticas() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <h1 className="font-display text-5xl tracking-wide sm:text-6xl">
           <span className="text-brasil-yellow">Estatísticas</span>
         </h1>

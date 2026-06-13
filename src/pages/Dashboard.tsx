@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarClock, Crosshair, Medal, Star } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { ComentaristaCard } from '../components/ComentaristaCard'
 import { StoriesViewer, type StoryData } from '../components/StoriesViewer'
@@ -55,6 +56,7 @@ function formatarRestante(ms: number): string {
 
 export function Dashboard() {
   const { profile, user } = useAuth()
+  const { t } = useTranslation()
   const { jogos } = useJogos()
   const [todosPalpites, setTodosPalpites] = useState<PalpiteResumo[]>([])
   const [agora, setAgora] = useState(() => Date.now())
@@ -168,7 +170,7 @@ export function Dashboard() {
 
       <Navbar />
 
-      <main className="relative z-10 mx-auto max-w-5xl px-4 py-12 sm:px-6 md:py-16">
+      <main className="relative z-10 mx-auto max-w-6xl px-4 py-12 sm:px-6 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -182,7 +184,7 @@ export function Dashboard() {
             !
           </h1>
           <p className="mt-3 text-lg text-zinc-400">
-            A Copa está rolando. Confira seus números e não perca o próximo jogo. ⚽
+            {t('dashboard.subtitle')}
           </p>
         </motion.div>
 
@@ -197,16 +199,16 @@ export function Dashboard() {
             <div className="mb-3 inline-flex rounded-lg bg-brasil-green/10 p-2.5">
               <Star className="h-5 w-5 text-brasil-yellow" />
             </div>
-            <p className="text-xs tracking-wider text-zinc-500 uppercase">Meus Pontos</p>
+            <p className="text-xs tracking-wider text-zinc-500 uppercase">{t('dashboard.myPoints')}</p>
             <p className="mt-1 font-display text-4xl text-zinc-100">{stats.meusPontos}</p>
             <p className="mt-1 text-xs text-zinc-500">
-              em {stats.palpitesFeitos}/{jogos.length || 72} palpites
+              {t('dashboard.inOf', { done: stats.palpitesFeitos, total: jogos.length || 72 })}
             </p>
             <Link
               to="/palpites"
               className="mt-3 inline-block text-xs font-semibold text-brasil-green hover:underline"
             >
-              Fazer palpites →
+              {t('dashboard.makePicks')}
             </Link>
           </motion.div>
 
@@ -220,18 +222,18 @@ export function Dashboard() {
             <div className="mb-3 inline-flex rounded-lg bg-brasil-green/10 p-2.5">
               <Medal className="h-5 w-5 text-brasil-yellow" />
             </div>
-            <p className="text-xs tracking-wider text-zinc-500 uppercase">Minha Posição</p>
+            <p className="text-xs tracking-wider text-zinc-500 uppercase">{t('dashboard.myPosition')}</p>
             <p className="mt-1 font-display text-4xl text-zinc-100">
               {stats.posicao > 0 ? `${stats.posicao}º` : '—'}
             </p>
             <p className="mt-1 text-xs text-zinc-500">
-              de {stats.participantes} participante{stats.participantes === 1 ? '' : 's'}
+              {t('dashboard.outOf', { count: stats.participantes, s: stats.participantes === 1 ? '' : 's' })}
             </p>
             <Link
               to="/ranking"
               className="mt-3 inline-block text-xs font-semibold text-brasil-green hover:underline"
             >
-              Ver ranking →
+              {t('dashboard.viewRanking')}
             </Link>
           </motion.div>
 
@@ -245,7 +247,7 @@ export function Dashboard() {
             <div className="mb-3 inline-flex rounded-lg bg-brasil-green/10 p-2.5">
               <CalendarClock className="h-5 w-5 text-brasil-yellow" />
             </div>
-            <p className="text-xs tracking-wider text-zinc-500 uppercase">Próximo Jogo</p>
+            <p className="text-xs tracking-wider text-zinc-500 uppercase">{t('dashboard.nextMatch')}</p>
             {proximoJogo ? (
               <>
                 <p className="mt-1 text-sm font-semibold">
@@ -263,7 +265,7 @@ export function Dashboard() {
                 </p>
               </>
             ) : (
-              <p className="mt-2 text-sm text-zinc-500">Nenhum jogo pendente.</p>
+              <p className="mt-2 text-sm text-zinc-500">{t('dashboard.noPending')}</p>
             )}
           </motion.div>
 
@@ -277,7 +279,7 @@ export function Dashboard() {
             <div className="mb-3 inline-flex rounded-lg bg-brasil-green/10 p-2.5">
               <Crosshair className="h-5 w-5 text-brasil-yellow" />
             </div>
-            <p className="text-xs tracking-wider text-zinc-500 uppercase">Melhor Palpite</p>
+            <p className="text-xs tracking-wider text-zinc-500 uppercase">{t('dashboard.bestPick')}</p>
             {melhorPalpite ? (
               <>
                 <p className="mt-1 font-display text-3xl text-brasil-green">
@@ -291,7 +293,7 @@ export function Dashboard() {
               </>
             ) : (
               <p className="mt-2 text-sm text-zinc-500">
-                Nenhum placar exato ainda. Vai que o próximo sai!
+                {t('dashboard.noExact')}
               </p>
             )}
           </motion.div>

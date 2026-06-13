@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion, type Variants } from 'framer-motion'
 import { Trophy, Target, BarChart3, ArrowRight, ChevronDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Logo } from '../components/Logo'
 import { Particles } from '../components/Particles'
 import { Countdown } from '../components/Countdown'
@@ -19,25 +20,11 @@ const item: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
 }
 
-const FEATURES = [
-  {
-    icon: Target,
-    title: 'Palpite',
-    desc: 'Dê seus palpites no placar de cada jogo da Copa antes do apito inicial.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Pontos',
-    desc: 'Acertou o placar exato? Pontuação máxima. Acertou o vencedor? Também soma.',
-  },
-  {
-    icon: Trophy,
-    title: 'Ranking',
-    desc: 'Acompanhe a classificação em tempo real e prove quem entende de futebol.',
-  },
-]
+const FEATURE_KEYS = ['predict', 'points', 'ranking'] as const
+const FEATURE_ICONS = [Target, BarChart3, Trophy]
 
 export function Landing() {
+  const { t } = useTranslation()
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Brilhos de fundo verde/amarelo */}
@@ -51,12 +38,12 @@ export function Landing() {
       <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 py-5 md:px-12">
         <Logo />
         <nav className="flex items-center gap-3">
-          <span className="hidden text-xs text-zinc-600 sm:block">Acesso por convite</span>
+          <span className="hidden text-xs text-zinc-600 sm:block">{t('landing.inviteOnly')}</span>
           <Link
             to="/login"
             className="btn-gradient rounded-lg px-4 py-2 text-sm font-semibold text-black"
           >
-            Entrar
+            {t('nav.login')}
           </Link>
         </nav>
       </header>
@@ -72,7 +59,7 @@ export function Landing() {
           variants={item}
           className="glass mb-8 px-4 py-1.5 text-sm font-medium text-brasil-yellow"
         >
-          ⚽ A maior competição do planeta
+          ⚽ {t('landing.tagline')}
         </motion.span>
 
         <motion.h1
@@ -89,7 +76,7 @@ export function Landing() {
           variants={item}
           className="mt-4 max-w-xl text-lg text-zinc-400 md:text-xl"
         >
-          Quem vai ser campeão? Faça seus palpites.
+          {t('landing.subtitle')}
         </motion.p>
 
         <motion.div variants={item} className="mt-12">
@@ -105,11 +92,11 @@ export function Landing() {
               to="/login"
               className="btn-gradient group flex items-center justify-center gap-2 rounded-xl px-10 py-4 text-lg font-bold text-black"
             >
-              Entrar no Bolão
+              {t('landing.cta')}
               <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
             </Link>
           </motion.div>
-          <p className="text-sm text-zinc-600">Acesso exclusivo por convite</p>
+          <p className="text-sm text-zinc-600">{t('landing.ctaDesc')}</p>
         </motion.div>
 
         <motion.div
@@ -123,7 +110,7 @@ export function Landing() {
       </motion.section>
 
       {/* Como funciona */}
-      <section className="relative z-10 mx-auto max-w-5xl px-6 py-24">
+      <section className="relative z-10 mx-auto max-w-6xl px-6 py-24">
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -131,13 +118,15 @@ export function Landing() {
           transition={{ duration: 0.6 }}
           className="text-center font-display text-5xl tracking-wide sm:text-6xl"
         >
-          Como <span className="text-brasil-green">funciona</span>
+          {t('landing.howItWorks')}
         </motion.h2>
 
         <div className="mt-14 grid gap-6 sm:grid-cols-3">
-          {FEATURES.map(({ icon: Icon, title, desc }, i) => (
+          {FEATURE_KEYS.map((key, i) => {
+            const Icon = FEATURE_ICONS[i]
+            return (
             <motion.div
-              key={title}
+              key={key}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
@@ -148,16 +137,17 @@ export function Landing() {
               <div className="mb-4 inline-flex rounded-lg bg-brasil-green/10 p-3">
                 <Icon className="h-7 w-7 text-brasil-yellow" />
               </div>
-              <h3 className="font-display text-3xl tracking-wide">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{desc}</p>
+              <h3 className="font-display text-3xl tracking-wide">{t(`landing.features.${key}.title`)}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{t(`landing.features.${key}.desc`)}</p>
             </motion.div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 px-6 py-8">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <Logo />
           <div className="flex items-center gap-4">
             <Link to="/regulamento" className="text-sm text-zinc-600 transition hover:text-zinc-400">
@@ -165,7 +155,7 @@ export function Landing() {
             </Link>
             <span className="text-zinc-800">·</span>
             <p className="text-sm text-zinc-600">
-              {APP_FULL_NAME} — feito com ⚽ e ☕
+              {APP_FULL_NAME} — {t('landing.footer')}
             </p>
           </div>
         </div>

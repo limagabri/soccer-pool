@@ -12,10 +12,11 @@
     "logout": "Sign out"
   },
   "landing": {
-    "tagline": "The most exciting World Cup prediction game",
-    "subtitle": "Predict scores, earn points and prove who knows football best.",
-    "cta": "Join now",
-    "howItWorks": "How it works?",
+    "tagline": "The biggest competition on the planet",
+    "subtitle": "Who's going to be champion? Make your predictions.",
+    "cta": "Join the Pool",
+    "ctaDesc": "Exclusive invite-only access",
+    "howItWorks": "How it works",
     "inviteOnly": "Invite only",
     "features": {
       "predict": { "title": "Predict", "desc": "Submit your score predictions for every group stage match before kick-off." },
@@ -114,6 +115,19 @@
       "picks": "Participants' Picks",
       "myPicks": "My Picks"
     }
+  },
+  "dashboard": {
+    "subtitle": "The Cup is on. Check your stats and don't miss the next match. ⚽",
+    "myPoints": "My Points",
+    "myPosition": "My Position",
+    "nextMatch": "Next Match",
+    "bestPick": "Best Pick",
+    "makePicks": "Make predictions →",
+    "viewRanking": "View ranking →",
+    "noPending": "No upcoming matches.",
+    "noExact": "No exact score yet. Next one might be it!",
+    "inOf": "in {{done}}/{{total}} predictions",
+    "outOf": "out of {{count}} participant{{s}}"
   },
   "simulator": { "title": "Simulator" },
   "groups": { "title": "Groups" },
