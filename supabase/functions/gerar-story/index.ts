@@ -163,13 +163,13 @@ Deno.serve(async (req) => {
         { role: 'system', content: SYSTEM },
         { role: 'user',   content: userPrompt },
       ],
-      max_tokens: 200,
-      temperature: 0.95,
+      max_completion_tokens: 200,
     }),
   })
 
   if (!aiRes.ok) {
-    return new Response(JSON.stringify({ error: 'OpenAI error', status: aiRes.status }), {
+    const detail = await aiRes.text()
+    return new Response(JSON.stringify({ error: 'OpenAI error', status: aiRes.status, detail }), {
       status: 502, headers: { 'Content-Type': 'application/json' },
     })
   }
