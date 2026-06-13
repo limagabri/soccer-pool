@@ -76,7 +76,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="relative z-20 border-b border-gray-200 bg-white shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-white/[0.02] dark:shadow-none">
+      <header className="fixed inset-x-0 top-0 z-20 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-zinc-950/90 dark:shadow-none">
         <div className="mx-auto flex max-w-7xl items-center gap-x-6 px-4 py-3 sm:px-6">
           <Logo />
 
@@ -162,6 +162,9 @@ export function Navbar() {
           </button>
         </div>
       </header>
+
+      {/* Spacer — compensates for the fixed header height (~56 px) */}
+      <div className="h-14" aria-hidden />
 
       {/* Mobile drawer */}
       <AnimatePresence>
