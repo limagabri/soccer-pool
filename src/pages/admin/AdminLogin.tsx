@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Loader2, Shield } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { APP_FULL_NAME } from '../../config/app'
 
 export function AdminLogin() {
   const navigate = useNavigate()
@@ -53,7 +54,7 @@ export function AdminLogin() {
           </div>
           <div className="text-center">
             <h1 className="text-2xl font-bold text-zinc-100">Painel Admin</h1>
-            <p className="mt-1 text-sm text-zinc-500">BolãoCopa 2026</p>
+            <p className="mt-1 text-sm text-zinc-500">{APP_FULL_NAME}</p>
           </div>
         </div>
 

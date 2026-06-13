@@ -4,6 +4,7 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { ScrollToTop } from './components/ScrollToTop'
 import { InstalarPWA } from './components/InstalarPWA'
+import { AnimacaoGol } from './components/AnimacaoGol'
 import { Landing } from './pages/Landing'
 import { Login } from './pages/Login'
 import { Cadastro } from './pages/Cadastro'
@@ -17,13 +18,18 @@ import { Simulador } from './pages/Simulador'
 import { Ranking } from './pages/Ranking'
 import { Perfil } from './pages/Perfil'
 import { PrimeiroAcesso } from './pages/PrimeiroAcesso'
+import { Comentarios } from './pages/Comentarios'
+import { Stories } from './pages/Stories'
 import { AdminLogin } from './pages/admin/AdminLogin'
 import { AdminLayout } from './pages/admin/AdminLayout'
+import { AdminDashboard } from './pages/admin/AdminDashboard'
 import { AdminJogos } from './pages/admin/AdminJogos'
 import { AdminUsuarios } from './pages/admin/AdminUsuarios'
 import { AdminConvites } from './pages/admin/AdminConvites'
 import { AdminEspeciais } from './pages/admin/AdminEspeciais'
 import { AdminChat } from './pages/admin/AdminChat'
+import { AdminComentarista } from './pages/admin/AdminComentarista'
+import { AdminStories } from './pages/admin/AdminStories'
 import { Estatisticas } from './pages/Estatisticas'
 import { Regulamento } from './pages/Regulamento'
 import { NotFound } from './pages/NotFound'
@@ -39,6 +45,7 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <PontuacaoGlobal />
+        <AnimacaoGol />
         <BrowserRouter
           basename={import.meta.env.BASE_URL}
           future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
@@ -58,6 +65,8 @@ function App() {
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/simulador" element={<Simulador />} />
             <Route path="/regulamento" element={<Regulamento />} />
+            <Route path="/comentarios" element={<Comentarios />} />
+            <Route path="/stories" element={<Stories />} />
 
             {/* Protegidas */}
             <Route
@@ -85,11 +94,14 @@ function App() {
             <Route path="/admin">
               <Route index element={<AdminLogin />} />
               <Route element={<AdminLayout />}>
-                <Route path="jogos" element={<AdminJogos />} />
-                <Route path="usuarios" element={<AdminUsuarios />} />
-                <Route path="convites" element={<AdminConvites />} />
-                <Route path="especiais" element={<AdminEspeciais />} />
-                <Route path="chat" element={<AdminChat />} />
+                <Route path="dashboard"    element={<AdminDashboard />} />
+                <Route path="jogos"        element={<AdminJogos />} />
+                <Route path="usuarios"     element={<AdminUsuarios />} />
+                <Route path="convites"     element={<AdminConvites />} />
+                <Route path="especiais"    element={<AdminEspeciais />} />
+                <Route path="chat"         element={<AdminChat />} />
+                <Route path="comentarista" element={<AdminComentarista />} />
+                <Route path="stories"      element={<AdminStories />} />
               </Route>
             </Route>
 

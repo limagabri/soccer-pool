@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Award, ClipboardList, LogOut, Mail, Menu, MessageCircle, Trophy, Users, X } from 'lucide-react'
+import { Award, BarChart2, ClipboardList, ImagePlay, LogOut, Mail, Menu, MessageCircle, Mic2, Trophy, Users, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 
 const LINKS = [
-  { to: '/admin/jogos', label: 'Jogos', icon: ClipboardList },
-  { to: '/admin/usuarios', label: 'Usuários', icon: Users },
-  { to: '/admin/convites', label: 'Convites', icon: Mail },
-  { to: '/admin/especiais', label: 'Especiais', icon: Award },
-  { to: '/admin/chat', label: 'Chat', icon: MessageCircle },
+  { to: '/admin/dashboard',     label: 'Dashboard',     icon: BarChart2 },
+  { to: '/admin/jogos',         label: 'Jogos',          icon: ClipboardList },
+  { to: '/admin/usuarios',      label: 'Usuários',       icon: Users },
+  { to: '/admin/convites',      label: 'Convites',       icon: Mail },
+  { to: '/admin/especiais',     label: 'Especiais',      icon: Award },
+  { to: '/admin/chat',          label: 'Chat',           icon: MessageCircle },
+  { to: '/admin/comentarista',  label: 'Comentarista',   icon: Mic2 },
+  { to: '/admin/stories',       label: 'Stories',        icon: ImagePlay },
 ]
 
 export function AdminLayout() {

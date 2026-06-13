@@ -110,10 +110,11 @@ export const CHAVE_32: [Seed, Seed][] = [
 ]
 
 export const NOMES_RODADAS = [
-  '16 avos de final',
+  '32-avos de final',
   'Oitavas de final',
   'Quartas de final',
   'Semifinais',
+  '3º lugar',
   'Final',
 ]
 
@@ -159,6 +160,20 @@ export function vencedorMataMata(
   if (r.gols_casa < r.gols_fora) return j.fora
   if (r.penaltis === 'casa') return j.casa
   if (r.penaltis === 'fora') return j.fora
+  return null
+}
+
+export function loserMataMata(
+  j: JogoMataMata,
+  resultados: ResultadosMataMata
+): TimeChave | null {
+  if (!j.casa || !j.fora) return null
+  const r = resultados[chaveResultado(j)]
+  if (!r || r.gols_casa == null || r.gols_fora == null) return null
+  if (r.gols_casa > r.gols_fora) return j.fora
+  if (r.gols_casa < r.gols_fora) return j.casa
+  if (r.penaltis === 'casa') return j.fora
+  if (r.penaltis === 'fora') return j.casa
   return null
 }
 
@@ -208,14 +223,16 @@ export function montarChaveamento(
 
   const rodadas: JogoMataMata[][] = [r32]
   let atual = r32
-  while (atual.length > 1) {
+
+  // Generate R16, QF, SF — stop when 2 games remain (the semi-finals)
+  while (atual.length > 2) {
     const proxima: JogoMataMata[] = []
     for (let i = 0; i < atual.length; i += 2) {
       const a = atual[i]
       const b = atual[i + 1]
       proxima.push({
         id: `J${numero}`,
-        rotulo: atual.length === 2 ? 'Final' : `Jogo ${numero}`,
+        rotulo: `Jogo ${numero}`,
         casa: vencedorMataMata(a, resultados),
         fora: vencedorMataMata(b, resultados),
         origemCasa: `Vencedor ${a.rotulo}`,
@@ -226,6 +243,29 @@ export function montarChaveamento(
     rodadas.push(proxima)
     atual = proxima
   }
+
+  // atual is the SF round (2 games); add 3rd place and final as separate rounds
+  const sf1 = atual[0]
+  const sf2 = atual[1]
+
+  rodadas.push([{
+    id: `J${numero}`,
+    rotulo: `Jogo ${numero}`,
+    casa: loserMataMata(sf1, resultados),
+    fora: loserMataMata(sf2, resultados),
+    origemCasa: `Perdedor ${sf1.rotulo}`,
+    origemFora: `Perdedor ${sf2.rotulo}`,
+  }])
+  numero++
+
+  rodadas.push([{
+    id: `J${numero}`,
+    rotulo: 'Final',
+    casa: vencedorMataMata(sf1, resultados),
+    fora: vencedorMataMata(sf2, resultados),
+    origemCasa: `Vencedor ${sf1.rotulo}`,
+    origemFora: `Vencedor ${sf2.rotulo}`,
+  }])
 
   return rodadas
 }

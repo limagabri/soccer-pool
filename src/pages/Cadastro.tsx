@@ -5,6 +5,7 @@ import { Mail, Lock, User, Loader2, CheckCircle, AlertCircle } from 'lucide-reac
 import { supabase } from '../lib/supabase'
 import { Logo } from '../components/Logo'
 import { AuthBackground } from '../components/AuthBackground'
+import { APP_FULL_NAME } from '../config/app'
 
 interface ConviteInfo {
   id: string
@@ -104,7 +105,7 @@ export function Cadastro() {
           <AlertCircle className="mx-auto mb-4 h-12 w-12 text-brasil-yellow" />
           <h1 className="font-display text-4xl tracking-wide">Acesso por convite</h1>
           <p className="mt-3 text-zinc-400">
-            O BolãoCopa 2026 é um bolão fechado. Para participar, você precisa de um convite enviado pelo organizador.
+            O {APP_FULL_NAME} é um bolão fechado. Para participar, você precisa de um convite enviado pelo organizador.
           </p>
           <Link to="/login" className="mt-6 inline-block text-sm text-brasil-green hover:underline">
             Já tenho conta — fazer login →
@@ -180,7 +181,7 @@ export function Cadastro() {
 
         <h1 className="text-center font-display text-4xl tracking-wide">Criar conta</h1>
         <p className="mt-1 text-center text-sm text-zinc-400">
-          Você foi convidado para o BolãoCopa 2026!
+          Você foi convidado para o {APP_FULL_NAME}!
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">

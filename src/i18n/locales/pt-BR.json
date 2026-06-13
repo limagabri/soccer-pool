@@ -1,0 +1,151 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "predictions": "Palpites",
+    "groups": "Grupos",
+    "statistics": "Estatísticas",
+    "ranking": "Ranking",
+    "simulator": "Simulador",
+    "admin": "Painel Admin",
+    "profile": "Meu perfil",
+    "login": "Entrar",
+    "logout": "Sair"
+  },
+  "landing": {
+    "tagline": "O bolão mais emocionante da Copa",
+    "subtitle": "Palpite nos placares, acumule pontos e prove quem entende mais de futebol.",
+    "cta": "Quero participar",
+    "howItWorks": "Como funciona?",
+    "inviteOnly": "Acesso por convite",
+    "features": {
+      "predict": { "title": "Palpite", "desc": "Dê seus palpites no placar de cada jogo da Copa antes do apito inicial." },
+      "points":  { "title": "Pontos",  "desc": "Acertou o placar exato? Pontuação máxima. Acertou o vencedor? Também soma." },
+      "ranking": { "title": "Ranking", "desc": "Acompanhe a classificação em tempo real e prove quem entende de futebol." }
+    },
+    "footer": "feito com ⚽ e ☕"
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Senha",
+    "username": "Nome de usuário",
+    "login": "Entrar",
+    "register": "Criar conta",
+    "forgotPassword": "Esqueci minha senha",
+    "backToLogin": "Voltar ao login",
+    "invalidCredentials": "E-mail ou senha inválidos.",
+    "resetEmailSent": "Enviamos um link para seu e-mail.",
+    "welcomeBack": "Bem-vindo de volta!",
+    "signInSubtitle": "Entre para acompanhar seus palpites",
+    "inviteRequired": "é um bolão fechado. Para participar, você precisa de um convite enviado pelo organizador.",
+    "invited": "Você foi convidado para o"
+  },
+  "predictions": {
+    "title": "Meus Palpites",
+    "subtitle": "Placar exato vale {{exact}} pts, acertar o vencedor ou empate vale {{winner}} pts.",
+    "save": "Salvar palpite",
+    "update": "Atualizar palpite",
+    "saved": "Palpite salvo! Boa sorte. 🍀",
+    "error": "Erro ao salvar palpite. Tente novamente.",
+    "invalidScore": "Preencha um placar válido.",
+    "inProgress": "Em andamento",
+    "awaiting": "aguardando resultado",
+    "noPrediction": "Você não palpitou neste jogo.",
+    "noneYet": "Nenhum jogo aqui ainda.",
+    "exactScore": "🎯 Placar exato",
+    "correctWinner": "✓ Acertou o vencedor",
+    "wrong": "✗ Errou",
+    "filters": {
+      "all": "Todos",
+      "round1": "Rodada 1",
+      "round2": "Rodada 2",
+      "round3": "Rodada 3",
+      "mine": "Meus palpites"
+    }
+  },
+  "ranking": {
+    "title": "Ranking",
+    "subtitle": "Quem está entendendo de futebol até agora? Atualiza em tempo real.",
+    "you": "você",
+    "noPredictions": "Nenhum palpite registrado ainda.",
+    "loginToSee": "Entre na sua conta para ver o ranking completo.",
+    "evolution": "Evolução do Ranking",
+    "noHistory": "Histórico insuficiente — o gráfico aparece após 2 dias de registro.",
+    "cols": {
+      "pos": "#",
+      "player": "Participante",
+      "predictions": "Palpites",
+      "exact": "🎯 Exatos",
+      "winner": "✓ Vencedor",
+      "pts": "Pts",
+      "bonus": "⭐ Bônus",
+      "total": "Total"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "editName": "Editar nome",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "nameMinLength": "O nome precisa ter pelo menos 3 caracteres.",
+    "nameSaved": "Nome atualizado!",
+    "nameSaveError": "Não foi possível salvar o nome.",
+    "lastPredictions": "Últimos palpites",
+    "noPredictions": "Você ainda não fez nenhum palpite.",
+    "stats": {
+      "points": "Pontos",
+      "predictions": "Palpites",
+      "exactScores": "Placares exatos"
+    },
+    "notifications": {
+      "title": "Notificações",
+      "subtitle": "Seja avisado 1h antes de cada jogo",
+      "on": "Ativadas",
+      "off": "Desativadas",
+      "denied": "Bloqueado pelo navegador — habilite nas configurações",
+      "unsupported": "Não suportado neste dispositivo",
+      "loading": "Verificando…"
+    }
+  },
+  "statistics": {
+    "title": "Estatísticas",
+    "tabs": {
+      "scorers": "Artilharia",
+      "teams": "Por seleção",
+      "picks": "Escolhas",
+      "myPicks": "Minhas escolhas"
+    }
+  },
+  "simulator": {
+    "title": "Simulador"
+  },
+  "groups": {
+    "title": "Grupos"
+  },
+  "regulamento": {
+    "title": "Regulamento"
+  },
+  "notFound": {
+    "title": "404",
+    "headline": "Essa bola saiu pela linha de fundo",
+    "subtitle": "A página que você procura não existe ou foi movida.",
+    "back": "Voltar ao início"
+  },
+  "common": {
+    "loading": "Carregando…",
+    "error": "Erro",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "awaiting": "Aguardando",
+    "match": "Jogo",
+    "group": "Grupo",
+    "round": "Rodada",
+    "home": "Casa",
+    "away": "Fora",
+    "pts": "pts"
+  },
+  "pwa": {
+    "install": "Instale o {{name}} no seu celular",
+    "installBtn": "Instalar"
+  }
+}

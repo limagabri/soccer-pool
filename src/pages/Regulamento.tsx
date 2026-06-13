@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Award, BarChart3, BookOpen, Shield, Target, Trophy } from 'lucide-react'
 import { Navbar } from '../components/Navbar'
+import { APP_FULL_NAME } from '../config/app'
 
 const item = {
   hidden: { opacity: 0, y: 16 },
@@ -42,7 +43,7 @@ export function Regulamento() {
               <h2 className="font-display text-2xl tracking-wide">Como funciona</h2>
             </div>
             <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
-              <p>O BolãoCopa 2026 é um bolão fechado, acessível apenas por convite. Cada participante dá seus palpites de placar para os jogos da Copa do Mundo antes de cada partida começar.</p>
+              <p>O {APP_FULL_NAME} é um bolão fechado, acessível apenas por convite. Cada participante dá seus palpites de placar para os jogos da Copa do Mundo antes de cada partida começar.</p>
               <p>Acompanhe a classificação em tempo real no <Link to="/ranking" className="text-brasil-green hover:underline">Ranking</Link> e veja quem está dominando.</p>
               <p>Palpites ficam bloqueados assim que o jogo inicia. Não é possível alterar um palpite já registrado.</p>
             </div>
@@ -182,7 +183,7 @@ export function Regulamento() {
       </main>
 
       <footer className="border-t border-white/5 px-6 py-6 text-center text-sm text-zinc-600">
-        BolãoCopa 2026 — feito com ⚽ e ☕
+        {APP_FULL_NAME} — feito com ⚽ e ☕
       </footer>
     </div>
   )

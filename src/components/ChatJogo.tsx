@@ -4,6 +4,17 @@ import { Loader2, Send, Trash2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 
+const REACOES = [
+  { emoji: '⚽', texto: '⚽ Gol!' },
+  { emoji: '🔥', texto: '🔥 Que jogo!' },
+  { emoji: '😱', texto: '😱 Não acredito!' },
+  { emoji: '🤦', texto: '🤦 Que vacilo' },
+  { emoji: '🎯', texto: '🎯 Acertei!' },
+  { emoji: '💀', texto: '💀 Tomei' },
+]
+
+const COOLDOWN_MS = 10_000
+
 interface Comentario {
   id: string
   user_id: string
@@ -33,7 +44,9 @@ export function ChatJogo({ jogo_id }: Props) {
   const [texto, setTexto] = useState('')
   const [loading, setLoading] = useState(true)
   const [enviando, setEnviando] = useState(false)
+  const [reacaoBounce, setReacaoBounce] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const ultimasReacoes = useRef<Record<string, number>>({})
 
   async function carregarComentarios() {
     const { data } = await supabase
@@ -112,6 +125,17 @@ export function ChatJogo({ jogo_id }: Props) {
     await supabase.from('comentarios').delete().eq('id', id)
   }
 
+  function handleReacao(r: { emoji: string; texto: string }) {
+    if (!user) return
+    const agora = Date.now()
+    const ultima = ultimasReacoes.current[r.emoji] ?? 0
+    if (agora - ultima < COOLDOWN_MS) return
+    ultimasReacoes.current[r.emoji] = agora
+    setReacaoBounce(r.emoji)
+    setTimeout(() => setReacaoBounce(null), 350)
+    supabase.from('comentarios').insert({ jogo_id, user_id: user.id, texto: r.texto })
+  }
+
   const restantes = 280 - texto.length
 
   return (
@@ -178,8 +202,25 @@ export function ChatJogo({ jogo_id }: Props) {
         <div ref={bottomRef} />
       </div>
 
+      {/* Reações rápidas */}
+      {user && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {REACOES.map(r => (
+            <motion.button
+              key={r.emoji}
+              animate={reacaoBounce === r.emoji ? { scale: [1, 1.4, 0.9, 1.1, 1] } : {}}
+              transition={{ duration: 0.35 }}
+              onClick={() => handleReacao(r)}
+              className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-zinc-300 transition hover:border-brasil-green/40 hover:bg-brasil-green/10 hover:text-zinc-100"
+            >
+              {r.emoji} <span className="hidden sm:inline">{r.texto.split(' ').slice(1).join(' ')}</span>
+            </motion.button>
+          ))}
+        </div>
+      )}
+
       {/* Input */}
-      <div className="mt-3 flex items-end gap-2">
+      <div className="mt-2.5 flex items-end gap-2">
         <div className="relative flex-1">
           <textarea
             value={texto}

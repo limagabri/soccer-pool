@@ -4,6 +4,7 @@ import { Trophy, Target, BarChart3, ArrowRight, ChevronDown } from 'lucide-react
 import { Logo } from '../components/Logo'
 import { Particles } from '../components/Particles'
 import { Countdown } from '../components/Countdown'
+import { APP_CONFIG, APP_FULL_NAME } from '../config/app'
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -78,9 +79,9 @@ export function Landing() {
           variants={item}
           className="font-display leading-[0.9] tracking-wide text-[clamp(4.5rem,15vw,8rem)] md:text-[clamp(8rem,13vw,12rem)]"
         >
-          BolãoCopa{' '}
+          {APP_CONFIG.name}{' '}
           <span className="bg-gradient-to-r from-brasil-green via-brasil-green-light to-brasil-yellow bg-clip-text text-transparent">
-            2026
+            {APP_CONFIG.year}
           </span>
         </motion.h1>
 
@@ -164,7 +165,7 @@ export function Landing() {
             </Link>
             <span className="text-zinc-800">·</span>
             <p className="text-sm text-zinc-600">
-              BolãoCopa 2026 — feito com ⚽ e ☕
+              {APP_FULL_NAME} — feito com ⚽ e ☕
             </p>
           </div>
         </div>

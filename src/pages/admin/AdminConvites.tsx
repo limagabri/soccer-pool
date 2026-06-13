@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Copy, Link as LinkIcon, Loader2, MessageCircle, RefreshCw, Trash2 } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { APP_FULL_NAME } from '../../config/app'
 
 interface Convite {
   id: string
@@ -83,7 +84,7 @@ export function AdminConvites() {
 
   function compartilharWhatsApp(token: string) {
     const url = urlConvite(token)
-    const msg = `Você foi convidado para o BolãoCopa 2026! 🏆⚽\n\nAccesse o link para se cadastrar:\n${url}`
+    const msg = `Você foi convidado para o ${APP_FULL_NAME}! 🏆⚽\n\nAccesse o link para se cadastrar:\n${url}`
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank')
   }
 

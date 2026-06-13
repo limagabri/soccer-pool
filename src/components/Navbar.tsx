@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LogOut, Menu, Moon, Sun, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../contexts/ThemeContext'
+import { SUPPORTED_LANGS } from '../i18n'
 import { Logo } from './Logo'
 
 const LINKS = [
@@ -14,6 +16,22 @@ const LINKS = [
   { to: '/ranking', label: 'Ranking', protegido: false },
   { to: '/simulador', label: 'Simulador', protegido: false },
 ]
+
+function LangToggle({ className = '' }: { className?: string }) {
+  const { i18n } = useTranslation()
+  const current = SUPPORTED_LANGS.find(l => l.code === i18n.language || l.code === i18n.language.split('-')[0])
+    ?? SUPPORTED_LANGS[0]
+  const next = SUPPORTED_LANGS[(SUPPORTED_LANGS.findIndex(l => l.code === current.code) + 1) % SUPPORTED_LANGS.length]
+  return (
+    <button
+      onClick={() => i18n.changeLanguage(next.code)}
+      title={next.label}
+      className={`rounded-lg px-2 py-1.5 text-xs font-medium text-gray-500 transition hover:bg-gray-100 dark:text-zinc-400 dark:hover:bg-white/5 ${className}`}
+    >
+      {current.flag}
+    </button>
+  )
+}
 
 function ThemeToggle({ className = '' }: { className?: string }) {
   const { isDark, setTheme } = useTheme()
@@ -96,7 +114,8 @@ export function Navbar() {
           </nav>
 
           {/* Desktop actions */}
-          <div className="ml-auto hidden items-center gap-2 sm:flex">
+          <div className="ml-auto hidden items-center gap-1 sm:flex">
+            <LangToggle />
             <ThemeToggle />
             {user ? (
               <>
@@ -166,6 +185,7 @@ export function Navbar() {
               <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-white/5">
                 <Logo />
                 <div className="flex items-center gap-1">
+                  <LangToggle />
                   <ThemeToggle />
                   <button
                     onClick={() => setMenuAberto(false)}

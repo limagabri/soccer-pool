@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+!.env.example
+.env.production
+.env.staging
 
 # Claude Code
 .claude/

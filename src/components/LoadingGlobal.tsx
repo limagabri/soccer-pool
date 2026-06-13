@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { APP_CONFIG } from '../config/app'
 
 export function LoadingGlobal() {
   return (
@@ -12,7 +13,7 @@ export function LoadingGlobal() {
         <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-brasil-green" />
         <span className="text-2xl">⚽</span>
       </motion.div>
-      <p className="font-display text-lg tracking-widest text-brasil-green">BolãoCopa</p>
+      <p className="font-display text-lg tracking-widest text-brasil-green">{APP_CONFIG.name}</p>
     </div>
   )
 }

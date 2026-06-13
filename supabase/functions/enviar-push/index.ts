@@ -35,16 +35,6 @@ function uint8ArrayToBase64url(arr: Uint8Array): string {
   return btoa(String.fromCharCode(...arr)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
 }
 
-async function importVapidPrivateKey(privateKeyB64: string): Promise<CryptoKey> {
-  const keyBytes = base64urlToUint8Array(privateKeyB64)
-  return crypto.subtle.importKey(
-    'raw',
-    keyBytes,
-    { name: 'ECDH', namedCurve: 'P-256' },
-    false,
-    ['deriveKey', 'deriveBits']
-  )
-}
 
 async function buildVapidJwt(audience: string): Promise<string> {
   const header = uint8ArrayToBase64url(new TextEncoder().encode(JSON.stringify({ typ: 'JWT', alg: 'ES256' })))

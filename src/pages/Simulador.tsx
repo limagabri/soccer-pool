@@ -155,7 +155,7 @@ export function Simulador() {
     [jogos, grupoAtivo]
   )
 
-  const campeao = rodadas.length > 0 ? vencedorMataMata(rodadas[4][0], ko) : null
+  const campeao = rodadas.length > 0 ? vencedorMataMata(rodadas[5][0], ko) : null
 
   function setGol(jogo: Jogo, lado: 'gols_casa' | 'gols_fora', v: number | null) {
     setPlacares((prev) => ({

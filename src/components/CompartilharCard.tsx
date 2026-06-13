@@ -1,5 +1,6 @@
 import { Share2 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import { APP_CONFIG, APP_FULL_NAME } from '../config/app'
 import type { Jogo } from '../types'
 
 interface Props {
@@ -43,7 +44,7 @@ function gerarCanvas(jogo: Jogo, palpite: { gols_casa: number; gols_fora: number
   // Título
   ctx.fillStyle = '#ffffff'
   ctx.font = 'bold 66px Arial, sans-serif'
-  ctx.fillText('BolãoCopa 2026', SIZE / 2, 130)
+  ctx.fillText(APP_FULL_NAME, SIZE / 2, 130)
 
   // Separador
   const sep = ctx.createLinearGradient(120, 0, SIZE - 120, 0)
@@ -99,7 +100,7 @@ function gerarCanvas(jogo: Jogo, palpite: { gols_casa: number; gols_fora: number
   // URL
   ctx.fillStyle = '#3f3f46'
   ctx.font = '28px Arial, sans-serif'
-  ctx.fillText('limagabri.github.io/bolao-copa', SIZE / 2, 1010)
+  ctx.fillText(APP_CONFIG.baseUrl.replace('https://', '') || 'bolao-copa', SIZE / 2, 1010)
 
   return canvas
 }
@@ -122,8 +123,8 @@ export function CompartilharCard({ jogo, palpite }: Props) {
       `⚽ Meu palpite para *${jogo.time_casa} × ${jogo.time_fora}*:`,
       `🎯 *${palpite.gols_casa} × ${palpite.gols_fora}*`,
       '',
-      `Participe do BolãoCopa 2026!`,
-      `https://limagabri.github.io/bolao-copa`,
+      `Participe do ${APP_FULL_NAME}!`,
+      APP_CONFIG.baseUrl || window.location.origin,
     ].join('\n')
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank')
   }

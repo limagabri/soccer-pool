@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import { APP_CONFIG, APP_FULL_NAME } from '../config/app'
 import type { Jogo } from '../types'
 
 export type NotifStatus = 'loading' | 'unsupported' | 'denied' | 'off' | 'on'
 
-const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY ?? ''
+const VAPID_PUBLIC_KEY = APP_CONFIG.vapidPublicKey
 
 function urlBase64ToUint8Array(base64String: string): ArrayBuffer {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -90,7 +91,7 @@ export function useNotificacoes() {
 
     agendados.current.add(jogo.id)
     setTimeout(() => {
-      new Notification('⚽ BolãoCopa 2026', {
+      new Notification(`⚽ ${APP_FULL_NAME}`, {
         body: `${jogo.emoji_casa} ${jogo.time_casa} × ${jogo.time_fora} ${jogo.emoji_fora} começa em 1 hora! Faça seu palpite.`,
         icon: `${import.meta.env.BASE_URL}pwa-icon.svg`,
         badge: `${import.meta.env.BASE_URL}pwa-icon.svg`,

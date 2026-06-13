@@ -1,0 +1,137 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "predictions": "Pronósticos",
+    "groups": "Grupos",
+    "statistics": "Estadísticas",
+    "ranking": "Ranking",
+    "simulator": "Simulador",
+    "admin": "Panel Admin",
+    "profile": "Mi perfil",
+    "login": "Entrar",
+    "logout": "Salir"
+  },
+  "landing": {
+    "tagline": "El pronóstico más emocionante del Mundial",
+    "subtitle": "Pronostica marcadores, acumula puntos y demuestra quién sabe más de fútbol.",
+    "cta": "Quiero participar",
+    "howItWorks": "¿Cómo funciona?",
+    "inviteOnly": "Solo por invitación",
+    "features": {
+      "predict": { "title": "Pronosticar", "desc": "Da tus pronósticos del marcador para cada partido antes del pitido inicial." },
+      "points":  { "title": "Puntos",      "desc": "¿Marcador exacto? Puntuación máxima. ¿Acertaste el ganador? También suma." },
+      "ranking": { "title": "Ranking",     "desc": "Sigue la clasificación en tiempo real y demuestra que entiendes de fútbol." }
+    },
+    "footer": "hecho con ⚽ y ☕"
+  },
+  "auth": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "username": "Nombre de usuario",
+    "login": "Entrar",
+    "register": "Crear cuenta",
+    "forgotPassword": "Olvidé mi contraseña",
+    "backToLogin": "Volver al inicio",
+    "invalidCredentials": "Correo o contraseña inválidos.",
+    "resetEmailSent": "Te enviamos un enlace a tu correo.",
+    "welcomeBack": "¡Bienvenido de nuevo!",
+    "signInSubtitle": "Entra para seguir tus pronósticos",
+    "inviteRequired": "es un juego cerrado. Necesitas una invitación del organizador.",
+    "invited": "Fuiste invitado a"
+  },
+  "predictions": {
+    "title": "Mis Pronósticos",
+    "subtitle": "Marcador exacto vale {{exact}} pts, acertar el ganador o empate vale {{winner}} pts.",
+    "save": "Guardar pronóstico",
+    "update": "Actualizar pronóstico",
+    "saved": "¡Pronóstico guardado! Buena suerte. 🍀",
+    "error": "Error al guardar. Inténtalo de nuevo.",
+    "invalidScore": "Ingresa un marcador válido.",
+    "inProgress": "En curso",
+    "awaiting": "esperando resultado",
+    "noPrediction": "No pronosticaste este partido.",
+    "noneYet": "No hay partidos aquí todavía.",
+    "exactScore": "🎯 Marcador exacto",
+    "correctWinner": "✓ Ganador correcto",
+    "wrong": "✗ Incorrecto",
+    "filters": {
+      "all": "Todos",
+      "round1": "Jornada 1",
+      "round2": "Jornada 2",
+      "round3": "Jornada 3",
+      "mine": "Mis pronósticos"
+    }
+  },
+  "ranking": {
+    "title": "Ranking",
+    "subtitle": "¿Quién entiende de fútbol? Se actualiza en tiempo real.",
+    "you": "tú",
+    "noPredictions": "Aún no hay pronósticos registrados.",
+    "loginToSee": "Inicia sesión para ver el ranking completo.",
+    "evolution": "Evolución del Ranking",
+    "noHistory": "Historial insuficiente — el gráfico aparece tras 2 días de registros.",
+    "cols": {
+      "pos": "#",
+      "player": "Participante",
+      "predictions": "Pronósticos",
+      "exact": "🎯 Exactos",
+      "winner": "✓ Ganador",
+      "pts": "Pts",
+      "bonus": "⭐ Bono",
+      "total": "Total"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "editName": "Editar nombre",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "nameMinLength": "El nombre necesita al menos 3 caracteres.",
+    "nameSaved": "¡Nombre actualizado!",
+    "nameSaveError": "No se pudo guardar el nombre.",
+    "lastPredictions": "Últimos pronósticos",
+    "noPredictions": "Aún no has hecho ningún pronóstico.",
+    "stats": {
+      "points": "Puntos",
+      "predictions": "Pronósticos",
+      "exactScores": "Marcadores exactos"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "subtitle": "Recibe aviso 1h antes de cada partido",
+      "on": "Activadas",
+      "off": "Desactivadas",
+      "denied": "Bloqueadas por el navegador",
+      "unsupported": "No compatible con este dispositivo",
+      "loading": "Verificando…"
+    }
+  },
+  "statistics": { "title": "Estadísticas", "tabs": { "scorers": "Goleadores", "teams": "Por selección", "picks": "Elecciones", "myPicks": "Mis elecciones" } },
+  "simulator": { "title": "Simulador" },
+  "groups": { "title": "Grupos" },
+  "regulamento": { "title": "Reglamento" },
+  "notFound": {
+    "title": "404",
+    "headline": "Ese balón salió por la línea de fondo",
+    "subtitle": "La página que buscas no existe o fue movida.",
+    "back": "Volver al inicio"
+  },
+  "common": {
+    "loading": "Cargando…",
+    "error": "Error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "awaiting": "Esperando",
+    "match": "Partido",
+    "group": "Grupo",
+    "round": "Jornada",
+    "home": "Local",
+    "away": "Visitante",
+    "pts": "pts"
+  },
+  "pwa": {
+    "install": "Instala {{name}} en tu celular",
+    "installBtn": "Instalar"
+  }
+}

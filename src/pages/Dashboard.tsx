@@ -1,13 +1,45 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarClock, Crosshair, Medal, Star } from 'lucide-react'
 import { Navbar } from '../components/Navbar'
+import { ComentaristaCard } from '../components/ComentaristaCard'
+import { StoriesViewer, type StoryData } from '../components/StoriesViewer'
+import { StoryHallVergonha } from '../components/stories/StoryHallVergonha'
+import { StoryZebraDia } from '../components/stories/StoryZebraDia'
+import { StoryVidente } from '../components/stories/StoryVidente'
+import { StorySubiuAfundou } from '../components/stories/StorySubiuAfundou'
+import { StoryCovarde } from '../components/stories/StoryCovarde'
+import { StoryTelepata } from '../components/stories/StoryTelepata'
 import { useAuth } from '../contexts/AuthContext'
 import { useJogos } from '../hooks/useJogos'
 import { supabase } from '../lib/supabase'
 import { agregarEstatisticas, type PalpiteResumo } from '../lib/pontuacao'
 import { calcularPontos, formatarData } from '../lib/utils'
+
+interface ComentarioIA { id: string; conteudo: string; publicado_em: string | null }
+
+function MiniStory({ story, onClick }: { story: StoryData; onClick: () => void }) {
+  const dados = story.dados ?? {}
+  const props = { titulo: story.titulo, conteudo: story.conteudo_ia, dados }
+  return (
+    <button onClick={onClick} className="group relative overflow-hidden rounded-xl transition hover:scale-[1.03]">
+      <div className="scale-[0.38] origin-top-left" style={{ width: 400, height: 400 }}>
+        {story.template === 'hall_vergonha'      && <StoryHallVergonha {...props} />}
+        {story.template === 'zebra_dia'          && <StoryZebraDia {...props} />}
+        {story.template === 'vidente_chutometro' && <StoryVidente {...props} />}
+        {story.template === 'subiu_afundou'      && <StorySubiuAfundou {...props} />}
+        {story.template === 'palpite_covarde'    && <StoryCovarde {...props} />}
+        {story.template === 'telepata_rodada'    && <StoryTelepata {...props} />}
+      </div>
+      <div style={{ height: 152, width: 152 }} className="pointer-events-none" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/60 to-transparent" />
+      <span className="absolute bottom-1.5 left-1.5 right-1.5 truncate text-[10px] font-semibold text-white drop-shadow">
+        {story.titulo}
+      </span>
+    </button>
+  )
+}
 
 function formatarRestante(ms: number): string {
   if (ms <= 0) return 'Em andamento'
@@ -26,6 +58,9 @@ export function Dashboard() {
   const { jogos } = useJogos()
   const [todosPalpites, setTodosPalpites] = useState<PalpiteResumo[]>([])
   const [agora, setAgora] = useState(() => Date.now())
+  const [ultimoComentario, setUltimoComentario] = useState<ComentarioIA | null>(null)
+  const [stories, setStories] = useState<StoryData[]>([])
+  const [viewerIdx, setViewerIdx] = useState<number | null>(null)
 
   const username =
     profile?.username ??
@@ -43,6 +78,25 @@ export function Dashboard() {
       .from('palpites')
       .select('user_id, jogo_id, gols_casa, gols_fora')
       .then(({ data }) => setTodosPalpites((data as PalpiteResumo[]) ?? []))
+  }, [])
+
+  useEffect(() => {
+    supabase
+      .from('comentarios_ia')
+      .select('id, conteudo, publicado_em')
+      .eq('publicado', true)
+      .order('publicado_em', { ascending: false })
+      .limit(1)
+      .single()
+      .then(({ data }) => { if (data) setUltimoComentario(data as ComentarioIA) })
+
+    supabase
+      .from('stories')
+      .select('id, template, titulo, conteudo_ia, dados, publicado_em')
+      .eq('publicado', true)
+      .order('publicado_em', { ascending: false })
+      .limit(3)
+      .then(({ data }) => setStories((data as StoryData[]) ?? []))
   }, [])
 
   const stats = useMemo(() => {
@@ -242,7 +296,65 @@ export function Dashboard() {
             )}
           </motion.div>
         </div>
+
+        {/* Seu Zé — último comentário */}
+        {ultimoComentario && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-10"
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-display text-2xl tracking-wide">
+                Seu Zé <span className="text-brasil-green">fala</span>
+              </h2>
+              <Link to="/comentarios" className="text-xs font-semibold text-brasil-green hover:underline">
+                Ver todos →
+              </Link>
+            </div>
+            <ComentaristaCard
+              conteudo={ultimoComentario.conteudo}
+              publicado_em={ultimoComentario.publicado_em}
+              compact
+            />
+          </motion.section>
+        )}
+
+        {/* Stories do dia */}
+        {stories.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-10"
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-display text-2xl tracking-wide">
+                Stories do <span className="text-brasil-yellow">Dia</span>
+              </h2>
+              <Link to="/stories" className="text-xs font-semibold text-brasil-yellow hover:underline">
+                Ver todos →
+              </Link>
+            </div>
+            <div className="flex gap-3">
+              {stories.map((s, i) => (
+                <MiniStory key={s.id} story={s} onClick={() => setViewerIdx(i)} />
+              ))}
+            </div>
+          </motion.section>
+        )}
       </main>
+
+      <AnimatePresence>
+        {viewerIdx !== null && stories.length > 0 && (
+          <StoriesViewer
+            stories={stories}
+            initialIndex={viewerIdx}
+            onClose={() => setViewerIdx(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }
