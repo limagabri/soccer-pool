@@ -126,7 +126,7 @@ Faça um comentário de boteco engraçado e irônico sobre esses resultados. Men
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user',   content: userPrompt },
       ],
-      max_completion_tokens: 500,
+      max_completion_tokens: 2000,
     }),
   })
 

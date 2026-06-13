@@ -163,7 +163,7 @@ Deno.serve(async (req) => {
         { role: 'system', content: SYSTEM },
         { role: 'user',   content: userPrompt },
       ],
-      max_completion_tokens: 200,
+      max_completion_tokens: 1200,
     }),
   })
 
@@ -175,7 +175,16 @@ Deno.serve(async (req) => {
   }
 
   const aiData = await aiRes.json()
-  const conteudo_ia = aiData.choices?.[0]?.message?.content ?? ''
+  const choice = aiData.choices?.[0]
+  console.log('OpenAI finish_reason:', choice?.finish_reason, '| reasoning_tokens:', aiData.usage?.completion_tokens_details?.reasoning_tokens)
+
+  const conteudo_ia: string = choice?.message?.content ?? ''
+  if (!conteudo_ia) {
+    const detail = `finish_reason=${choice?.finish_reason}, reasoning=${aiData.usage?.completion_tokens_details?.reasoning_tokens}`
+    return new Response(JSON.stringify({ error: 'OpenAI retornou conteúdo vazio', detail }), {
+      status: 502, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    })
+  }
 
   const { data: saved, error } = await supabase
     .from('stories')
