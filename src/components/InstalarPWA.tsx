@@ -51,14 +51,13 @@ export function InstalarPWA() {
       return
     }
 
-    // Android/desktop: o evento pode ter sido capturado pelo index.html antes
-    // do React montar. Verificamos imediatamente e também escutamos futuros.
+    // Android/desktop: mostramos o banner mesmo sem o prompt nativo. O Chrome
+    // nem sempre dispara `beforeinstallprompt` (heurística de engajamento,
+    // mini-infobar já dispensada, etc.); nesses casos o botão cai nas
+    // instruções manuais. (Obs.: em aba anônima o Chrome bloqueia instalar PWA.)
+    setVisivel(true)
     const mostrar = () => {
-      const capturado = window.__pwaInstallPrompt
-      if (capturado) {
-        setPrompt(capturado)
-        setVisivel(true)
-      }
+      if (window.__pwaInstallPrompt) setPrompt(window.__pwaInstallPrompt)
     }
     mostrar()
     window.addEventListener('pwa-install-available', mostrar)
