@@ -1,0 +1,160 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "predictions": "Predictions",
+    "groups": "Groups",
+    "statistics": "Statistics",
+    "ranking": "Ranking",
+    "simulator": "Simulator",
+    "rules": "Rules",
+    "admin": "Admin Panel",
+    "profile": "My profile",
+    "login": "Sign in",
+    "logout": "Sign out"
+  },
+  "landing": {
+    "tagline": "The biggest competition on the planet",
+    "subtitle": "Who's going to be champion? Make your predictions.",
+    "cta": "Join the Pool",
+    "ctaDesc": "Exclusive invite-only access",
+    "howItWorks": "How it works",
+    "inviteOnly": "Invite only",
+    "features": {
+      "predict": { "title": "Predict", "desc": "Submit your score predictions for every group stage match before kick-off." },
+      "points":  { "title": "Points",  "desc": "Exact score? Maximum points. Correct winner or draw? Still earns points." },
+      "ranking": { "title": "Ranking", "desc": "Follow the standings in real time and prove who really knows football." }
+    },
+    "footer": "made with ⚽ and ☕"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "login": "Sign in",
+    "register": "Create account",
+    "forgotPassword": "Forgot password",
+    "backToLogin": "Back to login",
+    "invalidCredentials": "Invalid email or password.",
+    "resetEmailSent": "We sent a reset link to your email.",
+    "welcomeBack": "Welcome back!",
+    "signInSubtitle": "Sign in to track your predictions",
+    "inviteRequired": "is an invite-only game. You need an invitation link from the organiser.",
+    "invited": "You've been invited to"
+  },
+  "predictions": {
+    "title": "My Predictions",
+    "subtitle": "Exact score is worth {{exact}} pts, correct winner or draw is worth {{winner}} pts.",
+    "save": "Save prediction",
+    "update": "Update prediction",
+    "saved": "Prediction saved! Good luck. 🍀",
+    "error": "Error saving prediction. Try again.",
+    "invalidScore": "Please enter a valid score.",
+    "inProgress": "In progress",
+    "awaiting": "awaiting result",
+    "noPrediction": "You didn't predict this match.",
+    "noneYet": "No matches here yet.",
+    "exactScore": "🎯 Exact score",
+    "correctWinner": "✓ Correct winner",
+    "wrong": "✗ Wrong",
+    "filters": {
+      "all": "All",
+      "round1": "Round 1",
+      "round2": "Round 2",
+      "round3": "Round 3",
+      "mine": "My predictions"
+    }
+  },
+  "ranking": {
+    "title": "Ranking",
+    "subtitle": "Who knows football best so far? Updates in real time.",
+    "you": "you",
+    "noPredictions": "No predictions recorded yet.",
+    "loginToSee": "Sign in to see the full ranking.",
+    "evolution": "Ranking History",
+    "noHistory": "Insufficient history — chart appears after 2 days of records.",
+    "cols": {
+      "pos": "#",
+      "player": "Player",
+      "predictions": "Predictions",
+      "exact": "🎯 Exact",
+      "winner": "✓ Winner",
+      "pts": "Pts",
+      "bonus": "⭐ Bonus",
+      "total": "Total"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "editName": "Edit name",
+    "save": "Save",
+    "cancel": "Cancel",
+    "nameMinLength": "Name must be at least 3 characters.",
+    "nameSaved": "Name updated!",
+    "nameSaveError": "Could not save name.",
+    "lastPredictions": "Latest predictions",
+    "noPredictions": "You haven't made any predictions yet.",
+    "stats": {
+      "points": "Points",
+      "predictions": "Predictions",
+      "exactScores": "Exact scores"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Get notified 1h before each match",
+      "on": "Enabled",
+      "off": "Disabled",
+      "denied": "Blocked by browser — enable in settings",
+      "unsupported": "Not supported on this device",
+      "loading": "Checking…"
+    }
+  },
+  "statistics": {
+    "title": "Statistics",
+    "tabs": {
+      "scorers": "Top Scorers",
+      "teams": "By Team",
+      "picks": "Participants' Picks",
+      "myPicks": "My Picks"
+    }
+  },
+  "dashboard": {
+    "subtitle": "The Cup is on. Check your stats and don't miss the next match. ⚽",
+    "myPoints": "My Points",
+    "myPosition": "My Position",
+    "nextMatch": "Next Match",
+    "bestPick": "Best Pick",
+    "makePicks": "Make predictions →",
+    "viewRanking": "View ranking →",
+    "noPending": "No upcoming matches.",
+    "noExact": "No exact score yet. Next one might be it!",
+    "inOf": "in {{done}}/{{total}} predictions",
+    "outOf": "out of {{count}} participant{{s}}"
+  },
+  "simulator": { "title": "Simulator" },
+  "groups": { "title": "Groups" },
+  "regulamento": { "title": "Rules" },
+  "notFound": {
+    "title": "404",
+    "headline": "That ball went out of play",
+    "subtitle": "The page you're looking for doesn't exist or has moved.",
+    "back": "Back to home"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "awaiting": "Awaiting",
+    "match": "Match",
+    "group": "Group",
+    "round": "Round",
+    "home": "Home",
+    "away": "Away",
+    "pts": "pts"
+  },
+  "pwa": {
+    "install": "Install {{name}} on your phone",
+    "installBtn": "Install"
+  }
+}

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/pwa-icon-192.png" />
+
+    <!-- PWA -->
+    <meta name="theme-color" content="#00c853" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="BolãoCopa 2026" />
+
+    <!-- SEO -->
+    <title>BolãoCopa 2026 — Bolão da Copa do Mundo</title>
+    <meta name="description" content="Participe do bolão da Copa do Mundo 2026. Dê seus palpites, acumule pontos e dispute com amigos quem entende mais de futebol." />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="%VITE_BASE_URL%/" />
+    <meta property="og:title" content="BolãoCopa 2026 — Bolão da Copa do Mundo" />
+    <meta property="og:description" content="Participe do bolão da Copa do Mundo 2026. Dê seus palpites, acumule pontos e dispute com amigos." />
+    <meta property="og:image" content="%VITE_BASE_URL%/pwa-icon.svg" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="BolãoCopa 2026" />
+    <meta name="twitter:description" content="Bolão da Copa do Mundo 2026 — palpites, pontos e ranking em tempo real." />
+    <meta name="twitter:image" content="%VITE_BASE_URL%/pwa-icon.svg" />
+    <script>
+      // Capture the PWA install prompt as early as possible. Chrome fires
+      // `beforeinstallprompt` very early — often before React mounts — and it
+      // never re-fires, so the in-app banner would miss it. We stash it on
+      // window and broadcast a custom event the React component listens for.
+      window.__pwaInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__pwaInstallPrompt = e;
+        window.dispatchEvent(new Event('pwa-install-available'));
+      });
+      window.addEventListener('appinstalled', function () {
+        window.__pwaInstallPrompt = null;
+        window.dispatchEvent(new Event('pwa-installed'));
+      });
+    </script>
+    <script>
+      // Restore path after GitHub Pages 404 redirect (see public/404.html).
+      // Converts /?/auth/callback&code=abc back to /auth/callback?code=abc
+      // and preserves the URL hash (needed for Supabase implicit-flow tokens).
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(
+            null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
