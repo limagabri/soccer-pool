@@ -20,12 +20,12 @@
 - 📈 **Ranking evolution chart** — track position changes over time
 - 🥅 **Auto top-scorer chart** — goalscorers pulled automatically from the live results feed
 - 🌟 **Special picks** — predict champion, runner-up, third, top scorer, and best player
-- 💬 **Real-time chat** — per-game comment section with live updates
+- 💬 **Real-time chat** — per-game comments with quick reactions and `@mentions`
+- 🔔 **Push notifications** — Web Push (aes128gcm via `web-push`); get pinged when someone `@mentions` you
 - 🤖 **AI comic commentary** — GPT-powered "Seu Zé" reacts to every goal
 - 📸 **Stories** — AI-generated tournament recap stories, Instagram-style (hold to pause)
 - 🎉 **Goal animation** — confetti + sound when a goal drops in real time
 - 📤 **Share card** — generate a PNG of your predictions for WhatsApp
-- 🔔 **Push notifications** — Web Push reminders before each match
 - 🛡️ **Admin panel** — manage matches, users, invites, special results and push
 - 📱 **PWA** — installable on iOS and Android, offline-capable, auto-updates on new deploys
 - 🌙 **Dark / light theme** — system default with manual override
@@ -76,7 +76,7 @@ src/
 
 supabase/
 ├── functions/      Edge Functions (see table below)
-└── migrations/     000_seed … 014_profiles_pontos_especiais
+└── migrations/     000_seed … 015_fix_missing_tables
 
 scripts/
 ├── setup.ts        Interactive project setup wizard
@@ -125,7 +125,7 @@ npm run setup           # runs migrations + seed automatically
 ### Manual
 
 ```bash
-npm run migrate            # schema only (001–014)
+npm run migrate            # schema only (001–015)
 npm run migrate -- --seed  # schema + 72 World Cup 2026 matches
 ```
 
