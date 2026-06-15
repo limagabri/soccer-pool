@@ -107,7 +107,7 @@ export function InstalarPWA() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 80, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2"
+          className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-sm"
         >
           <div className="glass px-4 py-3 shadow-lg">
             {(modoIOS || modoManual) ? (
