@@ -25,7 +25,7 @@ function MiniStory({ story, onClick }: { story: StoryData; onClick: () => void }
   const props = { titulo: story.titulo, conteudo: story.conteudo_ia, dados }
   return (
     <button onClick={onClick} className="group relative overflow-hidden rounded-xl transition hover:scale-[1.03]">
-      <div className="scale-[0.38] origin-top-left" style={{ width: 400, height: 400 }}>
+      <div className="scale-[0.38] origin-top-left" style={{ width: 400, height: 540 }}>
         {story.template === 'hall_vergonha'      && <StoryHallVergonha {...props} />}
         {story.template === 'zebra_dia'          && <StoryZebraDia {...props} />}
         {story.template === 'vidente_chutometro' && <StoryVidente {...props} />}
@@ -33,7 +33,7 @@ function MiniStory({ story, onClick }: { story: StoryData; onClick: () => void }
         {story.template === 'palpite_covarde'    && <StoryCovarde {...props} />}
         {story.template === 'telepata_rodada'    && <StoryTelepata {...props} />}
       </div>
-      <div style={{ height: 152, width: 152 }} className="pointer-events-none" />
+      <div style={{ height: 205, width: 152 }} className="pointer-events-none" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/60 to-transparent" />
       <span className="absolute bottom-1.5 left-1.5 right-1.5 truncate text-[10px] font-semibold text-white drop-shadow">
         {story.titulo}
@@ -97,7 +97,6 @@ export function Dashboard() {
       .select('id, template, titulo, conteudo_ia, dados, publicado_em')
       .eq('publicado', true)
       .order('publicado_em', { ascending: false })
-      .limit(3)
       .then(({ data }) => setStories((data as StoryData[]) ?? []))
   }, [])
 
@@ -348,7 +347,7 @@ export function Dashboard() {
           </div>
           {stories.length > 0 ? (
             <div className="flex gap-3">
-              {stories.map((s, i) => (
+              {stories.slice(0, 3).map((s, i) => (
                 <MiniStory key={s.id} story={s} onClick={() => setViewerIdx(i)} />
               ))}
             </div>

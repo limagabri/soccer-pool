@@ -50,12 +50,13 @@ export function StoriesViewer({ stories, initialIndex = 0, onClose }: Props) {
   const [idx, setIdx] = useState(initialIndex)
   const cardRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef(0)
-  const progressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [progressKey, setProgressKey] = useState(0)
+  const [paused, setPaused] = useState(false)
 
   const story = stories[idx]
 
   const next = useCallback(() => {
+    setPaused(false)
     if (idx < stories.length - 1) {
       setIdx(i => i + 1)
       setProgressKey(k => k + 1)
@@ -65,18 +66,12 @@ export function StoriesViewer({ stories, initialIndex = 0, onClose }: Props) {
   }, [idx, stories.length, onClose])
 
   const prev = useCallback(() => {
+    setPaused(false)
     if (idx > 0) {
       setIdx(i => i - 1)
       setProgressKey(k => k + 1)
     }
   }, [idx])
-
-  // Auto-advance after 8s
-  useEffect(() => {
-    if (progressTimer.current) clearTimeout(progressTimer.current)
-    progressTimer.current = setTimeout(next, 8000)
-    return () => { if (progressTimer.current) clearTimeout(progressTimer.current) }
-  }, [idx, next])
 
   // Keyboard navigation
   useEffect(() => {
@@ -114,17 +109,23 @@ export function StoriesViewer({ stories, initialIndex = 0, onClose }: Props) {
       onClick={onClose}
     >
       <div className="relative w-full max-w-sm px-4" onClick={e => e.stopPropagation()}>
-        {/* Progress bars */}
+        {/* Progress bars — CSS animation para permitir pausar (segurar) */}
         <div className="mb-3 flex gap-1">
           {stories.map((_, i) => (
             <div key={i} className="h-0.5 flex-1 overflow-hidden rounded-full bg-white/20">
-              <motion.div
-                key={i === idx ? `active-${progressKey}` : `done-${i}`}
-                className="h-full bg-white"
-                initial={{ width: i < idx ? '100%' : '0%' }}
-                animate={{ width: i < idx ? '100%' : i === idx ? '100%' : '0%' }}
-                transition={i === idx ? { duration: 8, ease: 'linear' } : { duration: 0 }}
-              />
+              {i < idx ? (
+                <div className="h-full w-full bg-white" />
+              ) : i === idx ? (
+                <div
+                  key={`active-${idx}-${progressKey}`}
+                  className="h-full bg-white"
+                  style={{
+                    animation: 'storyProgress 8s linear forwards',
+                    animationPlayState: paused ? 'paused' : 'running',
+                  }}
+                  onAnimationEnd={next}
+                />
+              ) : null}
             </div>
           ))}
         </div>
@@ -169,7 +170,11 @@ export function StoriesViewer({ stories, initialIndex = 0, onClose }: Props) {
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 0.25 }}
             ref={cardRef}
-            className="mx-auto w-fit"
+            className="mx-auto w-fit cursor-pointer select-none"
+            onPointerDown={() => setPaused(true)}
+            onPointerUp={() => setPaused(false)}
+            onPointerLeave={() => setPaused(false)}
+            onPointerCancel={() => setPaused(false)}
             onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
             onTouchEnd={e => {
               const dx = e.changedTouches[0].clientX - touchStartX.current
@@ -190,7 +195,10 @@ export function StoriesViewer({ stories, initialIndex = 0, onClose }: Props) {
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
-          <span className="text-xs text-zinc-400">{idx + 1} / {stories.length}</span>
+          <div className="flex flex-col items-center leading-tight">
+            <span className="text-xs text-zinc-400">{idx + 1} / {stories.length}</span>
+            <span className="text-[10px] text-zinc-600">segure para pausar</span>
+          </div>
           <button
             onClick={next}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"

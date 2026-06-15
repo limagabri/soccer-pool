@@ -11,7 +11,7 @@ export function StoryVidente({ titulo, conteudo, dados }: Props) {
   const pior   = dados?.pior   as { nome: string; erros: number }   | undefined
 
   return (
-    <div className="relative flex h-[400px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-purple-950 via-indigo-900 to-zinc-900 p-6 text-center">
+    <div className="relative flex h-[540px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-purple-950 via-indigo-900 to-zinc-900 p-6 text-center">
       {/* Stars */}
       {['10%,15%', '85%,20%', '25%,75%', '70%,80%', '50%,40%', '15%,55%'].map((pos, i) => (
         <div key={i}
@@ -40,7 +40,7 @@ export function StoryVidente({ titulo, conteudo, dados }: Props) {
           )}
         </div>
 
-        <div className="mt-2 w-full overflow-y-auto rounded-xl border border-purple-700/30 bg-black/30 p-4 max-h-24">
+        <div className="mt-2 w-full rounded-xl border border-purple-700/30 bg-black/30 p-4">
           <StoryConteudo conteudo={conteudo} className="text-zinc-300" />
         </div>
         <p className="mt-2 text-xs tracking-widest text-purple-700 uppercase">BolãoCopa 2026</p>

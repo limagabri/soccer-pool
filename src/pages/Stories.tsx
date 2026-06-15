@@ -21,7 +21,7 @@ function MiniCard({ story, onClick }: { story: StoryData; onClick: () => void })
       className="group relative overflow-hidden rounded-xl transition hover:scale-[1.02] hover:shadow-xl"
       aria-label={`Abrir story: ${story.titulo}`}
     >
-      <div className="scale-[0.42] origin-top-left" style={{ width: 400, height: 400 }}>
+      <div className="scale-[0.42] origin-top-left" style={{ width: 400, height: 540 }}>
         {story.template === 'hall_vergonha'      && <StoryHallVergonha {...props} />}
         {story.template === 'zebra_dia'          && <StoryZebraDia {...props} />}
         {story.template === 'vidente_chutometro' && <StoryVidente {...props} />}
@@ -29,7 +29,7 @@ function MiniCard({ story, onClick }: { story: StoryData; onClick: () => void })
         {story.template === 'palpite_covarde'    && <StoryCovarde {...props} />}
         {story.template === 'telepata_rodada'    && <StoryTelepata {...props} />}
       </div>
-      <div style={{ height: 168, width: 168 }} className="pointer-events-none" />
+      <div style={{ height: 227, width: 168 }} className="pointer-events-none" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/60 to-transparent" />
       <span className="absolute bottom-2 left-2 right-2 truncate text-xs font-semibold text-white drop-shadow">
         {story.titulo}

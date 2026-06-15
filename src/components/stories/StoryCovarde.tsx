@@ -10,7 +10,7 @@ export function StoryCovarde({ titulo, conteudo, dados }: Props) {
   const covarde = dados?.covarde as { nome: string; count: number } | undefined
 
   return (
-    <div className="relative flex h-[400px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-700 via-yellow-600 to-amber-800 p-6 text-center">
+    <div className="relative flex h-[540px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-700 via-yellow-600 to-amber-800 p-6 text-center">
       <div className="pointer-events-none absolute inset-0 opacity-20"
            style={{ backgroundImage: 'radial-gradient(circle at 50% 30%, #fbbf24 0%, transparent 60%)' }} />
 
@@ -27,7 +27,7 @@ export function StoryCovarde({ titulo, conteudo, dados }: Props) {
           </>
         )}
 
-        <div className="mt-3 w-full overflow-y-auto rounded-xl border border-yellow-900/40 bg-black/25 p-4 max-h-28">
+        <div className="mt-3 w-full rounded-xl border border-yellow-900/40 bg-black/25 p-4">
           <StoryConteudo conteudo={conteudo} className="text-yellow-50" />
         </div>
         <p className="mt-2 text-xs tracking-widest text-yellow-900 uppercase">BolãoCopa 2026</p>

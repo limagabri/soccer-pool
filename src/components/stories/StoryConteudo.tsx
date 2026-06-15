@@ -13,8 +13,9 @@ function renderMd(text: string): ReactNode[] {
 }
 
 function sizeClass(len: number): string {
-  if (len < 200) return 'text-sm leading-relaxed'
-  if (len < 380) return 'text-xs leading-relaxed'
+  if (len < 220) return 'text-base leading-relaxed'
+  if (len < 420) return 'text-sm leading-relaxed'
+  if (len < 620) return 'text-xs leading-snug'
   return 'text-[11px] leading-snug'
 }
 

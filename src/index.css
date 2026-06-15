@@ -105,3 +105,10 @@
     @apply text-gray-900 dark:text-zinc-100;
   }
 }
+
+/* Barra de progresso dos stories — usa CSS animation para poder pausar
+   (animation-play-state) ao segurar o story, igual ao Instagram. */
+@keyframes storyProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}

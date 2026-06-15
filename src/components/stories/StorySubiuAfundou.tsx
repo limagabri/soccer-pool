@@ -11,7 +11,7 @@ export function StorySubiuAfundou({ titulo, conteudo, dados }: Props) {
   const afundou = dados?.afundou as { nome: string; posicoes: number } | undefined
 
   return (
-    <div className="relative flex h-[400px] w-[400px] flex-col overflow-hidden rounded-2xl">
+    <div className="relative flex h-[540px] w-[400px] flex-col overflow-hidden rounded-2xl">
       {/* Split background */}
       <div className="flex h-[45%]">
         <div className="w-1/2 bg-gradient-to-br from-green-800 to-green-950" />
@@ -46,7 +46,7 @@ export function StorySubiuAfundou({ titulo, conteudo, dados }: Props) {
           </div>
         </div>
 
-        <div className="mt-4 w-full overflow-y-auto rounded-xl border border-white/10 bg-black/40 p-4 max-h-24">
+        <div className="mt-4 w-full rounded-xl border border-white/10 bg-black/40 p-4">
           <StoryConteudo conteudo={conteudo} className="text-zinc-300" />
         </div>
         <p className="mt-3 text-xs tracking-widest text-zinc-600 uppercase">BolãoCopa 2026</p>

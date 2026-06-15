@@ -11,7 +11,7 @@ export function StoryZebraDia({ titulo, conteudo, dados }: Props) {
   const detalhes = (dados?.detalhes as string) ?? ''
 
   return (
-    <div className="relative flex h-[400px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl p-6 text-center"
+    <div className="relative flex h-[540px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl p-6 text-center"
          style={{
            background: 'repeating-linear-gradient(45deg, #000 0px, #000 20px, #fff 20px, #fff 40px)',
          }}
@@ -28,7 +28,7 @@ export function StoryZebraDia({ titulo, conteudo, dados }: Props) {
         {detalhes && (
           <p className="text-sm text-zinc-300">{detalhes}</p>
         )}
-        <div className="mt-3 w-full overflow-y-auto rounded-xl border border-white/20 bg-black/50 p-4 max-h-28">
+        <div className="mt-3 w-full rounded-xl border border-white/20 bg-black/50 p-4">
           <StoryConteudo conteudo={conteudo} className="text-zinc-200" />
         </div>
         <p className="mt-3 text-xs tracking-widest text-zinc-500 uppercase">BolãoCopa 2026</p>

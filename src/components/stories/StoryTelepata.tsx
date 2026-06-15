@@ -10,7 +10,7 @@ export function StoryTelepata({ titulo, conteudo, dados }: Props) {
   const telepata = dados?.telepata as { nome: string; acertos: number } | undefined
 
   return (
-    <div className="relative flex h-[400px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500 via-amber-400 to-yellow-600 p-6 text-center">
+    <div className="relative flex h-[540px] w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500 via-amber-400 to-yellow-600 p-6 text-center">
       {/* Sparkle dots */}
       {['12%,18%', '88%,12%', '5%,70%', '92%,75%', '50%,10%'].map((pos, i) => (
         <div key={i}
@@ -35,7 +35,7 @@ export function StoryTelepata({ titulo, conteudo, dados }: Props) {
           </>
         )}
 
-        <div className="mt-3 w-full overflow-y-auto rounded-xl border border-yellow-700/30 bg-black/20 p-4 max-h-28">
+        <div className="mt-3 w-full rounded-xl border border-yellow-700/30 bg-black/20 p-4">
           <StoryConteudo conteudo={conteudo} className="text-yellow-900" />
         </div>
         <p className="mt-2 text-xs tracking-widest text-yellow-800 uppercase">BolãoCopa 2026</p>
