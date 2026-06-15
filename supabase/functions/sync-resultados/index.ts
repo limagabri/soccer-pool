@@ -211,6 +211,7 @@ Deno.serve(async (req) => {
 
   let updated = 0
   let eventosSync = 0
+  let datasSync = 0
   const errors: string[] = []
   const seen = new Set<string>()
 
@@ -219,37 +220,51 @@ Deno.serve(async (req) => {
     seen.add(event.id)
 
     const comp = event.competitions?.[0]
-    if (!comp?.status.type.completed) continue
+    if (!comp) continue
 
     const home = comp.competitors.find((c) => c.homeAway === 'home')
     const away = comp.competitors.find((c) => c.homeAway === 'away')
     if (!home || !away) continue
 
-    const scoreHome = parseInt(home.score, 10)
-    const scoreAway = parseInt(away.score, 10)
-    if (isNaN(scoreHome) || isNaN(scoreAway)) continue
-
     const timeCasa = toPT(home.team.displayName)
     const timeFora = toPT(away.team.displayName)
-    const dataDia  = event.date.slice(0, 10) // "YYYY-MM-DD"
 
+    // Casa pelo confronto (sem filtrar por data) para que remarcações sejam
+    // tratadas: o horário no banco é corrigido a partir da ESPN mesmo antes de
+    // o jogo acontecer.
     const { data: jogos } = await supabase
       .from('jogos')
-      .select('id, encerrado, gols_casa, gols_fora')
+      .select('id, encerrado, gols_casa, gols_fora, data_jogo')
       .eq('time_casa', timeCasa)
       .eq('time_fora', timeFora)
-      .gte('data_jogo', `${dataDia}T00:00:00`)
-      .lt('data_jogo',  `${dataDia}T23:59:59`)
       .limit(1)
 
     if (!jogos?.length) {
-      errors.push(`Not found: ${timeCasa} x ${timeFora} on ${dataDia}`)
+      errors.push(`Not found: ${timeCasa} x ${timeFora}`)
       continue
     }
 
     const jogo = jogos[0]
 
-    // 1) Update the score when it changed (or the game just finished).
+    // 1) Mantém a data/hora de início em dia com a ESPN (trata remarcações),
+    //    inclusive para jogos ainda não realizados.
+    if (event.date && new Date(event.date).getTime() !== new Date(jogo.data_jogo).getTime()) {
+      const { error } = await supabase
+        .from('jogos')
+        .update({ data_jogo: event.date })
+        .eq('id', jogo.id)
+      if (error) errors.push(`Data update error for ${jogo.id}: ${error.message}`)
+      else datasSync++
+    }
+
+    // Placar e artilharia só quando o jogo terminou.
+    if (!comp.status.type.completed) continue
+
+    const scoreHome = parseInt(home.score, 10)
+    const scoreAway = parseInt(away.score, 10)
+    if (isNaN(scoreHome) || isNaN(scoreAway)) continue
+
+    // 2) Update the score when it changed (or the game just finished).
     const placarMudou =
       !jogo.encerrado || jogo.gols_casa !== scoreHome || jogo.gols_fora !== scoreAway
     if (placarMudou) {
@@ -264,7 +279,7 @@ Deno.serve(async (req) => {
       updated++
     }
 
-    // 2) Sync goalscorers/assists (feeds the Artilharia). Cheap-by-default:
+    // 3) Sync goalscorers/assists (feeds the Artilharia). Cheap-by-default:
     //    only hit the summary endpoint when the goals we already stored don't
     //    add up to the final score — so the cron stays light and old games get
     //    backfilled automatically.
@@ -293,7 +308,7 @@ Deno.serve(async (req) => {
   }
 
   return new Response(
-    JSON.stringify({ updated, eventosSync, checked: allEvents.length, datesToFetch, errors }),
+    JSON.stringify({ updated, eventosSync, datasSync, checked: allEvents.length, datesToFetch, errors }),
     { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
   )
 })
