@@ -6,12 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { ComentaristaCard } from '../components/ComentaristaCard'
 import { StoriesViewer, type StoryData } from '../components/StoriesViewer'
-import { StoryHallVergonha } from '../components/stories/StoryHallVergonha'
-import { StoryZebraDia } from '../components/stories/StoryZebraDia'
-import { StoryVidente } from '../components/stories/StoryVidente'
-import { StorySubiuAfundou } from '../components/stories/StorySubiuAfundou'
-import { StoryCovarde } from '../components/stories/StoryCovarde'
-import { StoryTelepata } from '../components/stories/StoryTelepata'
 import { useAuth } from '../contexts/AuthContext'
 import { useJogos } from '../hooks/useJogos'
 import { supabase } from '../lib/supabase'
@@ -19,28 +13,6 @@ import { agregarEstatisticas, type PalpiteResumo } from '../lib/pontuacao'
 import { calcularPontos, formatarData } from '../lib/utils'
 
 interface ComentarioIA { id: string; conteudo: string; publicado_em: string | null }
-
-function MiniStory({ story, onClick }: { story: StoryData; onClick: () => void }) {
-  const dados = story.dados ?? {}
-  const props = { titulo: story.titulo, conteudo: story.conteudo_ia, dados }
-  return (
-    <button onClick={onClick} className="group relative overflow-hidden rounded-xl transition hover:scale-[1.03]">
-      <div className="scale-[0.38] origin-top-left" style={{ width: 400, height: 540 }}>
-        {story.template === 'hall_vergonha'      && <StoryHallVergonha {...props} />}
-        {story.template === 'zebra_dia'          && <StoryZebraDia {...props} />}
-        {story.template === 'vidente_chutometro' && <StoryVidente {...props} />}
-        {story.template === 'subiu_afundou'      && <StorySubiuAfundou {...props} />}
-        {story.template === 'palpite_covarde'    && <StoryCovarde {...props} />}
-        {story.template === 'telepata_rodada'    && <StoryTelepata {...props} />}
-      </div>
-      <div style={{ height: 205, width: 152 }} className="pointer-events-none" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/60 to-transparent" />
-      <span className="absolute bottom-1.5 left-1.5 right-1.5 truncate text-[10px] font-semibold text-white drop-shadow">
-        {story.titulo}
-      </span>
-    </button>
-  )
-}
 
 function formatarRestante(ms: number): string {
   if (ms <= 0) return 'Em andamento'
@@ -346,11 +318,24 @@ export function Dashboard() {
             </Link>
           </div>
           {stories.length > 0 ? (
-            <div className="flex gap-3">
-              {stories.slice(0, 3).map((s, i) => (
-                <MiniStory key={s.id} story={s} onClick={() => setViewerIdx(i)} />
-              ))}
-            </div>
+            <button
+              onClick={() => setViewerIdx(0)}
+              className="flex items-center gap-4 text-left transition hover:opacity-90"
+            >
+              <span className="rounded-full bg-gradient-to-tr from-brasil-green via-brasil-yellow to-brasil-green p-[3px]">
+                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-zinc-900 text-4xl">
+                  👴🏽
+                </span>
+              </span>
+              <span>
+                <span className="block font-display text-xl tracking-wide text-zinc-100">
+                  Ver stories
+                </span>
+                <span className="block text-sm text-zinc-400">
+                  {stories.length} {stories.length === 1 ? 'card' : 'cards'} do Seu Zé · toque para abrir
+                </span>
+              </span>
+            </button>
           ) : (
             <div className="glass flex items-center gap-3 px-4 py-5">
               <span className="text-3xl opacity-40">📸</span>
