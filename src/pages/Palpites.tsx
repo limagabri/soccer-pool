@@ -13,7 +13,7 @@ import { calcularPontos, formatarData, jogoComecou } from '../lib/utils'
 import type { Jogo, Palpite } from '../types'
 
 const FILTROS = [
-  { id: 'agora', label: 'Agora' },
+  { id: 'agora', label: 'Próximos' },
   { id: 'todos', label: 'Todos' },
   { id: '1', label: 'Rodada 1' },
   { id: '2', label: 'Rodada 2' },
@@ -118,17 +118,9 @@ export function Palpites() {
     )
     if (filtro === 'meus') return cron.filter((j) => palpites[j.id])
     if (filtro === 'todos') return cron
-    if (filtro === 'agora') {
-      // Janela em torno de hoje: jogos recentes (3 dias) + próximos (5 dias).
-      const ini = Date.now() - 3 * 86_400_000
-      const fim = Date.now() + 5 * 86_400_000
-      const janela = cron.filter((j) => {
-        const t = new Date(j.data_jogo).getTime()
-        return t >= ini && t <= fim
-      })
-      // Fora do período de jogos (janela vazia) → mostra os próximos.
-      return janela.length ? janela : cron.filter((j) => !j.encerrado).slice(0, 10)
-    }
+    // "Próximos": apenas jogos que ainda não terminaram (em andamento + futuros).
+    // Para ver os já encerrados, usar Rodadas ou Todos.
+    if (filtro === 'agora') return cron.filter((j) => !j.encerrado)
     return cron.filter((j) => j.rodada === Number(filtro))
   }, [jogos, filtro, palpites])
 
