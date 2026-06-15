@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { Loader2, Target, Trophy, Users, Zap } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 
 interface MetricsData {
@@ -31,6 +32,7 @@ function MetricCard({ icon, label, value, sub, color = 'text-brasil-green' }: {
 }
 
 export function AdminDashboard() {
+  const { t } = useTranslation()
   const [palpites, setPalpites]   = useState<Palpite[]>([])
   const [profiles, setProfiles]   = useState<Profile[]>([])
   const [jogos, setJogos]         = useState<Jogo[]>([])
@@ -50,7 +52,7 @@ export function AdminDashboard() {
   }, [])
 
   const nomeMap = useMemo(
-    () => Object.fromEntries(profiles.map(p => [p.id, p.username ?? 'Anônimo'])),
+    () => Object.fromEntries(profiles.map(p => [p.id, p.username ?? t('admin.anon')])),
     [profiles]
   )
 
@@ -73,7 +75,7 @@ export function AdminDashboard() {
       liderPontos: liderPts,
       proximoJogo: proxJogo
         ? `${proxJogo.time_casa} × ${proxJogo.time_fora}`
-        : 'Copa encerrada',
+        : t('admin.dash.cupOver'),
     }
   }, [palpites, profiles, jogos, nomeMap])
 
@@ -119,7 +121,7 @@ export function AdminDashboard() {
     const totalJogos = jogos.length || 72
     return Object.keys(palpitesPorUser)
       .map(uid => ({
-        nome: nomeMap[uid] ?? 'Anônimo',
+        nome: nomeMap[uid] ?? t('admin.anon'),
         palpites: palpitesPorUser[uid],
         participacao: Math.round((palpitesPorUser[uid] / totalJogos) * 100),
         pontos: pontosPorUser[uid] ?? 0,
@@ -144,23 +146,23 @@ export function AdminDashboard() {
 
       {/* Metric cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        <MetricCard icon={<Users className="h-5 w-5" />} label="Participantes" value={metrics.totalParticipantes} />
-        <MetricCard icon={<Zap className="h-5 w-5" />} label="Palpites" value={metrics.totalPalpites}
-          sub={`de ${metrics.totalParticipantes * 72} possíveis`} />
-        <MetricCard icon={<Target className="h-5 w-5" />} label="Acertos exatos" value={metrics.totalAcertosExatos}
+        <MetricCard icon={<Users className="h-5 w-5" />} label={t('admin.dash.participants')} value={metrics.totalParticipantes} />
+        <MetricCard icon={<Zap className="h-5 w-5" />} label={t('admin.dash.predictions')} value={metrics.totalPalpites}
+          sub={t('admin.dash.ofPossible', { n: metrics.totalParticipantes * 72 })} />
+        <MetricCard icon={<Target className="h-5 w-5" />} label={t('admin.dash.exactHits')} value={metrics.totalAcertosExatos}
           color="text-brasil-yellow" />
-        <MetricCard icon={<Zap className="h-5 w-5" />} label="Acurácia média" value={`${acuraciaMedia}%`}
+        <MetricCard icon={<Zap className="h-5 w-5" />} label={t('admin.dash.avgAccuracy')} value={`${acuraciaMedia}%`}
           color="text-brasil-yellow" />
-        <MetricCard icon={<Trophy className="h-5 w-5" />} label="Líder" value={metrics.lider}
-          sub={`${metrics.liderPontos} pontos`} />
-        <MetricCard icon={<Zap className="h-5 w-5" />} label="Próximo jogo" value=""
+        <MetricCard icon={<Trophy className="h-5 w-5" />} label={t('admin.dash.leader')} value={metrics.lider}
+          sub={t('admin.dash.pointsSuffix', { n: metrics.liderPontos })} />
+        <MetricCard icon={<Zap className="h-5 w-5" />} label={t('admin.dash.nextMatch')} value=""
           sub={metrics.proximoJogo ?? '—'} />
       </div>
 
       {/* Charts */}
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
-          <h2 className="mb-4 text-sm font-semibold text-zinc-400 uppercase tracking-wider">Usuários por Rodada</h2>
+          <h2 className="mb-4 text-sm font-semibold text-zinc-400 uppercase tracking-wider">{t('admin.dash.usersByRound')}</h2>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={palpitesPorRodada} barCategoryGap="30%">
               <XAxis dataKey="rodada" tick={{ fill: '#71717a', fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -174,7 +176,7 @@ export function AdminDashboard() {
         </div>
 
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
-          <h2 className="mb-4 text-sm font-semibold text-zinc-400 uppercase tracking-wider">Distribuição de Pontos</h2>
+          <h2 className="mb-4 text-sm font-semibold text-zinc-400 uppercase tracking-wider">{t('admin.dash.pointsDist')}</h2>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={distribuicaoPontos} barCategoryGap="30%">
               <XAxis dataKey="range" tick={{ fill: '#71717a', fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -192,10 +194,10 @@ export function AdminDashboard() {
           <thead>
             <tr className="border-b border-zinc-800 text-left text-xs tracking-wider text-zinc-500 uppercase">
               <th className="px-4 py-3">#</th>
-              <th className="px-4 py-3">Usuário</th>
-              <th className="px-4 py-3 text-center">Palpites</th>
-              <th className="px-4 py-3 text-center">Participação</th>
-              <th className="px-4 py-3 text-center">Pontos</th>
+              <th className="px-4 py-3">{t('admin.user')}</th>
+              <th className="px-4 py-3 text-center">{t('admin.dash.predictions')}</th>
+              <th className="px-4 py-3 text-center">{t('admin.dash.participation')}</th>
+              <th className="px-4 py-3 text-center">{t('admin.points')}</th>
             </tr>
           </thead>
           <tbody>

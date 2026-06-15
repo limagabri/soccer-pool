@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 
 interface Comentario {
@@ -13,10 +14,10 @@ interface Comentario {
   jogo_label: string
 }
 
-function tempoRelativo(dateStr: string): string {
+function tempoRelativo(dateStr: string, t: (k: string) => string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const m = Math.floor(diff / 60000)
-  if (m < 1) return 'agora'
+  if (m < 1) return t('admin.now')
   if (m < 60) return `${m}min`
   const h = Math.floor(m / 60)
   if (h < 24) return `${h}h`
@@ -24,6 +25,7 @@ function tempoRelativo(dateStr: string): string {
 }
 
 export function AdminChat() {
+  const { t } = useTranslation()
   const [comentarios, setComentarios] = useState<Comentario[]>([])
   const [loading, setLoading] = useState(true)
   const [filtroJogo, setFiltroJogo] = useState('')
@@ -52,12 +54,12 @@ export function AdminChat() {
 
     const jogosMap: Record<string, string> = {}
     for (const j of (jogos as { id: string; numero_jogo: number; time_casa: string; time_fora: string }[]) ?? [])
-      jogosMap[j.id] = `Jogo ${j.numero_jogo}: ${j.time_casa} × ${j.time_fora}`
+      jogosMap[j.id] = `${t('common.match')} ${j.numero_jogo}: ${j.time_casa} × ${j.time_fora}`
 
     setComentarios(
       (raw as { id: string; jogo_id: string; user_id: string; texto: string; created_at: string }[]).map((c) => ({
         ...c,
-        username: nomes[c.user_id] ?? 'Anônimo',
+        username: nomes[c.user_id] ?? t('admin.anon'),
         jogo_label: jogosMap[c.jogo_id] ?? c.jogo_id,
       }))
     )
@@ -92,15 +94,15 @@ export function AdminChat() {
     <>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-100">Moderação de Chat</h1>
-          <p className="mt-1 text-sm text-zinc-500">Comentários das últimas 24h — atualiza em tempo real</p>
+          <h1 className="text-2xl font-bold text-zinc-100">{t('admin.chat.title')}</h1>
+          <p className="mt-1 text-sm text-zinc-500">{t('admin.chat.subtitle')}</p>
         </div>
         <select
           value={filtroJogo}
           onChange={(e) => setFiltroJogo(e.target.value)}
           className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-300 outline-none focus:border-green-600"
         >
-          <option value="">Todos os jogos</option>
+          <option value="">{t('admin.chat.allMatches')}</option>
           {jogoOpcoes.map((j) => (
             <option key={j} value={j}>{j}</option>
           ))}
@@ -113,18 +115,18 @@ export function AdminChat() {
         </div>
       ) : filtrados.length === 0 ? (
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 py-12 text-center text-zinc-500">
-          Nenhum comentário nas últimas 24h.
+          {t('admin.chat.empty')}
         </div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-zinc-800">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-wider text-zinc-500">
-                <th className="px-4 py-3">Usuário</th>
-                <th className="px-4 py-3">Jogo</th>
-                <th className="px-4 py-3">Mensagem</th>
-                <th className="px-4 py-3 text-center">Hora</th>
-                <th className="px-4 py-3 text-right">Ação</th>
+                <th className="px-4 py-3">{t('admin.user')}</th>
+                <th className="px-4 py-3">{t('admin.chat.colMatch')}</th>
+                <th className="px-4 py-3">{t('admin.chat.colMessage')}</th>
+                <th className="px-4 py-3 text-center">{t('admin.chat.colTime')}</th>
+                <th className="px-4 py-3 text-right">{t('admin.chat.colAction')}</th>
               </tr>
             </thead>
             <tbody>
@@ -140,7 +142,7 @@ export function AdminChat() {
                   <td className="max-w-xs px-4 py-3 text-zinc-300">
                     <p className="truncate">{c.texto}</p>
                   </td>
-                  <td className="px-4 py-3 text-center text-xs text-zinc-500">{tempoRelativo(c.created_at)}</td>
+                  <td className="px-4 py-3 text-center text-xs text-zinc-500">{tempoRelativo(c.created_at, t)}</td>
                   <td className="px-4 py-3 text-right">
                     <button
                       onClick={() => deletar(c.id)}

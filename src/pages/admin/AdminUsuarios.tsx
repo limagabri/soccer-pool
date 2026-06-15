@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, RefreshCw, Shield, ShieldOff, UserPlus, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 
 interface UsuarioAdmin {
@@ -21,6 +22,7 @@ interface FormCriar {
 }
 
 export function AdminUsuarios() {
+  const { t } = useTranslation()
   const [usuarios, setUsuarios] = useState<UsuarioAdmin[]>([])
   const [loading, setLoading] = useState(true)
   const [modalAberto, setModalAberto] = useState(false)
@@ -50,11 +52,11 @@ export function AdminUsuarios() {
 
   async function criarUsuario() {
     if (!form.nome || !form.email || !form.senha) {
-      setErro('Preencha todos os campos.')
+      setErro(t('admin.users.fillAll'))
       return
     }
     if (form.senha.length < 6) {
-      setErro('A senha deve ter pelo menos 6 caracteres.')
+      setErro(t('admin.users.passMin'))
       return
     }
     setErro(null)
@@ -66,11 +68,11 @@ export function AdminUsuarios() {
 
     setCriando(false)
     if (error || !data?.success) {
-      setErro(data?.error ?? 'Erro ao criar usuário. Verifique se a Edge Function está deployada.')
+      setErro(data?.error ?? t('admin.users.createError'))
       return
     }
 
-    setSucessoMsg(`Usuário "${form.nome}" criado com sucesso!`)
+    setSucessoMsg(t('admin.users.created', { name: form.nome }))
     setForm({ nome: '', email: '', senha: '' })
     setModalAberto(false)
     setTimeout(() => setSucessoMsg(null), 4000)
@@ -81,8 +83,8 @@ export function AdminUsuarios() {
     <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-100">Usuários</h1>
-          <p className="mt-1 text-sm text-zinc-500">{usuarios.length} participante{usuarios.length !== 1 ? 's' : ''} cadastrado{usuarios.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-2xl font-bold text-zinc-100">{t('admin.users.title')}</h1>
+          <p className="mt-1 text-sm text-zinc-500">{t('admin.users.count', { count: usuarios.length })}</p>
         </div>
         <div className="flex gap-3">
           <button
@@ -90,14 +92,14 @@ export function AdminUsuarios() {
             className="flex items-center gap-2 rounded-lg bg-zinc-800 px-3 py-2 text-sm text-zinc-400 transition hover:text-zinc-100"
           >
             <RefreshCw className="h-4 w-4" />
-            Atualizar
+            {t('admin.refresh')}
           </button>
           <button
             onClick={() => setModalAberto(true)}
             className="flex items-center gap-2 rounded-lg bg-green-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-600"
           >
             <UserPlus className="h-4 w-4" />
-            Criar usuário
+            {t('admin.users.create')}
           </button>
         </div>
       </div>
@@ -123,12 +125,12 @@ export function AdminUsuarios() {
           <table className="w-full min-w-[600px] text-sm">
             <thead>
               <tr className="border-b border-zinc-800 text-left text-xs tracking-wider text-zinc-500 uppercase">
-                <th className="px-4 py-3">Usuário</th>
-                <th className="px-3 py-3">E-mail</th>
-                <th className="px-3 py-3 text-center">Pontos</th>
-                <th className="px-3 py-3 text-center">Palpites</th>
-                <th className="px-3 py-3 text-center">1º Acesso</th>
-                <th className="px-4 py-3 text-center">Admin</th>
+                <th className="px-4 py-3">{t('admin.user')}</th>
+                <th className="px-3 py-3">{t('auth.email')}</th>
+                <th className="px-3 py-3 text-center">{t('admin.points')}</th>
+                <th className="px-3 py-3 text-center">{t('admin.dash.predictions')}</th>
+                <th className="px-3 py-3 text-center">{t('admin.users.colFirstAccess')}</th>
+                <th className="px-4 py-3 text-center">{t('admin.users.colAdmin')}</th>
               </tr>
             </thead>
             <tbody>
@@ -147,15 +149,15 @@ export function AdminUsuarios() {
                   <td className="px-3 py-3 text-center text-zinc-400">{u.palpites_count}</td>
                   <td className="px-3 py-3 text-center">
                     {u.primeiro_acesso ? (
-                      <span className="rounded-full bg-amber-900/40 px-2 py-0.5 text-xs text-amber-400">Pendente</span>
+                      <span className="rounded-full bg-amber-900/40 px-2 py-0.5 text-xs text-amber-400">{t('admin.users.pending')}</span>
                     ) : (
-                      <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-xs text-zinc-500">Concluído</span>
+                      <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-xs text-zinc-500">{t('admin.users.done')}</span>
                     )}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <button
                       onClick={() => toggleAdmin(u)}
-                      title={u.is_admin ? 'Remover admin' : 'Tornar admin'}
+                      title={u.is_admin ? t('admin.users.removeAdmin') : t('admin.users.makeAdmin')}
                       className={`rounded-lg p-2 transition ${
                         u.is_admin
                           ? 'text-green-400 hover:bg-red-900/20 hover:text-red-400'
@@ -188,7 +190,7 @@ export function AdminUsuarios() {
               className="w-full max-w-md rounded-xl border border-zinc-700 bg-zinc-900 p-6"
             >
               <div className="mb-5 flex items-center justify-between">
-                <h2 className="font-semibold text-zinc-100">Criar Usuário</h2>
+                <h2 className="font-semibold text-zinc-100">{t('admin.users.createTitle')}</h2>
                 <button onClick={() => { setModalAberto(false); setErro(null) }} className="text-zinc-600 hover:text-zinc-300">
                   <X className="h-5 w-5" />
                 </button>
@@ -198,7 +200,7 @@ export function AdminUsuarios() {
                 {(['nome', 'email', 'senha'] as const).map((campo) => (
                   <div key={campo}>
                     <label className="mb-1.5 block text-sm font-medium text-zinc-400 capitalize">
-                      {campo === 'senha' ? 'Senha temporária' : campo === 'nome' ? 'Nome de usuário' : 'E-mail'}
+                      {campo === 'senha' ? t('admin.users.labelTempPass') : campo === 'nome' ? t('admin.users.labelName') : t('auth.email')}
                     </label>
                     <input
                       type={campo === 'senha' ? 'password' : campo === 'email' ? 'email' : 'text'}
@@ -219,7 +221,7 @@ export function AdminUsuarios() {
                 )}
 
                 <p className="text-xs text-zinc-600">
-                  O usuário receberá uma senha temporária e deverá alterá-la no primeiro acesso.
+                  {t('admin.users.hint')}
                 </p>
               </div>
 
@@ -228,7 +230,7 @@ export function AdminUsuarios() {
                   onClick={() => { setModalAberto(false); setErro(null) }}
                   className="flex-1 rounded-lg border border-zinc-700 py-2.5 text-sm font-medium text-zinc-400 transition hover:border-zinc-600"
                 >
-                  Cancelar
+                  {t('admin.common.cancel')}
                 </button>
                 <button
                   onClick={criarUsuario}
@@ -236,7 +238,7 @@ export function AdminUsuarios() {
                   className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-700 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600 disabled:opacity-60"
                 >
                   {criando && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Criar
+                  {t('admin.common.create')}
                 </button>
               </div>
             </motion.div>
