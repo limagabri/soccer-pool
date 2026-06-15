@@ -1,4 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
+
+// pontuacao.ts importa o client supabase (createClient), que exige env. Para
+// testar só as funções puras, mockamos o módulo.
+vi.mock('./supabase', () => ({ supabase: {} }))
+
 import { agregarEstatisticas, type PalpiteResumo } from './pontuacao'
 import type { Jogo } from '../types'
 
