@@ -6,12 +6,12 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 
 const REACOES = [
-  { emoji: '⚽', texto: '⚽ Gol!' },
-  { emoji: '🔥', texto: '🔥 Que jogo!' },
-  { emoji: '😱', texto: '😱 Não acredito!' },
-  { emoji: '🤦', texto: '🤦 Que vacilo' },
-  { emoji: '🎯', texto: '🎯 Acertei!' },
-  { emoji: '💀', texto: '💀 Tomei' },
+  { emoji: '⚽', key: 'goal' },
+  { emoji: '🔥', key: 'whatGame' },
+  { emoji: '😱', key: 'noWay' },
+  { emoji: '🤦', key: 'blunder' },
+  { emoji: '🎯', key: 'nailedIt' },
+  { emoji: '💀', key: 'rip' },
 ]
 
 const COOLDOWN_MS = 10_000
@@ -202,7 +202,7 @@ export function ChatJogo({ jogo_id }: Props) {
     await supabase.from('comentarios').delete().eq('id', id)
   }
 
-  function handleReacao(r: { emoji: string; texto: string }) {
+  function handleReacao(r: { emoji: string; key: string }) {
     if (!user) return
     const agora = Date.now()
     const ultima = ultimasReacoes.current[r.emoji] ?? 0
@@ -210,7 +210,7 @@ export function ChatJogo({ jogo_id }: Props) {
     ultimasReacoes.current[r.emoji] = agora
     setReacaoBounce(r.emoji)
     setTimeout(() => setReacaoBounce(null), 350)
-    supabase.from('comentarios').insert({ jogo_id, user_id: user.id, texto: r.texto })
+    supabase.from('comentarios').insert({ jogo_id, user_id: user.id, texto: `${r.emoji} ${t(`chat.reactions.${r.key}`)}` })
   }
 
   const restantes = 280 - texto.length
@@ -291,7 +291,7 @@ export function ChatJogo({ jogo_id }: Props) {
               onClick={() => handleReacao(r)}
               className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-zinc-300 transition hover:border-brasil-green/40 hover:bg-brasil-green/10 hover:text-zinc-100"
             >
-              {r.emoji} <span className="hidden sm:inline">{r.texto.split(' ').slice(1).join(' ')}</span>
+              {r.emoji} <span className="hidden sm:inline">{t(`chat.reactions.${r.key}`)}</span>
             </motion.button>
           ))}
         </div>

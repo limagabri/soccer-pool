@@ -182,7 +182,8 @@
     "empty": "Nenhuma mensagem ainda. Seja o primeiro a comentar!",
     "placeholder": "Comente… use @ para marcar alguém",
     "mentionedYou": "{{name}} te marcou",
-    "delete": "Deletar"
+    "delete": "Deletar",
+    "reactions": { "goal": "Gol!", "whatGame": "Que jogo!", "noWay": "Não acredito!", "blunder": "Que vacilo", "nailedIt": "Acertei!", "rip": "Tomei" }
   },
   "matchPicks": {
     "title": "Palpites",
@@ -193,8 +194,28 @@
     "byPoints": "ordenados por pontos",
     "revealed": "placar revelado (jogo já começou)"
   },
-  "simulator": { "title": "Simulador da", "titleAccent": "Copa", "subtitle": "Preencha os placares e descubra quem levanta a taça. Resultados reais entram automaticamente e não podem ser alterados." },
-  "regulamento": { "titleAccent": "Regulamento", "subtitle": "Tudo que você precisa saber para ganhar o bolão." },
+  "simulator": {
+    "title": "Simulador da", "titleAccent": "Copa",
+    "subtitle": "Preencha os placares e descubra quem levanta a taça. Resultados reais entram automaticamente e não podem ser alterados.",
+    "simulateRandom": "Simular aleatoriamente", "reset": "Resetar",
+    "s1Pre": "1 · Fase de", "s1Accent": "Grupos",
+    "s2Pre": "2 · Melhores", "s2Accent": "Terceiros",
+    "thirdsHint": "Preencha os placares de todos os grupos para calcular os 8 melhores terceiros e liberar o chaveamento — ou use o botão",
+    "s3Pre": "3 ·", "s3Accent": "Mata-mata",
+    "koHint": "Empatou? Escolha quem avança nos pênaltis. Arraste para o lado para ver todas as fases.",
+    "penalties": "Pênaltis:", "worldChampion": "Campeão do mundo", "simulateFinal": "Simule a final para conhecer o campeão",
+    "rounds": { "0": "32-avos de final", "1": "Oitavas de final", "2": "Quartas de final", "3": "Semifinais", "4": "Final" }
+  },
+  "regulamento": {
+    "titleAccent": "Regulamento",
+    "subtitle": "Tudo que você precisa saber para ganhar o bolão.",
+    "points": "pontos",
+    "s1": { "title": "Como funciona", "p1": "O {{name}} é um bolão fechado, acessível apenas por convite. Cada participante dá seus palpites de placar para os jogos da Copa do Mundo antes de cada partida começar.", "p2pre": "Acompanhe a classificação em tempo real no", "p2link": "Ranking", "p2post": "e veja quem está dominando.", "p3": "Palpites ficam bloqueados assim que o jogo inicia. Não é possível alterar um palpite já registrado." },
+    "s2": { "title": "Pontuação dos palpites", "exact": "Placar exato", "winner": "Vencedor ou empate correto", "wrong": "Resultado errado", "example": "Exemplo", "exampleIntro": "Jogo encerrado", "youGuessed": "Você chutou", "homeWins": "(Brasil vence)", "awayWins": "(Argentina vence)" },
+    "s3": { "title": "Escolhas especiais", "bonus": "bônus", "intro": "Feitas no primeiro acesso. Não podem ser alteradas após confirmadas.", "colChoice": "Escolha", "colPoints": "Pontos", "champion": "Campeão correto", "topScorer": "Artilheiro correto", "bestPlayer": "Melhor jogador correto", "runnerUp": "Vice-campeão correto", "third": "3º lugar correto", "bestDefense": "Melhor defesa (menos gols sofridos)", "auto": "(calculada automaticamente)" },
+    "s4": { "title": "Classificação final", "total": "Total = Pontos de palpites + Pontos especiais", "tiebreak": "Critérios de desempate (em ordem):", "tb1": "Mais acertos de placar exato", "tb2": "Mais acertos de vencedor/empate", "tb3": "Ordem alfabética do nome" },
+    "s5": { "title": "Regras gerais", "r1": "Palpites são bloqueados automaticamente quando o jogo inicia.", "r2": "Não é possível alterar palpites após o início da partida.", "r3": "Escolhas especiais são feitas no primeiro acesso e não podem ser editadas.", "r4": "Após 27/06/2026 (fim da fase de grupos), as escolhas dos participantes são reveladas para todos.", "r5": "Os resultados finais e pontos especiais são calculados pelo administrador ao término da Copa.", "r6": "O administrador não participa do bolão.", "r7": "O bolão é fechado — acesso exclusivo por convite." }
+  },
   "storiesPage": {
     "title": "Stories do",
     "titleAccent": "Bolão",

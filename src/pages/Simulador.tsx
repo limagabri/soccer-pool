@@ -57,6 +57,7 @@ function CardMataMata({
   resultados: ResultadosMataMata
   onChange: (chave: string, r: { gols_casa: number | null; gols_fora: number | null; penaltis?: 'casa' | 'fora' }) => void
 }) {
+  const { t } = useTranslation()
   const chave = chaveResultado(jogo)
   const r = resultados[chave]
   const definido = !!jogo.casa && !!jogo.fora
@@ -106,7 +107,7 @@ function CardMataMata({
       {linha('fora')}
       {empate && definido && (
         <div className="flex items-center gap-1.5 pt-1 text-xs">
-          <span className="text-zinc-500">Pênaltis:</span>
+          <span className="text-zinc-500">{t('simulator.penalties')}</span>
           {(['casa', 'fora'] as const).map((lado) => {
             const time = lado === 'casa' ? jogo.casa! : jogo.fora!
             const ativo = r?.penaltis === lado
@@ -272,21 +273,21 @@ export function Simulador() {
               className="btn-gradient flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-black disabled:opacity-60"
             >
               <Dices className="h-4 w-4" />
-              Simular aleatoriamente
+              {t('simulator.simulateRandom')}
             </button>
             <button
               onClick={resetar}
               className="glass flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-zinc-300 transition hover:border-brasil-yellow/50 hover:text-brasil-yellow"
             >
               <RotateCcw className="h-4 w-4" />
-              Resetar
+              {t('simulator.reset')}
             </button>
           </div>
         </div>
 
         {error && (
           <p className="mt-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-            Erro ao carregar jogos: {error}
+            {t('groups.loadError')} {error}
           </p>
         )}
 
@@ -300,7 +301,7 @@ export function Simulador() {
             {/* ── Seção 1: Fase de grupos ───────────────────────── */}
             <section className="mt-12">
               <h2 className="font-display text-3xl tracking-wide sm:text-4xl">
-                1 · Fase de <span className="text-brasil-green">Grupos</span>
+                {t('simulator.s1Pre')} <span className="text-brasil-green">{t('simulator.s1Accent')}</span>
               </h2>
 
               <div className="mt-4 flex gap-1 overflow-x-auto border-b border-white/10 pb-px">
@@ -382,10 +383,10 @@ export function Simulador() {
                       <thead>
                         <tr className="border-b border-white/10 text-left text-xs tracking-wider text-zinc-500 uppercase">
                           <th className="px-3 py-2.5">#</th>
-                          <th className="py-2.5">Seleção</th>
-                          <th className="px-1.5 py-2.5 text-center">J</th>
-                          <th className="px-1.5 py-2.5 text-center">SG</th>
-                          <th className="px-3 py-2.5 text-center">Pts</th>
+                          <th className="py-2.5">{t('groups.team')}</th>
+                          <th className="px-1.5 py-2.5 text-center">{t('groups.std.p')}</th>
+                          <th className="px-1.5 py-2.5 text-center">{t('groups.std.gd')}</th>
+                          <th className="px-3 py-2.5 text-center">{t('groups.std.pts')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -430,7 +431,7 @@ export function Simulador() {
             {/* ── Melhores terceiros ────────────────────────────── */}
             <section className="mt-14">
               <h2 className="font-display text-3xl tracking-wide sm:text-4xl">
-                2 · Melhores <span className="text-brasil-yellow">Terceiros</span>
+                {t('simulator.s2Pre')} <span className="text-brasil-yellow">{t('simulator.s2Accent')}</span>
               </h2>
               {terceiros ? (
                 <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -445,9 +446,8 @@ export function Simulador() {
                 </div>
               ) : (
                 <p className="glass mt-4 p-6 text-sm text-zinc-500">
-                  Preencha os placares de todos os grupos para calcular os 8 melhores terceiros
-                  e liberar o chaveamento — ou use o botão{' '}
-                  <strong className="text-zinc-300">Simular aleatoriamente</strong>.
+                  {t('simulator.thirdsHint')}{' '}
+                  <strong className="text-zinc-300">{t('simulator.simulateRandom')}</strong>.
                 </p>
               )}
             </section>
@@ -455,17 +455,17 @@ export function Simulador() {
             {/* ── Seção 3: Mata-mata ────────────────────────────── */}
             <section className="mt-14">
               <h2 className="font-display text-3xl tracking-wide sm:text-4xl">
-                3 · <span className="text-brasil-green">Mata-mata</span>
+                {t('simulator.s3Pre')} <span className="text-brasil-green">{t('simulator.s3Accent')}</span>
               </h2>
               <p className="mt-2 text-sm text-zinc-500">
-                Empatou? Escolha quem avança nos pênaltis. Arraste para o lado para ver todas as fases.
+                {t('simulator.koHint')}
               </p>
 
               <div className="mt-6 flex gap-5 overflow-x-auto pb-4">
                 {rodadas.map((rodada, ri) => (
                   <div key={ri} className="flex w-60 shrink-0 flex-col">
                     <h3 className="mb-3 text-center font-display text-xl tracking-wide text-zinc-300">
-                      {NOMES_RODADAS[ri]}
+                      {t(`simulator.rounds.${ri}`)}
                     </h3>
                     <div className="flex flex-1 flex-col justify-around gap-3">
                       {rodada.map((j) => (
@@ -489,7 +489,7 @@ export function Simulador() {
                               animate={{ opacity: 1, scale: 1 }}
                             >
                               <p className="text-xs tracking-widest text-zinc-400 uppercase">
-                                Campeão do mundo
+                                {t('simulator.worldChampion')}
                               </p>
                               <p className="mt-1 font-display text-3xl text-brasil-yellow">
                                 {campeao.emoji} {campeao.nome}
@@ -497,7 +497,7 @@ export function Simulador() {
                             </motion.div>
                           ) : (
                             <p className="text-xs text-zinc-500">
-                              Simule a final para conhecer o campeão
+                              {t('simulator.simulateFinal')}
                             </p>
                           )}
                         </div>

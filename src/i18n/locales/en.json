@@ -182,7 +182,8 @@
     "empty": "No messages yet. Be the first to comment!",
     "placeholder": "Comment… use @ to mention someone",
     "mentionedYou": "{{name}} mentioned you",
-    "delete": "Delete"
+    "delete": "Delete",
+    "reactions": { "goal": "Goal!", "whatGame": "What a game!", "noWay": "No way!", "blunder": "What a blunder", "nailedIt": "Nailed it!", "rip": "Got smashed" }
   },
   "matchPicks": {
     "title": "Picks",
@@ -193,8 +194,28 @@
     "byPoints": "sorted by points",
     "revealed": "scores revealed (match has started)"
   },
-  "simulator": { "title": "World Cup", "titleAccent": "Simulator", "subtitle": "Fill in the scores and find out who lifts the trophy. Real results are applied automatically and can't be changed." },
-  "regulamento": { "titleAccent": "Rules", "subtitle": "Everything you need to know to win the pool." },
+  "simulator": {
+    "title": "World Cup", "titleAccent": "Simulator",
+    "subtitle": "Fill in the scores and find out who lifts the trophy. Real results are applied automatically and can't be changed.",
+    "simulateRandom": "Simulate randomly", "reset": "Reset",
+    "s1Pre": "1 · Group", "s1Accent": "Stage",
+    "s2Pre": "2 · Best", "s2Accent": "Third-placed",
+    "thirdsHint": "Fill in the scores of every group to compute the 8 best third-placed teams and unlock the bracket — or use the",
+    "s3Pre": "3 ·", "s3Accent": "Knockouts",
+    "koHint": "Tied? Choose who advances on penalties. Swipe sideways to see all rounds.",
+    "penalties": "Penalties:", "worldChampion": "World champion", "simulateFinal": "Simulate the final to crown the champion",
+    "rounds": { "0": "Round of 32", "1": "Round of 16", "2": "Quarter-finals", "3": "Semi-finals", "4": "Final" }
+  },
+  "regulamento": {
+    "titleAccent": "Rules",
+    "subtitle": "Everything you need to know to win the pool.",
+    "points": "points",
+    "s1": { "title": "How it works", "p1": "{{name}} is a private, invite-only pool. Each participant submits score predictions for the World Cup matches before each game kicks off.", "p2pre": "Follow the live standings on the", "p2link": "Ranking", "p2post": "and see who's on top.", "p3": "Predictions lock the moment a match starts. You can't change a prediction once it's saved." },
+    "s2": { "title": "Match scoring", "exact": "Exact score", "winner": "Correct winner or draw", "wrong": "Wrong result", "example": "Example", "exampleIntro": "Final result", "youGuessed": "You guessed", "homeWins": "(Brazil wins)", "awayWins": "(Argentina wins)" },
+    "s3": { "title": "Special picks", "bonus": "bonus", "intro": "Made on first login. They can't be changed once confirmed.", "colChoice": "Pick", "colPoints": "Points", "champion": "Correct champion", "topScorer": "Correct top scorer", "bestPlayer": "Correct best player", "runnerUp": "Correct runner-up", "third": "Correct third place", "bestDefense": "Best defense (fewest goals conceded)", "auto": "(calculated automatically)" },
+    "s4": { "title": "Final standings", "total": "Total = Match points + Special points", "tiebreak": "Tiebreakers (in order):", "tb1": "Most exact scores", "tb2": "Most correct winners/draws", "tb3": "Alphabetical order of name" },
+    "s5": { "title": "General rules", "r1": "Predictions lock automatically when a match starts.", "r2": "Predictions can't be changed after kick-off.", "r3": "Special picks are made on first login and can't be edited.", "r4": "After 06/27/2026 (end of the group stage), participants' picks are revealed to everyone.", "r5": "Final results and special points are computed by the admin at the end of the World Cup.", "r6": "The admin does not participate in the pool.", "r7": "The pool is private — invite-only access." }
+  },
   "storiesPage": {
     "title": "Pool",
     "titleAccent": "Stories",

@@ -42,12 +42,12 @@ export function Regulamento() {
               <div className="rounded-lg bg-brasil-green/15 p-2">
                 <BookOpen className="h-5 w-5 text-brasil-green" />
               </div>
-              <h2 className="font-display text-2xl tracking-wide">Como funciona</h2>
+              <h2 className="font-display text-2xl tracking-wide">{t('regulamento.s1.title')}</h2>
             </div>
             <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
-              <p>O {APP_FULL_NAME} é um bolão fechado, acessível apenas por convite. Cada participante dá seus palpites de placar para os jogos da Copa do Mundo antes de cada partida começar.</p>
-              <p>Acompanhe a classificação em tempo real no <Link to="/ranking" className="text-brasil-green hover:underline">Ranking</Link> e veja quem está dominando.</p>
-              <p>Palpites ficam bloqueados assim que o jogo inicia. Não é possível alterar um palpite já registrado.</p>
+              <p>{t('regulamento.s1.p1', { name: APP_FULL_NAME })}</p>
+              <p>{t('regulamento.s1.p2pre')} <Link to="/ranking" className="text-brasil-green hover:underline">{t('regulamento.s1.p2link')}</Link> {t('regulamento.s1.p2post')}</p>
+              <p>{t('regulamento.s1.p3')}</p>
             </div>
           </motion.section>
 
@@ -57,34 +57,34 @@ export function Regulamento() {
               <div className="rounded-lg bg-brasil-yellow/15 p-2">
                 <Target className="h-5 w-5 text-brasil-yellow" />
               </div>
-              <h2 className="font-display text-2xl tracking-wide">Pontuação dos palpites</h2>
+              <h2 className="font-display text-2xl tracking-wide">{t('regulamento.s2.title')}</h2>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-xl border border-brasil-green/30 bg-brasil-green/10 p-4 text-center">
                 <p className="text-2xl">🎯</p>
-                <p className="mt-2 font-bold text-brasil-green text-xl">10 pontos</p>
-                <p className="mt-1 text-sm text-zinc-400">Placar exato</p>
+                <p className="mt-2 font-bold text-brasil-green text-xl">10 {t('regulamento.points')}</p>
+                <p className="mt-1 text-sm text-zinc-400">{t('regulamento.s2.exact')}</p>
               </div>
               <div className="rounded-xl border border-brasil-yellow/30 bg-brasil-yellow/10 p-4 text-center">
                 <p className="text-2xl">✅</p>
-                <p className="mt-2 font-bold text-brasil-yellow text-xl">5 pontos</p>
-                <p className="mt-1 text-sm text-zinc-400">Vencedor ou empate correto</p>
+                <p className="mt-2 font-bold text-brasil-yellow text-xl">5 {t('regulamento.points')}</p>
+                <p className="mt-1 text-sm text-zinc-400">{t('regulamento.s2.winner')}</p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-center">
                 <p className="text-2xl">❌</p>
-                <p className="mt-2 font-bold text-zinc-500 text-xl">0 pontos</p>
-                <p className="mt-1 text-sm text-zinc-500">Resultado errado</p>
+                <p className="mt-2 font-bold text-zinc-500 text-xl">0 {t('regulamento.points')}</p>
+                <p className="mt-1 text-sm text-zinc-500">{t('regulamento.s2.wrong')}</p>
               </div>
             </div>
 
             <div className="mt-5 rounded-xl bg-white/[0.04] p-4">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">Exemplo</p>
-              <p className="text-sm text-zinc-400">Jogo encerrado <strong className="text-zinc-200">Brasil 2×1 Argentina</strong>:</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">{t('regulamento.s2.example')}</p>
+              <p className="text-sm text-zinc-400">{t('regulamento.s2.exampleIntro')} <strong className="text-zinc-200">Brasil 2×1 Argentina</strong>:</p>
               <div className="mt-2 space-y-1.5 text-sm">
-                <div className="flex justify-between"><span className="text-zinc-400">Você chutou <strong className="text-zinc-200">2×1</strong></span><span className="text-brasil-green font-bold">+10 pts</span></div>
-                <div className="flex justify-between"><span className="text-zinc-400">Você chutou <strong className="text-zinc-200">3×2</strong> (Brasil vence)</span><span className="text-brasil-yellow font-bold">+5 pts</span></div>
-                <div className="flex justify-between"><span className="text-zinc-400">Você chutou <strong className="text-zinc-200">0×1</strong> (Argentina vence)</span><span className="text-zinc-500">+0 pts</span></div>
+                <div className="flex justify-between"><span className="text-zinc-400">{t('regulamento.s2.youGuessed')} <strong className="text-zinc-200">2×1</strong></span><span className="text-brasil-green font-bold">+10 pts</span></div>
+                <div className="flex justify-between"><span className="text-zinc-400">{t('regulamento.s2.youGuessed')} <strong className="text-zinc-200">3×2</strong> {t('regulamento.s2.homeWins')}</span><span className="text-brasil-yellow font-bold">+5 pts</span></div>
+                <div className="flex justify-between"><span className="text-zinc-400">{t('regulamento.s2.youGuessed')} <strong className="text-zinc-200">0×1</strong> {t('regulamento.s2.awayWins')}</span><span className="text-zinc-500">+0 pts</span></div>
               </div>
             </div>
           </motion.section>
@@ -95,31 +95,31 @@ export function Regulamento() {
               <div className="rounded-lg bg-brasil-yellow/15 p-2">
                 <Award className="h-5 w-5 text-brasil-yellow" />
               </div>
-              <h2 className="font-display text-2xl tracking-wide">Escolhas especiais <span className="text-sm text-zinc-500 font-sans font-normal">bônus</span></h2>
+              <h2 className="font-display text-2xl tracking-wide">{t('regulamento.s3.title')} <span className="text-sm text-zinc-500 font-sans font-normal">{t('regulamento.s3.bonus')}</span></h2>
             </div>
-            <p className="mb-4 text-sm text-zinc-400">Feitas no primeiro acesso. Não podem ser alteradas após confirmadas.</p>
+            <p className="mb-4 text-sm text-zinc-400">{t('regulamento.s3.intro')}</p>
 
             <div className="overflow-x-auto rounded-xl border border-white/10">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/10 text-left text-xs uppercase tracking-wider text-zinc-500">
-                    <th className="px-4 py-2.5">Escolha</th>
-                    <th className="px-4 py-2.5 text-right">Pontos</th>
+                    <th className="px-4 py-2.5">{t('regulamento.s3.colChoice')}</th>
+                    <th className="px-4 py-2.5 text-right">{t('regulamento.s3.colPoints')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
-                    { emoji: '🏆', label: 'Campeão correto', pts: 30 },
-                    { emoji: '⚽', label: 'Artilheiro correto', pts: 20 },
-                    { emoji: '🌟', label: 'Melhor jogador correto', pts: 15 },
-                    { emoji: '🥈', label: 'Vice-campeão correto', pts: 15 },
-                    { emoji: '🥉', label: '3º lugar correto', pts: 10 },
-                    { emoji: '🛡️', label: 'Melhor defesa (menos gols sofridos)', pts: 10, auto: true },
+                    { emoji: '🏆', label: t('regulamento.s3.champion'), pts: 30 },
+                    { emoji: '⚽', label: t('regulamento.s3.topScorer'), pts: 20 },
+                    { emoji: '🌟', label: t('regulamento.s3.bestPlayer'), pts: 15 },
+                    { emoji: '🥈', label: t('regulamento.s3.runnerUp'), pts: 15 },
+                    { emoji: '🥉', label: t('regulamento.s3.third'), pts: 10 },
+                    { emoji: '🛡️', label: t('regulamento.s3.bestDefense'), pts: 10, auto: true },
                   ].map(({ emoji, label, pts, auto }) => (
                     <tr key={label} className="border-b border-white/5 last:border-0">
                       <td className="px-4 py-2.5 text-zinc-300">
                         <span className="mr-2">{emoji}</span>{label}
-                        {auto && <span className="ml-2 text-xs text-zinc-600">(calculada automaticamente)</span>}
+                        {auto && <span className="ml-2 text-xs text-zinc-600">{t('regulamento.s3.auto')}</span>}
                       </td>
                       <td className="px-4 py-2.5 text-right font-bold text-brasil-yellow">+{pts}</td>
                     </tr>
@@ -135,21 +135,21 @@ export function Regulamento() {
               <div className="rounded-lg bg-brasil-green/15 p-2">
                 <BarChart3 className="h-5 w-5 text-brasil-green" />
               </div>
-              <h2 className="font-display text-2xl tracking-wide">Classificação final</h2>
+              <h2 className="font-display text-2xl tracking-wide">{t('regulamento.s4.title')}</h2>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-3 rounded-xl bg-white/[0.04] px-4 py-3">
                 <Trophy className="h-5 w-5 text-brasil-yellow shrink-0" />
                 <p className="text-sm text-zinc-300">
-                  <strong>Total = Pontos de palpites + Pontos especiais</strong>
+                  <strong>{t('regulamento.s4.total')}</strong>
                 </p>
               </div>
               <div className="rounded-xl bg-white/[0.04] px-4 py-3">
-                <p className="text-sm font-medium text-zinc-400 mb-2">Critérios de desempate (em ordem):</p>
+                <p className="text-sm font-medium text-zinc-400 mb-2">{t('regulamento.s4.tiebreak')}</p>
                 <ol className="space-y-1.5 text-sm text-zinc-500">
-                  <li className="flex gap-2"><span className="text-zinc-600">1.</span> Mais acertos de placar exato</li>
-                  <li className="flex gap-2"><span className="text-zinc-600">2.</span> Mais acertos de vencedor/empate</li>
-                  <li className="flex gap-2"><span className="text-zinc-600">3.</span> Ordem alfabética do nome</li>
+                  <li className="flex gap-2"><span className="text-zinc-600">1.</span> {t('regulamento.s4.tb1')}</li>
+                  <li className="flex gap-2"><span className="text-zinc-600">2.</span> {t('regulamento.s4.tb2')}</li>
+                  <li className="flex gap-2"><span className="text-zinc-600">3.</span> {t('regulamento.s4.tb3')}</li>
                 </ol>
               </div>
             </div>
@@ -161,17 +161,17 @@ export function Regulamento() {
               <div className="rounded-lg bg-zinc-700/50 p-2">
                 <Shield className="h-5 w-5 text-zinc-400" />
               </div>
-              <h2 className="font-display text-2xl tracking-wide">Regras gerais</h2>
+              <h2 className="font-display text-2xl tracking-wide">{t('regulamento.s5.title')}</h2>
             </div>
             <ul className="space-y-2 text-sm text-zinc-400">
               {[
-                'Palpites são bloqueados automaticamente quando o jogo inicia.',
-                'Não é possível alterar palpites após o início da partida.',
-                'Escolhas especiais são feitas no primeiro acesso e não podem ser editadas.',
-                'Após 27/06/2026 (fim da fase de grupos), as escolhas dos participantes são reveladas para todos.',
-                'Os resultados finais e pontos especiais são calculados pelo administrador ao término da Copa.',
-                'O administrador não participa do bolão.',
-                'O bolão é fechado — acesso exclusivo por convite.',
+                t('regulamento.s5.r1'),
+                t('regulamento.s5.r2'),
+                t('regulamento.s5.r3'),
+                t('regulamento.s5.r4'),
+                t('regulamento.s5.r5'),
+                t('regulamento.s5.r6'),
+                t('regulamento.s5.r7'),
               ].map((r) => (
                 <li key={r} className="flex gap-2">
                   <span className="mt-0.5 text-brasil-green shrink-0">•</span>
@@ -185,7 +185,7 @@ export function Regulamento() {
       </main>
 
       <footer className="border-t border-white/5 px-6 py-6 text-center text-sm text-zinc-600">
-        {APP_FULL_NAME} — feito com ⚽ e ☕
+        {APP_FULL_NAME} — {t('landing.footer')}
       </footer>
     </div>
   )

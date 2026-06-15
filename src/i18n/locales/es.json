@@ -173,7 +173,8 @@
     "empty": "Aún no hay mensajes. ¡Sé el primero en comentar!",
     "placeholder": "Comenta… usa @ para mencionar a alguien",
     "mentionedYou": "{{name}} te mencionó",
-    "delete": "Eliminar"
+    "delete": "Eliminar",
+    "reactions": { "goal": "¡Gol!", "whatGame": "¡Qué partido!", "noWay": "¡No me lo creo!", "blunder": "Qué cagada", "nailedIt": "¡Acerté!", "rip": "Me metieron" }
   },
   "matchPicks": {
     "title": "Pronósticos",
@@ -184,8 +185,28 @@
     "byPoints": "ordenados por puntos",
     "revealed": "marcadores revelados (el partido ya empezó)"
   },
-  "simulator": { "title": "Simulador del", "titleAccent": "Mundial", "subtitle": "Completa los marcadores y descubre quién levanta la copa. Los resultados reales se aplican automáticamente y no se pueden cambiar." },
-  "regulamento": { "titleAccent": "Reglamento", "subtitle": "Todo lo que necesitas saber para ganar el bolão." },
+  "simulator": {
+    "title": "Simulador del", "titleAccent": "Mundial",
+    "subtitle": "Completa los marcadores y descubre quién levanta la copa. Los resultados reales se aplican automáticamente y no se pueden cambiar.",
+    "simulateRandom": "Simular al azar", "reset": "Reiniciar",
+    "s1Pre": "1 · Fase de", "s1Accent": "Grupos",
+    "s2Pre": "2 · Mejores", "s2Accent": "Terceros",
+    "thirdsHint": "Completa los marcadores de todos los grupos para calcular los 8 mejores terceros y desbloquear el cuadro — o usa el botón",
+    "s3Pre": "3 ·", "s3Accent": "Eliminatorias",
+    "koHint": "¿Empate? Elige quién avanza en los penales. Desliza para ver todas las fases.",
+    "penalties": "Penales:", "worldChampion": "Campeón del mundo", "simulateFinal": "Simula la final para conocer al campeón",
+    "rounds": { "0": "Dieciseisavos", "1": "Octavos de final", "2": "Cuartos de final", "3": "Semifinales", "4": "Final" }
+  },
+  "regulamento": {
+    "titleAccent": "Reglamento",
+    "subtitle": "Todo lo que necesitas saber para ganar el bolão.",
+    "points": "puntos",
+    "s1": { "title": "Cómo funciona", "p1": "{{name}} es un juego cerrado, solo por invitación. Cada participante envía sus pronósticos de marcador para los partidos del Mundial antes de que empiece cada juego.", "p2pre": "Sigue la clasificación en vivo en el", "p2link": "Ranking", "p2post": "y mira quién manda.", "p3": "Los pronósticos se bloquean en cuanto empieza el partido. No se puede cambiar un pronóstico ya guardado." },
+    "s2": { "title": "Puntuación de pronósticos", "exact": "Marcador exacto", "winner": "Ganador o empate correcto", "wrong": "Resultado incorrecto", "example": "Ejemplo", "exampleIntro": "Partido finalizado", "youGuessed": "Pronosticaste", "homeWins": "(gana Brasil)", "awayWins": "(gana Argentina)" },
+    "s3": { "title": "Elecciones especiales", "bonus": "bono", "intro": "Se hacen en el primer acceso. No se pueden cambiar una vez confirmadas.", "colChoice": "Elección", "colPoints": "Puntos", "champion": "Campeón correcto", "topScorer": "Goleador correcto", "bestPlayer": "Mejor jugador correcto", "runnerUp": "Subcampeón correcto", "third": "Tercer lugar correcto", "bestDefense": "Mejor defensa (menos goles recibidos)", "auto": "(calculada automáticamente)" },
+    "s4": { "title": "Clasificación final", "total": "Total = Puntos de pronósticos + Puntos especiales", "tiebreak": "Criterios de desempate (en orden):", "tb1": "Más marcadores exactos", "tb2": "Más aciertos de ganador/empate", "tb3": "Orden alfabético del nombre" },
+    "s5": { "title": "Reglas generales", "r1": "Los pronósticos se bloquean automáticamente al empezar el partido.", "r2": "No se pueden cambiar pronósticos tras el inicio del partido.", "r3": "Las elecciones especiales se hacen en el primer acceso y no se pueden editar.", "r4": "Tras el 27/06/2026 (fin de la fase de grupos), las elecciones de los participantes se revelan a todos.", "r5": "Los resultados finales y puntos especiales los calcula el administrador al terminar el Mundial.", "r6": "El administrador no participa en el juego.", "r7": "El juego es cerrado — acceso solo por invitación." }
+  },
   "storiesPage": {
     "title": "Stories del",
     "titleAccent": "Bolão",
