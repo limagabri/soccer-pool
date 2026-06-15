@@ -327,52 +327,52 @@ export function Palpites() {
                   </div>
 
                   {/* Barra de ações: compartilhar + palpites de todos + chat */}
-                  <div className="mt-3 flex items-center gap-1 border-t border-white/5 pt-3">
+                  <div className="mt-3 flex flex-wrap items-center gap-1 border-t border-white/5 pt-3">
                     {palpite && (
                       <CompartilharCard jogo={jogo} palpite={palpite} />
                     )}
-                    {comecou && (
+                    <div className="ml-auto flex items-center gap-1">
+                      {comecou && (
+                        <button
+                          onClick={() => togglePalpites(jogo.id)}
+                          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition ${
+                            palpitesEstaAberto
+                              ? 'bg-brasil-yellow/15 text-brasil-yellow'
+                              : 'text-zinc-500 hover:bg-white/5 hover:text-zinc-300'
+                          }`}
+                        >
+                          <Users className="h-3.5 w-3.5" />
+                          Palpites
+                          {qtdPalpites > 0 && (
+                            <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
+                              {qtdPalpites}
+                            </span>
+                          )}
+                          <ChevronDown
+                            className={`h-3 w-3 transition-transform ${palpitesEstaAberto ? 'rotate-180' : ''}`}
+                          />
+                        </button>
+                      )}
                       <button
-                        onClick={() => togglePalpites(jogo.id)}
-                        className={`ml-auto flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition ${
-                          palpitesEstaAberto
-                            ? 'bg-brasil-yellow/15 text-brasil-yellow'
+                        onClick={() => toggleChat(jogo.id)}
+                        className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition ${
+                          chatEstaAberto
+                            ? 'bg-brasil-green/15 text-brasil-green'
                             : 'text-zinc-500 hover:bg-white/5 hover:text-zinc-300'
                         }`}
                       >
-                        <Users className="h-3.5 w-3.5" />
-                        Palpites
-                        {qtdPalpites > 0 && (
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        Chat
+                        {qtdComentarios > 0 && (
                           <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
-                            {qtdPalpites}
+                            {qtdComentarios}
                           </span>
                         )}
                         <ChevronDown
-                          className={`h-3 w-3 transition-transform ${palpitesEstaAberto ? 'rotate-180' : ''}`}
+                          className={`h-3 w-3 transition-transform ${chatEstaAberto ? 'rotate-180' : ''}`}
                         />
                       </button>
-                    )}
-                    <button
-                      onClick={() => toggleChat(jogo.id)}
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition ${
-                        comecou ? '' : 'ml-auto'
-                      } ${
-                        chatEstaAberto
-                          ? 'bg-brasil-green/15 text-brasil-green'
-                          : 'text-zinc-500 hover:bg-white/5 hover:text-zinc-300'
-                      }`}
-                    >
-                      <MessageCircle className="h-3.5 w-3.5" />
-                      Chat
-                      {qtdComentarios > 0 && (
-                        <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
-                          {qtdComentarios}
-                        </span>
-                      )}
-                      <ChevronDown
-                        className={`h-3 w-3 transition-transform ${chatEstaAberto ? 'rotate-180' : ''}`}
-                      />
-                    </button>
+                    </div>
                   </div>
 
                   {/* Palpites de todos — expandido */}
