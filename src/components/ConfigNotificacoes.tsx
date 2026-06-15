@@ -1,23 +1,25 @@
+import { useTranslation } from 'react-i18next'
 import { useNotificacoes } from '../hooks/useNotificacoes'
 
 export function ConfigNotificacoes() {
+  const { t } = useTranslation()
   const { status, ativar, desativar } = useNotificacoes()
 
   const label: Record<typeof status, string> = {
-    loading: 'Verificando…',
-    unsupported: 'Não suportado neste dispositivo',
-    denied: 'Bloqueado pelo navegador — habilite nas configurações',
-    off: 'Desativadas',
-    on: 'Ativadas',
+    loading: t('profile.notifications.loading'),
+    unsupported: t('profile.notifications.unsupported'),
+    denied: t('profile.notifications.denied'),
+    off: t('profile.notifications.off'),
+    on: t('profile.notifications.on'),
   }
 
   return (
     <div className="glass p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="font-semibold text-gray-900 dark:text-zinc-100">🔔 Notificações</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-zinc-100">🔔 {t('profile.notifications.title')}</h3>
           <p className="mt-0.5 text-sm text-gray-500 dark:text-zinc-500">
-            Seja avisado 1h antes de cada jogo
+            {t('profile.notifications.subtitle')}
           </p>
           <p className={`mt-2 text-xs font-medium ${
             status === 'on' ? 'text-brasil-green' :

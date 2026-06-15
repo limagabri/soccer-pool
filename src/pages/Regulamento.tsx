@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Award, BarChart3, BookOpen, Shield, Target, Trophy } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { APP_FULL_NAME } from '../config/app'
 
@@ -15,6 +16,7 @@ const container = {
 }
 
 export function Regulamento() {
+  const { t } = useTranslation()
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -27,9 +29,9 @@ export function Regulamento() {
 
         <div className="mb-10">
           <h1 className="font-display text-5xl tracking-wide sm:text-6xl">
-            <span className="text-brasil-green">Regulamento</span>
+            <span className="text-brasil-green">{t('regulamento.titleAccent')}</span>
           </h1>
-          <p className="mt-2 text-zinc-400">Tudo que você precisa saber para ganhar o bolão.</p>
+          <p className="mt-2 text-zinc-400">{t('regulamento.subtitle')}</p>
         </div>
 
         <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">

@@ -329,10 +329,10 @@ export function Dashboard() {
               </span>
               <span>
                 <span className="block font-display text-xl tracking-wide text-zinc-100">
-                  Ver stories
+                  {t('storiesPage.viewAll')}
                 </span>
                 <span className="block text-sm text-zinc-400">
-                  {stories.length} {stories.length === 1 ? 'card' : 'cards'} do Seu Zé · toque para abrir
+                  {t('storiesPage.cardsCount', { count: stories.length })}
                 </span>
               </span>
             </button>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Send, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -74,6 +75,7 @@ function renderComMencoes(texto: string, nomes: string[]): ReactNode {
 }
 
 export function ChatJogo({ jogo_id }: Props) {
+  const { t } = useTranslation()
   const { user, profile, isAdmin } = useAuth()
   const [comentarios, setComentarios] = useState<Comentario[]>([])
   const [texto, setTexto] = useState('')
@@ -188,7 +190,7 @@ export function ChatJogo({ jogo_id }: Props) {
       supabase.functions.invoke('enviar-push', {
         body: {
           user_ids: mencionados,
-          titulo: `💬 ${profile?.username ?? 'Alguém'} te marcou`,
+          titulo: `💬 ${t('chat.mentionedYou', { name: profile?.username ?? '' })}`,
           mensagem: conteudo.slice(0, 120),
           url: 'palpites', // relativo ao scope do SW (base-agnóstico)
         },
@@ -224,7 +226,7 @@ export function ChatJogo({ jogo_id }: Props) {
           </div>
         ) : comentarios.length === 0 ? (
           <p className="py-4 text-center text-xs text-zinc-600">
-            Nenhuma mensagem ainda. Seja o primeiro a comentar!
+            {t('chat.empty')}
           </p>
         ) : (
           <AnimatePresence initial={false}>
@@ -263,7 +265,7 @@ export function ChatJogo({ jogo_id }: Props) {
                         <button
                           onClick={() => deletar(c.id)}
                           className="text-zinc-700 transition hover:text-red-500"
-                          title="Deletar"
+                          title={t('chat.delete')}
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
@@ -319,7 +321,7 @@ export function ChatJogo({ jogo_id }: Props) {
             value={texto}
             onChange={(e) => setTexto(e.target.value.slice(0, 280))}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviar() } }}
-            placeholder="Comente… use @ para marcar alguém"
+            placeholder={t('chat.placeholder')}
             rows={1}
             className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2 pr-12 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-brasil-green/50"
           />

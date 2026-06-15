@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Download, Share2, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import html2canvas from 'html2canvas'
 import { StoryHallVergonha } from './stories/StoryHallVergonha'
 import { StoryZebraDia } from './stories/StoryZebraDia'
@@ -47,6 +48,7 @@ function StoryCard({ story }: { story: StoryData }) {
 }
 
 export function StoriesViewer({ stories, initialIndex = 0, onClose }: Props) {
+  const { t } = useTranslation()
   const [idx, setIdx] = useState(initialIndex)
   const cardRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef(0)
@@ -197,7 +199,7 @@ export function StoriesViewer({ stories, initialIndex = 0, onClose }: Props) {
           </button>
           <div className="flex flex-col items-center leading-tight">
             <span className="text-xs text-zinc-400">{idx + 1} / {stories.length}</span>
-            <span className="text-[10px] text-zinc-600">segure para pausar</span>
+            <span className="text-[10px] text-zinc-600">{t('storiesPage.hold')}</span>
           </div>
           <button
             onClick={next}

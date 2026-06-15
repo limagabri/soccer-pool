@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Loader2, Pencil, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { Toast, type ToastInfo } from '../components/Toast'
 import { ConfigNotificacoes } from '../components/ConfigNotificacoes'
@@ -11,6 +12,7 @@ import { calcularPontos, formatarData } from '../lib/utils'
 import type { Palpite } from '../types'
 
 export function Perfil() {
+  const { t } = useTranslation()
   const { user, profile, refreshProfile } = useAuth()
   const { jogos } = useJogos()
 
@@ -140,7 +142,7 @@ export function Perfil() {
                     setNovoUsername(username)
                     setEditando(true)
                   }}
-                  title="Editar nome"
+                  title={t('profile.editName')}
                   className="rounded-lg p-2 text-zinc-500 transition hover:bg-white/5 hover:text-brasil-yellow"
                 >
                   <Pencil className="h-4 w-4" />
@@ -154,9 +156,9 @@ export function Perfil() {
         {/* Estatísticas */}
         <div className="mt-6 grid grid-cols-3 gap-4">
           {[
-            { rotulo: 'Pontos', valor: stats.pontos, cor: 'text-brasil-yellow' },
-            { rotulo: 'Palpites', valor: stats.palpites, cor: 'text-zinc-100' },
-            { rotulo: 'Placares exatos', valor: stats.exatos, cor: 'text-brasil-green' },
+            { rotulo: t('profile.stats.points'), valor: stats.pontos, cor: 'text-brasil-yellow' },
+            { rotulo: t('profile.stats.predictions'), valor: stats.palpites, cor: 'text-zinc-100' },
+            { rotulo: t('profile.stats.exactScores'), valor: stats.exatos, cor: 'text-brasil-green' },
           ].map(({ rotulo, valor, cor }, i) => (
             <motion.div
               key={rotulo}
@@ -178,7 +180,7 @@ export function Perfil() {
 
         {/* Histórico */}
         <h2 className="mt-10 font-display text-3xl tracking-wide">
-          Últimos <span className="text-brasil-green">palpites</span>
+          {t('profile.lastPredictions')}
         </h2>
 
         {loading ? (
@@ -189,7 +191,7 @@ export function Perfil() {
           </div>
         ) : historico.length === 0 ? (
           <p className="glass mt-4 p-8 text-center text-zinc-500">
-            Você ainda não fez nenhum palpite.
+            {t('profile.noPredictions')}
           </p>
         ) : (
           <div className="glass mt-4 divide-y divide-white/5">

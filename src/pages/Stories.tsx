@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { StoriesViewer, type StoryData } from '../components/StoriesViewer'
 import { StoryHallVergonha } from '../components/stories/StoryHallVergonha'
@@ -39,6 +40,7 @@ function MiniCard({ story, onClick }: { story: StoryData; onClick: () => void })
 }
 
 export function Stories() {
+  const { t } = useTranslation()
   const [stories, setStories] = useState<StoryData[]>([])
   const [loading, setLoading] = useState(true)
   const [viewerIdx, setViewerIdx] = useState<number | null>(null)
@@ -60,11 +62,9 @@ export function Stories() {
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <h1 className="font-display text-4xl tracking-wide sm:text-5xl">
-          Stories do <span className="text-brasil-yellow">Bolão</span>
+          {t('storiesPage.title')} <span className="text-brasil-yellow">{t('storiesPage.titleAccent')}</span>
         </h1>
-        <p className="mt-3 text-zinc-400">
-          Os melhores momentos do bolão em cards cômicos gerados pelo Seu Zé.
-        </p>
+        <p className="mt-3 text-zinc-400">{t('storiesPage.subtitle')}</p>
 
         <div className="mt-10">
           {loading ? (
@@ -73,7 +73,7 @@ export function Stories() {
             </div>
           ) : stories.length === 0 ? (
             <div className="glass p-10 text-center text-zinc-500">
-              Nenhum story publicado ainda. O Seu Zé está preparando o material! 👴🏽
+              {t('storiesPage.empty')}
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

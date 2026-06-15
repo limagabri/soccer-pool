@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import { calcularPontos } from '../lib/utils'
@@ -21,6 +22,7 @@ interface PalpiteLinha {
 // Mostra os palpites de todos os participantes para um jogo. Só deve ser
 // renderizado depois que o jogo começou — antes disso seria injusto revelar.
 export function PalpitesJogo({ jogo }: Props) {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const [linhas, setLinhas] = useState<PalpiteLinha[]>([])
   const [loading, setLoading] = useState(true)
@@ -95,7 +97,7 @@ export function PalpitesJogo({ jogo }: Props) {
   if (ordenadas.length === 0) {
     return (
       <p className="py-4 text-center text-xs text-zinc-600">
-        Ninguém palpitou neste jogo.
+        {t('matchPicks.empty')}
       </p>
     )
   }
@@ -103,8 +105,8 @@ export function PalpitesJogo({ jogo }: Props) {
   return (
     <div className="space-y-1.5">
       <p className="mb-2 text-xs text-zinc-500">
-        {ordenadas.length} {ordenadas.length === 1 ? 'palpite' : 'palpites'} ·{' '}
-        {encerrado ? 'ordenados por pontos' : 'placar revelado (jogo já começou)'}
+        {t('matchPicks.count', { count: ordenadas.length })} ·{' '}
+        {encerrado ? t('matchPicks.byPoints') : t('matchPicks.revealed')}
       </p>
       {ordenadas.map((l, i) => {
         const sou = l.user_id === user?.id
@@ -131,7 +133,7 @@ export function PalpitesJogo({ jogo }: Props) {
             </div>
             <span className="flex-1 truncate text-sm text-zinc-300">
               {l.username}
-              {sou && <span className="ml-1.5 text-xs font-semibold text-brasil-green">você</span>}
+              {sou && <span className="ml-1.5 text-xs font-semibold text-brasil-green">{t('matchPicks.you')}</span>}
             </span>
             <span className={`font-mono text-sm font-bold tabular-nums ${cor}`}>
               {l.gols_casa} <span className="text-zinc-600">x</span> {l.gols_fora}

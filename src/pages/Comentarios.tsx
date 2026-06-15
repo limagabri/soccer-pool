@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { ComentaristaCard } from '../components/ComentaristaCard'
 import { supabase } from '../lib/supabase'
@@ -22,6 +23,7 @@ const TIPO_LABEL: Record<string, string> = {
 }
 
 export function Comentarios() {
+  const { t } = useTranslation()
   const [comentarios, setComentarios] = useState<ComentarioIA[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -42,11 +44,9 @@ export function Comentarios() {
       <Navbar />
       <main className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
         <h1 className="font-display text-4xl tracking-wide sm:text-5xl">
-          Comentários do <span className="text-brasil-green">Seu Zé</span>
+          {t('comentarios.title')} <span className="text-brasil-green">{t('comentarios.titleAccent')}</span>
         </h1>
-        <p className="mt-3 text-zinc-400">
-          O nosso comentarista oficial dá seu veredito sobre cada rodada do bolão.
-        </p>
+        <p className="mt-3 text-zinc-400">{t('comentarios.subtitle')}</p>
 
         <div className="mt-10 space-y-6">
           {loading ? (

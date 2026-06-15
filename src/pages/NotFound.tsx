@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Home } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export function NotFound() {
+  const { t } = useTranslation()
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
       <motion.div
@@ -22,10 +24,10 @@ export function NotFound() {
           404
         </h1>
         <p className="mt-3 text-xl font-semibold text-gray-800 dark:text-zinc-200">
-          Essa bola saiu pela linha de fundo
+          {t('notFound.headline')}
         </p>
         <p className="mt-2 text-gray-500 dark:text-zinc-500">
-          A página que você procura não existe ou foi movida.
+          {t('notFound.subtitle')}
         </p>
 
         <Link
@@ -33,7 +35,7 @@ export function NotFound() {
           className="btn-gradient mt-8 inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold text-black"
         >
           <Home className="h-4 w-4" />
-          Voltar ao início
+          {t('notFound.back')}
         </Link>
       </motion.div>
     </div>

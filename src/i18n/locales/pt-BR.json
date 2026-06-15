@@ -43,6 +43,9 @@
   },
   "predictions": {
     "title": "Meus Palpites",
+    "titlePre": "Meus",
+    "titleAccent": "Palpites",
+    "yourPick": "Seu palpite:",
     "subtitle": "Placar exato vale {{exact}} pts, acertar o vencedor ou empate vale {{winner}} pts.",
     "save": "Salvar palpite",
     "update": "Atualizar palpite",
@@ -57,6 +60,7 @@
     "correctWinner": "✓ Acertou o vencedor",
     "wrong": "✗ Errou",
     "filters": {
+      "now": "Próximos",
       "all": "Todos",
       "round1": "Rodada 1",
       "round2": "Rodada 2",
@@ -66,6 +70,7 @@
   },
   "ranking": {
     "title": "Ranking",
+    "titleSuffix": "Geral",
     "subtitle": "Quem está entendendo de futebol até agora? Atualiza em tempo real.",
     "you": "você",
     "noPredictions": "Nenhum palpite registrado ainda.",
@@ -110,6 +115,7 @@
   },
   "statistics": {
     "title": "Estatísticas",
+    "subtitle": "Artilharia, defesas e escolhas especiais.",
     "tabs": {
       "scorers": "Artilharia",
       "teams": "Por seleção",
@@ -129,15 +135,6 @@
     "noExact": "Nenhum placar exato ainda. Vai que o próximo sai!",
     "inOf": "em {{done}}/{{total}} palpites",
     "outOf": "de {{count}} participante{{s}}"
-  },
-  "simulator": {
-    "title": "Simulador"
-  },
-  "groups": {
-    "title": "Grupos"
-  },
-  "regulamento": {
-    "title": "Regulamento"
   },
   "notFound": {
     "title": "404",
@@ -161,6 +158,64 @@
   },
   "pwa": {
     "install": "Instale o {{name}} no seu celular",
-    "installBtn": "Instalar"
+    "installBtn": "Instalar",
+    "installIos": "Instale o {{name}} no seu iPhone",
+    "iosStep": "Toque em",
+    "iosShare": "Compartilhar",
+    "iosThen": "e depois",
+    "iosAdd": "Adicionar à Tela de Início",
+    "androidManual": "Abra o menu do Chrome e toque em Instalar app (ou Adicionar à tela inicial)."
+  },
+  "footer": { "madeBy": "Feito por" },
+  "groups": {
+    "title": "Fase de",
+    "titleAccent": "Grupos",
+    "subtitle": "Classificação atualizada em tempo real conforme os resultados saem.",
+    "loadError": "Erro ao carregar jogos:",
+    "team": "Seleção",
+    "qualifyDirect": "Classificados diretos",
+    "qualifyThird": "Disputa vaga de melhor 3º",
+    "matchesOf": "Jogos do Grupo {{group}}",
+    "std": { "p": "J", "w": "V", "d": "E", "l": "D", "gf": "GP", "ga": "GC", "gd": "SG", "pts": "Pts" }
+  },
+  "chat": {
+    "empty": "Nenhuma mensagem ainda. Seja o primeiro a comentar!",
+    "placeholder": "Comente… use @ para marcar alguém",
+    "mentionedYou": "{{name}} te marcou",
+    "delete": "Deletar"
+  },
+  "matchPicks": {
+    "title": "Palpites",
+    "empty": "Ninguém palpitou neste jogo.",
+    "you": "você",
+    "count_one": "{{count}} palpite",
+    "count_other": "{{count}} palpites",
+    "byPoints": "ordenados por pontos",
+    "revealed": "placar revelado (jogo já começou)"
+  },
+  "simulator": { "title": "Simulador da", "titleAccent": "Copa", "subtitle": "Preencha os placares e descubra quem levanta a taça. Resultados reais entram automaticamente e não podem ser alterados." },
+  "regulamento": { "titleAccent": "Regulamento", "subtitle": "Tudo que você precisa saber para ganhar o bolão." },
+  "storiesPage": {
+    "title": "Stories do",
+    "titleAccent": "Bolão",
+    "subtitle": "Os melhores momentos do bolão em cards cômicos gerados pelo Seu Zé.",
+    "empty": "Nenhum story publicado ainda. O Seu Zé está preparando o material! 👴🏽",
+    "hold": "segure para pausar",
+    "viewAll": "Ver stories",
+    "cardsCount_one": "{{count}} card do Seu Zé · toque para abrir",
+    "cardsCount_other": "{{count}} cards do Seu Zé · toque para abrir"
+  },
+  "comentarios": {
+    "title": "Comentários do",
+    "titleAccent": "Seu Zé",
+    "subtitle": "O nosso comentarista oficial dá seu veredito sobre cada rodada do bolão."
+  },
+  "notif": {
+    "title": "Notificações",
+    "subtitle": "Seja avisado quando te marcarem no chat",
+    "on": "Ativadas",
+    "off": "Ativar",
+    "denied": "Bloqueado — habilite nas configurações do navegador",
+    "unsupported": "Não suportado neste dispositivo"
   }
 }

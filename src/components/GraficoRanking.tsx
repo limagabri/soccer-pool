@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { useTranslation } from 'react-i18next'
 import type { EntradaHistorico } from '../hooks/useRankingHistorico'
 
 const CORES = [
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function GraficoRanking({ historico, usernames }: Props) {
+  const { t } = useTranslation()
   const datas = useMemo(
     () => [...new Set(historico.map((h) => h.data))].sort(),
     [historico]
@@ -49,7 +51,7 @@ export function GraficoRanking({ historico, usernames }: Props) {
   if (datas.length < 2) {
     return (
       <p className="py-6 text-center text-sm text-zinc-600">
-        Histórico insuficiente — o gráfico aparece após 2 dias de registro.
+        {t('ranking.noHistory')}
       </p>
     )
   }

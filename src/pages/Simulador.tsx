@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Dices, Lock, RotateCcw, Trophy } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { useJogos } from '../hooks/useJogos'
 import {
@@ -130,6 +131,7 @@ function CardMataMata({
 }
 
 export function Simulador() {
+  const { t } = useTranslation()
   const { jogos, loading, error } = useJogos()
   const [placares, setPlacares] = useState<Placares>({})
   const [ko, setKo] = useState<ResultadosMataMata>({})
@@ -257,11 +259,10 @@ export function Simulador() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display text-4xl tracking-wide sm:text-5xl md:text-6xl">
-              Simulador da <span className="text-brasil-green">Copa</span>
+              {t('simulator.title')} <span className="text-brasil-green">{t('simulator.titleAccent')}</span>
             </h1>
             <p className="mt-2 text-zinc-400">
-              Preencha os placares e descubra quem levanta a taça. Resultados reais entram
-              automaticamente e não podem ser alterados.
+              {t('simulator.subtitle')}
             </p>
           </div>
           <div className="flex gap-3">

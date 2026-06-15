@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Download, Share, Plus, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { APP_FULL_NAME } from '../config/app'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
@@ -32,6 +34,7 @@ function isIOS(): boolean {
 }
 
 export function InstalarPWA() {
+  const { t } = useTranslation()
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [visivel, setVisivel] = useState(false)
   const [modoIOS, setModoIOS] = useState(false)
@@ -114,22 +117,20 @@ export function InstalarPWA() {
                 <span className="text-xl">📱</span>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-800 dark:text-zinc-200">
-                    Instale o BolãoCopa 2026 no seu celular
+                    {t('pwa.install', { name: APP_FULL_NAME })}
                   </p>
                   {modoIOS ? (
                     <p className="mt-1 flex flex-wrap items-center gap-1 text-xs text-gray-600 dark:text-zinc-400">
-                      Toque em
+                      {t('pwa.iosStep')}
                       <Share className="inline h-3.5 w-3.5 text-blue-500" />
-                      <span className="font-semibold">Compartilhar</span>
-                      e depois
+                      <span className="font-semibold">{t('pwa.iosShare')}</span>
+                      {t('pwa.iosThen')}
                       <Plus className="inline h-3.5 w-3.5" />
-                      <span className="font-semibold">Adicionar à Tela de Início</span>
+                      <span className="font-semibold">{t('pwa.iosAdd')}</span>
                     </p>
                   ) : (
                     <p className="mt-1 text-xs text-gray-600 dark:text-zinc-400">
-                      Abra o menu <span className="font-semibold">⋮</span> do Chrome e toque em{' '}
-                      <span className="font-semibold">Instalar app</span> (ou{' '}
-                      <span className="font-semibold">Adicionar à tela inicial</span>).
+                      {t('pwa.androidManual')}
                     </p>
                   )}
                 </div>
@@ -144,14 +145,14 @@ export function InstalarPWA() {
               <div className="flex items-center gap-3">
                 <span className="text-xl">📱</span>
                 <p className="flex-1 text-sm font-medium text-gray-800 dark:text-zinc-200">
-                  Instale o BolãoCopa 2026 no seu celular
+                  {t('pwa.install', { name: APP_FULL_NAME })}
                 </p>
                 <button
                   onClick={instalar}
                   className="btn-gradient flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold text-black"
                 >
                   <Download className="h-3.5 w-3.5" />
-                  Instalar
+                  {t('pwa.installBtn')}
                 </button>
                 <button
                   onClick={fechar}

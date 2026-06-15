@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Loader2, Lock, MapPin, MessageCircle, Users } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { Toast, type ToastInfo } from '../components/Toast'
 import { ChatJogo } from '../components/ChatJogo'
@@ -13,12 +14,12 @@ import { calcularPontos, formatarData, jogoComecou } from '../lib/utils'
 import type { Jogo, Palpite } from '../types'
 
 const FILTROS = [
-  { id: 'agora', label: 'Próximos' },
-  { id: 'todos', label: 'Todos' },
-  { id: '1', label: 'Rodada 1' },
-  { id: '2', label: 'Rodada 2' },
-  { id: '3', label: 'Rodada 3' },
-  { id: 'meus', label: 'Meus palpites' },
+  { id: 'agora', key: 'now' },
+  { id: 'todos', key: 'all' },
+  { id: '1', key: 'round1' },
+  { id: '2', key: 'round2' },
+  { id: '3', key: 'round3' },
+  { id: 'meus', key: 'mine' },
 ]
 
 interface InputPlacar {
@@ -26,14 +27,14 @@ interface InputPlacar {
   f: string
 }
 
-function BadgePontos({ pontos }: { pontos: number }) {
+function BadgePontos({ pontos, t }: { pontos: number; t: (k: string) => string }) {
   const estilo =
     pontos === 10
       ? 'bg-brasil-green/20 text-brasil-green'
       : pontos === 5
         ? 'bg-brasil-yellow/20 text-brasil-yellow'
         : 'bg-red-500/10 text-red-400'
-  const rotulo = pontos === 10 ? '🎯 Placar exato' : pontos === 5 ? '✓ Acertou o vencedor' : '✗ Errou'
+  const rotulo = pontos === 10 ? t('predictions.exactScore') : pontos === 5 ? t('predictions.correctWinner') : t('predictions.wrong')
   return (
     <span className={`rounded-full px-3 py-1 text-xs font-semibold ${estilo}`}>
       {rotulo} · +{pontos} pts
@@ -42,6 +43,7 @@ function BadgePontos({ pontos }: { pontos: number }) {
 }
 
 export function Palpites() {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { jogos, loading: loadingJogos, error } = useJogos()
 
@@ -155,7 +157,7 @@ export function Palpites() {
     const gc = Number.parseInt(v?.c ?? '', 10)
     const gf = Number.parseInt(v?.f ?? '', 10)
     if (Number.isNaN(gc) || Number.isNaN(gf) || gc < 0 || gf < 0) {
-      setToast({ mensagem: 'Preencha um placar válido.', tipo: 'erro' })
+      setToast({ mensagem: t('predictions.invalidScore'), tipo: 'erro' })
       return
     }
 
@@ -171,11 +173,11 @@ export function Palpites() {
     setSalvando(null)
 
     if (error) {
-      setToast({ mensagem: 'Erro ao salvar palpite. Tente novamente.', tipo: 'erro' })
+      setToast({ mensagem: t('predictions.error'), tipo: 'erro' })
       return
     }
     setPalpites((prev) => ({ ...prev, [jogo.id]: data as Palpite }))
-    setToast({ mensagem: 'Palpite salvo! Boa sorte. 🍀', tipo: 'sucesso' })
+    setToast({ mensagem: t('predictions.saved'), tipo: 'sucesso' })
   }
 
   const loading = loadingJogos || loadingPalpites
@@ -186,12 +188,9 @@ export function Palpites() {
 
       <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
         <h1 className="font-display text-5xl tracking-wide sm:text-6xl">
-          Meus <span className="text-brasil-green">Palpites</span>
+          {t('predictions.titlePre')} <span className="text-brasil-green">{t('predictions.titleAccent')}</span>
         </h1>
-        <p className="mt-2 text-zinc-400">
-          Placar exato vale <strong className="text-brasil-green">10 pts</strong>, acertar o
-          vencedor ou empate vale <strong className="text-brasil-yellow">5 pts</strong>.
-        </p>
+        <p className="mt-2 text-zinc-400">{t('predictions.subtitle', { exact: 10, winner: 5 })}</p>
 
         {/* Filtros */}
         <div className="mt-8 flex gap-2 overflow-x-auto pb-1">
@@ -205,14 +204,14 @@ export function Palpites() {
                   : 'glass text-zinc-400 hover:text-zinc-100'
               }`}
             >
-              {f.label}
+              {t(`predictions.filters.${f.key}`)}
             </button>
           ))}
         </div>
 
         {error && (
           <p className="mt-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-            Erro ao carregar jogos: {error}
+            {t('groups.loadError')} {error}
           </p>
         )}
 
@@ -228,7 +227,7 @@ export function Palpites() {
           <div className="mt-6 space-y-4">
             {jogosFiltrados.length === 0 && (
               <p className="glass p-8 text-center text-zinc-500">
-                Nenhum jogo aqui ainda.
+                {t('predictions.noneYet')}
               </p>
             )}
             {jogosFiltrados.map((jogo, i) => {
@@ -250,7 +249,7 @@ export function Palpites() {
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-500">
                     <span>
-                      Jogo {jogo.numero_jogo} · Grupo {jogo.grupo} · Rodada {jogo.rodada}
+                      {t('common.match')} {jogo.numero_jogo} · {t('common.group')} {jogo.grupo} · {t('common.round')} {jogo.rodada}
                     </span>
                     <span className="flex items-center gap-1">
                       <MapPin className="h-3 w-3" />
@@ -270,7 +269,7 @@ export function Palpites() {
                       </span>
                     ) : comecou ? (
                       <span className="flex items-center gap-1 text-sm text-zinc-500">
-                        <Lock className="h-4 w-4" /> Em andamento
+                        <Lock className="h-4 w-4" /> {t('predictions.inProgress')}
                       </span>
                     ) : (
                       <div className="flex items-center gap-2">
@@ -299,19 +298,20 @@ export function Palpites() {
                     {jogo.encerrado && palpite && (
                       <>
                         <span className="text-sm text-zinc-400">
-                          Seu palpite: <strong>{palpite.gols_casa} x {palpite.gols_fora}</strong>
+                          {t('predictions.yourPick')} <strong>{palpite.gols_casa} x {palpite.gols_fora}</strong>
                         </span>
                         <BadgePontos
+                          t={t}
                           pontos={calcularPontos(palpite.gols_casa, palpite.gols_fora, jogo.gols_casa!, jogo.gols_fora!)}
                         />
                       </>
                     )}
                     {jogo.encerrado && !palpite && (
-                      <span className="text-sm text-zinc-600">Você não palpitou neste jogo.</span>
+                      <span className="text-sm text-zinc-600">{t('predictions.noPrediction')}</span>
                     )}
                     {!jogo.encerrado && comecou && palpite && (
                       <span className="text-sm text-zinc-400">
-                        Seu palpite: <strong>{palpite.gols_casa} x {palpite.gols_fora}</strong> · aguardando resultado
+                        {t('predictions.yourPick')} <strong>{palpite.gols_casa} x {palpite.gols_fora}</strong> · {t('predictions.awaiting')}
                       </span>
                     )}
                     {!comecou && (
@@ -321,7 +321,7 @@ export function Palpites() {
                         className="btn-gradient flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-bold text-black disabled:opacity-60"
                       >
                         {salvando === jogo.id && <Loader2 className="h-4 w-4 animate-spin" />}
-                        {palpite ? 'Atualizar palpite' : 'Salvar palpite'}
+                        {palpite ? t('predictions.update') : t('predictions.save')}
                       </button>
                     )}
                   </div>
@@ -342,7 +342,7 @@ export function Palpites() {
                           }`}
                         >
                           <Users className="h-3.5 w-3.5" />
-                          Palpites
+                          {t('matchPicks.title')}
                           {qtdPalpites > 0 && (
                             <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
                               {qtdPalpites}

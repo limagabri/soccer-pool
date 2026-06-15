@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BarChart2, ChevronDown, Star } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { GraficoRanking } from '../components/GraficoRanking'
 import { useAuth } from '../contexts/AuthContext'
@@ -23,6 +24,7 @@ interface LinhaRanking {
 }
 
 export function Ranking() {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { jogos } = useJogos()
   const [palpites, setPalpites] = useState<PalpiteResumo[]>([])
@@ -108,11 +110,9 @@ export function Ranking() {
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <h1 className="font-display text-4xl tracking-wide sm:text-5xl md:text-6xl">
-          <span className="text-brasil-yellow">Ranking</span> Geral
+          <span className="text-brasil-yellow">{t('ranking.title')}</span> {t('ranking.titleSuffix')}
         </h1>
-        <p className="mt-2 text-zinc-400">
-          Quem está entendendo de futebol até agora? Atualiza em tempo real.
-        </p>
+        <p className="mt-2 text-zinc-400">{t('ranking.subtitle')}</p>
 
         {loading ? (
           <div className="mt-8 space-y-3">
@@ -122,8 +122,8 @@ export function Ranking() {
           </div>
         ) : linhas.length === 0 ? (
           <p className="glass mt-8 p-10 text-center text-zinc-500">
-            Nenhum palpite registrado ainda.
-            {!user && ' Entre na sua conta para ver o ranking completo.'}
+            {t('ranking.noPredictions')}
+            {!user && ` ${t('ranking.loginToSee')}`}
           </p>
         ) : (
           <>
@@ -131,18 +131,14 @@ export function Ranking() {
               <table className="w-full min-w-[38rem] text-sm">
                 <thead>
                   <tr className="border-b border-white/10 text-left text-xs tracking-wider text-zinc-500 uppercase">
-                    <th className="px-4 py-3">#</th>
-                    <th className="py-3">Participante</th>
-                    <th className="px-2 py-3 text-center">Palpites</th>
-                    <th className="px-2 py-3 text-center" title="Placar exato (10 pts)">
-                      🎯 Exatos
-                    </th>
-                    <th className="px-2 py-3 text-center" title="Vencedor/empate (5 pts)">
-                      ✓ Vencedor
-                    </th>
-                    <th className="px-2 py-3 text-center">Pts</th>
-                    {temEspeciais && <th className="px-2 py-3 text-center">⭐ Bônus</th>}
-                    <th className="px-4 py-3 text-right">Total</th>
+                    <th className="px-4 py-3">{t('ranking.cols.pos')}</th>
+                    <th className="py-3">{t('ranking.cols.player')}</th>
+                    <th className="px-2 py-3 text-center">{t('ranking.cols.predictions')}</th>
+                    <th className="px-2 py-3 text-center">{t('ranking.cols.exact')}</th>
+                    <th className="px-2 py-3 text-center">{t('ranking.cols.winner')}</th>
+                    <th className="px-2 py-3 text-center">{t('ranking.cols.pts')}</th>
+                    {temEspeciais && <th className="px-2 py-3 text-center">{t('ranking.cols.bonus')}</th>}
+                    <th className="px-4 py-3 text-right">{t('ranking.cols.total')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -172,7 +168,7 @@ export function Ranking() {
                               {linha.username}
                               {sou && (
                                 <span className="ml-2 text-xs font-semibold text-brasil-green">
-                                  você
+                                  {t('ranking.you')}
                                 </span>
                               )}
                             </span>
@@ -211,7 +207,7 @@ export function Ranking() {
                 className="flex w-full items-center gap-2 px-5 py-4 text-sm font-medium text-zinc-400 transition hover:text-zinc-200"
               >
                 <BarChart2 className="h-4 w-4 text-brasil-yellow" />
-                Evolução do Ranking
+                {t('ranking.evolution')}
                 <ChevronDown
                   className={`ml-auto h-4 w-4 transition-transform ${mostrarGrafico ? 'rotate-180' : ''}`}
                 />

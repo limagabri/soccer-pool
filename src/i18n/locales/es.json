@@ -43,6 +43,9 @@
   },
   "predictions": {
     "title": "Mis Pronósticos",
+    "titlePre": "Mis",
+    "titleAccent": "Pronósticos",
+    "yourPick": "Tu pronóstico:",
     "subtitle": "Marcador exacto vale {{exact}} pts, acertar el ganador o empate vale {{winner}} pts.",
     "save": "Guardar pronóstico",
     "update": "Actualizar pronóstico",
@@ -57,6 +60,7 @@
     "correctWinner": "✓ Ganador correcto",
     "wrong": "✗ Incorrecto",
     "filters": {
+      "now": "Próximos",
       "all": "Todos",
       "round1": "Jornada 1",
       "round2": "Jornada 2",
@@ -66,6 +70,7 @@
   },
   "ranking": {
     "title": "Ranking",
+    "titleSuffix": "General",
     "subtitle": "¿Quién entiende de fútbol? Se actualiza en tiempo real.",
     "you": "tú",
     "noPredictions": "Aún no hay pronósticos registrados.",
@@ -121,10 +126,7 @@
     "inOf": "en {{done}}/{{total}} pronósticos",
     "outOf": "de {{count}} participante{{s}}"
   },
-  "statistics": { "title": "Estadísticas", "tabs": { "scorers": "Goleadores", "teams": "Por selección", "picks": "Elecciones", "myPicks": "Mis elecciones" } },
-  "simulator": { "title": "Simulador" },
-  "groups": { "title": "Grupos" },
-  "regulamento": { "title": "Reglamento" },
+  "statistics": { "title": "Estadísticas", "subtitle": "Goleadores, defensas y elecciones especiales.", "tabs": { "scorers": "Goleadores", "teams": "Por selección", "picks": "Elecciones", "myPicks": "Mis elecciones" } },
   "notFound": {
     "title": "404",
     "headline": "Ese balón salió por la línea de fondo",
@@ -147,6 +149,64 @@
   },
   "pwa": {
     "install": "Instala {{name}} en tu celular",
-    "installBtn": "Instalar"
+    "installBtn": "Instalar",
+    "installIos": "Instala {{name}} en tu iPhone",
+    "iosStep": "Toca en",
+    "iosShare": "Compartir",
+    "iosThen": "y luego",
+    "iosAdd": "Añadir a pantalla de inicio",
+    "androidManual": "Abre el menú de Chrome y toca Instalar app (o Añadir a pantalla de inicio)."
+  },
+  "footer": { "madeBy": "Hecho por" },
+  "groups": {
+    "title": "Fase de",
+    "titleAccent": "Grupos",
+    "subtitle": "Clasificación actualizada en tiempo real según salen los resultados.",
+    "loadError": "Error al cargar los partidos:",
+    "team": "Selección",
+    "qualifyDirect": "Clasificados directos",
+    "qualifyThird": "Disputa de mejor 3º",
+    "matchesOf": "Partidos del Grupo {{group}}",
+    "std": { "p": "PJ", "w": "G", "d": "E", "l": "P", "gf": "GF", "ga": "GC", "gd": "DG", "pts": "Pts" }
+  },
+  "chat": {
+    "empty": "Aún no hay mensajes. ¡Sé el primero en comentar!",
+    "placeholder": "Comenta… usa @ para mencionar a alguien",
+    "mentionedYou": "{{name}} te mencionó",
+    "delete": "Eliminar"
+  },
+  "matchPicks": {
+    "title": "Pronósticos",
+    "empty": "Nadie pronosticó este partido.",
+    "you": "tú",
+    "count_one": "{{count}} pronóstico",
+    "count_other": "{{count}} pronósticos",
+    "byPoints": "ordenados por puntos",
+    "revealed": "marcadores revelados (el partido ya empezó)"
+  },
+  "simulator": { "title": "Simulador del", "titleAccent": "Mundial", "subtitle": "Completa los marcadores y descubre quién levanta la copa. Los resultados reales se aplican automáticamente y no se pueden cambiar." },
+  "regulamento": { "titleAccent": "Reglamento", "subtitle": "Todo lo que necesitas saber para ganar el bolão." },
+  "storiesPage": {
+    "title": "Stories del",
+    "titleAccent": "Bolão",
+    "subtitle": "Los mejores momentos del bolão en tarjetas cómicas generadas por Seu Zé.",
+    "empty": "Aún no hay stories publicadas. ¡Seu Zé está preparando el material! 👴🏽",
+    "hold": "mantén para pausar",
+    "viewAll": "Ver stories",
+    "cardsCount_one": "{{count}} tarjeta de Seu Zé · toca para abrir",
+    "cardsCount_other": "{{count}} tarjetas de Seu Zé · toca para abrir"
+  },
+  "comentarios": {
+    "title": "Comentarios de",
+    "titleAccent": "Seu Zé",
+    "subtitle": "Nuestro comentarista oficial da su veredicto sobre cada jornada del bolão."
+  },
+  "notif": {
+    "title": "Notificaciones",
+    "subtitle": "Recibe aviso cuando te mencionen en el chat",
+    "on": "Activadas",
+    "off": "Activar",
+    "denied": "Bloqueado — actívalo en la configuración del navegador",
+    "unsupported": "No soportado en este dispositivo"
   }
 }

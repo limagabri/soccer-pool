@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, Shield, Star, Trophy } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Navbar } from '../components/Navbar'
 import { useAuth } from '../contexts/AuthContext'
 import { useJogos } from '../hooks/useJogos'
@@ -68,6 +69,7 @@ function iconeStatus(minha: string, resultado: string | null, finalizado: boolea
 }
 
 export function Estatisticas() {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { jogos } = useJogos()
   const [secao, setSecao] = useState<Secao>('artilharia')
@@ -169,10 +171,10 @@ export function Estatisticas() {
   }, [statsSelecao])
 
   const SECOES: { id: Secao; label: string }[] = [
-    { id: 'artilharia', label: '⚽ Artilharia' },
-    { id: 'selecoes', label: '🏳️ Por seleção' },
-    { id: 'escolhas', label: '🔍 Escolhas' },
-    ...(user ? [{ id: 'minhas' as Secao, label: '🌟 Minhas escolhas' }] : []),
+    { id: 'artilharia', label: `⚽ ${t('statistics.tabs.scorers')}` },
+    { id: 'selecoes', label: `🏳️ ${t('statistics.tabs.teams')}` },
+    { id: 'escolhas', label: `🔍 ${t('statistics.tabs.picks')}` },
+    ...(user ? [{ id: 'minhas' as Secao, label: `🌟 ${t('statistics.tabs.myPicks')}` }] : []),
   ]
 
   return (
@@ -180,9 +182,9 @@ export function Estatisticas() {
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <h1 className="font-display text-5xl tracking-wide sm:text-6xl">
-          <span className="text-brasil-yellow">Estatísticas</span>
+          <span className="text-brasil-yellow">{t('statistics.title')}</span>
         </h1>
-        <p className="mt-2 text-zinc-400">Artilharia, defesas e escolhas especiais.</p>
+        <p className="mt-2 text-zinc-400">{t('statistics.subtitle')}</p>
 
         {/* Abas */}
         <div className="mt-6 flex flex-wrap gap-2">
