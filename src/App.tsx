@@ -1,4 +1,6 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Loader2 } from 'lucide-react'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { JogosProvider } from './contexts/JogosContext'
@@ -8,36 +10,47 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { InstalarPWA } from './components/InstalarPWA'
 import { AnimacaoGol } from './components/AnimacaoGol'
 import { Footer } from './components/Footer'
-import { Landing } from './pages/Landing'
-import { Login } from './pages/Login'
-import { Cadastro } from './pages/Cadastro'
-import { EsqueciSenha } from './pages/EsqueciSenha'
-import { NovaSenha } from './pages/NovaSenha'
-import { Dashboard } from './pages/Dashboard'
-import { AuthCallback } from './pages/AuthCallback'
-import { Grupos } from './pages/Grupos'
-import { Palpites } from './pages/Palpites'
-import { Simulador } from './pages/Simulador'
-import { Ranking } from './pages/Ranking'
-import { Perfil } from './pages/Perfil'
-import { PrimeiroAcesso } from './pages/PrimeiroAcesso'
-import { Comentarios } from './pages/Comentarios'
-import { Stories } from './pages/Stories'
-import { AdminLogin } from './pages/admin/AdminLogin'
-import { AdminLayout } from './pages/admin/AdminLayout'
-import { AdminDashboard } from './pages/admin/AdminDashboard'
-import { AdminJogos } from './pages/admin/AdminJogos'
-import { AdminUsuarios } from './pages/admin/AdminUsuarios'
-import { AdminConvites } from './pages/admin/AdminConvites'
-import { AdminEspeciais } from './pages/admin/AdminEspeciais'
-import { AdminChat } from './pages/admin/AdminChat'
-import { AdminComentarista } from './pages/admin/AdminComentarista'
-import { AdminStories } from './pages/admin/AdminStories'
-import { AdminPalpites } from './pages/admin/AdminPalpites'
-import { Estatisticas } from './pages/Estatisticas'
-import { Regulamento } from './pages/Regulamento'
-import { NotFound } from './pages/NotFound'
 import { usePontuacao } from './hooks/usePontuacao'
+
+// Code-splitting por rota: cada página vira um chunk próprio, carregado sob
+// demanda (recharts, html2canvas etc. não pesam no carregamento inicial).
+const Landing = lazy(() => import('./pages/Landing').then((m) => ({ default: m.Landing })))
+const Login = lazy(() => import('./pages/Login').then((m) => ({ default: m.Login })))
+const Cadastro = lazy(() => import('./pages/Cadastro').then((m) => ({ default: m.Cadastro })))
+const EsqueciSenha = lazy(() => import('./pages/EsqueciSenha').then((m) => ({ default: m.EsqueciSenha })))
+const NovaSenha = lazy(() => import('./pages/NovaSenha').then((m) => ({ default: m.NovaSenha })))
+const Dashboard = lazy(() => import('./pages/Dashboard').then((m) => ({ default: m.Dashboard })))
+const AuthCallback = lazy(() => import('./pages/AuthCallback').then((m) => ({ default: m.AuthCallback })))
+const Grupos = lazy(() => import('./pages/Grupos').then((m) => ({ default: m.Grupos })))
+const Palpites = lazy(() => import('./pages/Palpites').then((m) => ({ default: m.Palpites })))
+const Simulador = lazy(() => import('./pages/Simulador').then((m) => ({ default: m.Simulador })))
+const Ranking = lazy(() => import('./pages/Ranking').then((m) => ({ default: m.Ranking })))
+const Perfil = lazy(() => import('./pages/Perfil').then((m) => ({ default: m.Perfil })))
+const PrimeiroAcesso = lazy(() => import('./pages/PrimeiroAcesso').then((m) => ({ default: m.PrimeiroAcesso })))
+const Comentarios = lazy(() => import('./pages/Comentarios').then((m) => ({ default: m.Comentarios })))
+const Stories = lazy(() => import('./pages/Stories').then((m) => ({ default: m.Stories })))
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin').then((m) => ({ default: m.AdminLogin })))
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })))
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard })))
+const AdminJogos = lazy(() => import('./pages/admin/AdminJogos').then((m) => ({ default: m.AdminJogos })))
+const AdminUsuarios = lazy(() => import('./pages/admin/AdminUsuarios').then((m) => ({ default: m.AdminUsuarios })))
+const AdminConvites = lazy(() => import('./pages/admin/AdminConvites').then((m) => ({ default: m.AdminConvites })))
+const AdminEspeciais = lazy(() => import('./pages/admin/AdminEspeciais').then((m) => ({ default: m.AdminEspeciais })))
+const AdminChat = lazy(() => import('./pages/admin/AdminChat').then((m) => ({ default: m.AdminChat })))
+const AdminComentarista = lazy(() => import('./pages/admin/AdminComentarista').then((m) => ({ default: m.AdminComentarista })))
+const AdminStories = lazy(() => import('./pages/admin/AdminStories').then((m) => ({ default: m.AdminStories })))
+const AdminPalpites = lazy(() => import('./pages/admin/AdminPalpites').then((m) => ({ default: m.AdminPalpites })))
+const Estatisticas = lazy(() => import('./pages/Estatisticas').then((m) => ({ default: m.Estatisticas })))
+const Regulamento = lazy(() => import('./pages/Regulamento').then((m) => ({ default: m.Regulamento })))
+const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
+
+function RouteFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <Loader2 className="h-7 w-7 animate-spin text-brasil-green" />
+    </div>
+  )
+}
 
 function PontuacaoGlobal() {
   usePontuacao()
@@ -60,6 +73,7 @@ function App() {
             >
               <ScrollToTop />
               <InstalarPWA />
+              <Suspense fallback={<RouteFallback />}>
               <Routes>
                 {/* Públicas */}
                 <Route path="/" element={<Landing />} />
@@ -110,6 +124,7 @@ function App() {
                 {/* 404 */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              </Suspense>
               <Footer />
             </BrowserRouter>
           </JogosProvider>

@@ -41,9 +41,26 @@ Deno.serve(async (req) => {
   let body: { titulo?: string; mensagem?: string; url?: string; user_ids?: string[] } = {}
   try { body = await req.json() } catch { /* defaults */ }
 
+  // Autorização: identifica o chamador. Não-admin só pode notificar
+  // destinatários específicos (ex.: menções), no máximo 10 — não pode disparar
+  // para todo mundo (evita spam). Admin pode fazer broadcast.
+  const callerClient = createClient(SUPABASE_URL, Deno.env.get('SUPABASE_ANON_KEY')!, {
+    global: { headers: { Authorization: req.headers.get('Authorization') ?? '' } },
+  })
+  const { data: { user: caller } } = await callerClient.auth.getUser()
+  if (!caller) {
+    return Response.json({ error: 'unauthenticated' }, { status: 401, headers: corsHeaders })
+  }
+  const { data: prof } = await callerClient.from('profiles').select('is_admin').eq('id', caller.id).single()
+  if (!prof?.is_admin) {
+    if (!body.user_ids?.length) {
+      return Response.json({ error: 'forbidden: user_ids required' }, { status: 403, headers: corsHeaders })
+    }
+    body.user_ids = body.user_ids.slice(0, 10)
+  }
+
   const titulo = body.titulo ?? '⚽ BolãoCopa 2026'
   const mensagem = body.mensagem ?? 'Novo aviso do bolão!'
-  const url = body.url ?? '/'
 
   const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
   let query = sb.from('push_subscriptions').select('id, endpoint, p256dh, auth_key')
@@ -54,12 +71,11 @@ Deno.serve(async (req) => {
     return Response.json({ sent: 0, total: 0 }, { headers: corsHeaders })
   }
 
+  // Não fixamos base: o service worker resolve ícone/url a partir do seu scope.
   const payload = JSON.stringify({
     title: titulo,
     body: mensagem,
-    icon: '/soccer-pool/pwa-icon-192.png',
-    badge: '/soccer-pool/pwa-icon-192.png',
-    url,
+    url: body.url, // relativo ao app (ex.: "palpites") ou undefined
   })
 
   let sent = 0

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "vitest run",
     "preview": "vite preview",
     "setup": "tsx scripts/setup.ts",
     "migrate": "tsx scripts/migrate.ts",
@@ -49,7 +50,8 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
-    "vite-plugin-pwa": "^1.3.0"
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^2.1.9"
   },
   "homepage": "https://USERNAME.github.io/soccer-pool"
 }

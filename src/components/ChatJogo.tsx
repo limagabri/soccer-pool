@@ -190,7 +190,7 @@ export function ChatJogo({ jogo_id }: Props) {
           user_ids: mencionados,
           titulo: `💬 ${profile?.username ?? 'Alguém'} te marcou`,
           mensagem: conteudo.slice(0, 120),
-          url: '/soccer-pool/palpites',
+          url: 'palpites', // relativo ao scope do SW (base-agnóstico)
         },
       }).catch(() => { /* push é best-effort */ })
     }

@@ -66,21 +66,19 @@ export function Cadastro() {
       setLoading(false)
 
       if (signUpError) {
-        console.error('Erro detalhado no cadastro:', signUpError)
         const msg = signUpError.message.toLowerCase()
         if (msg.includes('already registered') || msg.includes('already exists') || msg.includes('email already')) {
           setError('Este e-mail já está cadastrado.')
         } else if (msg.includes('rate limit') || (signUpError as { status?: number }).status === 429) {
           setError('Muitas tentativas de cadastro. Aguarde alguns minutos e tente novamente.')
         } else {
-          setError(`Não foi possível criar a conta. Tente novamente. (${signUpError.message})`)
+          setError('Não foi possível criar a conta. Tente novamente.')
         }
         return
       }
 
       // Marca convite como usado independente da confirmação de e-mail
-      const { error: rpcError } = await supabase.rpc('marcar_convite_usado', { p_token: convite.token, p_email: convite.email })
-      if (rpcError) console.error('Erro ao marcar convite como usado:', rpcError)
+      await supabase.rpc('marcar_convite_usado', { p_token: convite.token, p_email: convite.email })
 
       if (!data.session) {
         setConfirmationSent(true)
@@ -93,8 +91,7 @@ export function Cadastro() {
       }
 
       navigate('/primeiro-acesso')
-    } catch (err) {
-      console.error('Exceção inesperada no cadastro:', err)
+    } catch {
       setLoading(false)
       setError('Não foi possível criar a conta. Tente novamente.')
     }
