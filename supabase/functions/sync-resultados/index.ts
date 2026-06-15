@@ -226,25 +226,38 @@ Deno.serve(async (req) => {
     const away = comp.competitors.find((c) => c.homeAway === 'away')
     if (!home || !away) continue
 
-    const timeCasa = toPT(home.team.displayName)
-    const timeFora = toPT(away.team.displayName)
+    // Ignora confrontos de mata-mata ainda sem times definidos (ex.: "Group A
+    // 2nd Place", "Winner Match 73") — não existem no banco e não são erro.
+    const placeholder = /place|winner|runner|group [a-l]\b|tbd/i
+    if (placeholder.test(home.team.displayName) || placeholder.test(away.team.displayName)) continue
 
-    // Casa pelo confronto (sem filtrar por data) para que remarcações sejam
-    // tratadas: o horário no banco é corrigido a partir da ESPN mesmo antes de
-    // o jogo acontecer.
-    const { data: jogos } = await supabase
-      .from('jogos')
-      .select('id, encerrado, gols_casa, gols_fora, data_jogo')
-      .eq('time_casa', timeCasa)
-      .eq('time_fora', timeFora)
-      .limit(1)
+    const espnCasa = toPT(home.team.displayName)
+    const espnFora = toPT(away.team.displayName)
 
-    if (!jogos?.length) {
-      errors.push(`Not found: ${timeCasa} x ${timeFora}`)
+    // Casa pelo confronto (sem filtrar por data) para tratar remarcações. A
+    // ESPN às vezes inverte mandante/visitante em relação ao banco, então
+    // tentamos as duas orientações e marcamos se veio invertido — para orientar
+    // o placar corretamente.
+    let jogo: { id: string; encerrado: boolean; gols_casa: number | null; gols_fora: number | null; data_jogo: string } | null = null
+    let invertido = false
+    {
+      const { data } = await supabase
+        .from('jogos')
+        .select('id, encerrado, gols_casa, gols_fora, data_jogo')
+        .eq('time_casa', espnCasa).eq('time_fora', espnFora).limit(1)
+      if (data?.length) jogo = data[0]
+    }
+    if (!jogo) {
+      const { data } = await supabase
+        .from('jogos')
+        .select('id, encerrado, gols_casa, gols_fora, data_jogo')
+        .eq('time_casa', espnFora).eq('time_fora', espnCasa).limit(1)
+      if (data?.length) { jogo = data[0]; invertido = true }
+    }
+    if (!jogo) {
+      errors.push(`Not found: ${espnCasa} x ${espnFora}`)
       continue
     }
-
-    const jogo = jogos[0]
 
     // 1) Mantém a data/hora de início em dia com a ESPN (trata remarcações),
     //    inclusive para jogos ainda não realizados.
@@ -260,9 +273,13 @@ Deno.serve(async (req) => {
     // Placar e artilharia só quando o jogo terminou.
     if (!comp.status.type.completed) continue
 
-    const scoreHome = parseInt(home.score, 10)
-    const scoreAway = parseInt(away.score, 10)
-    if (isNaN(scoreHome) || isNaN(scoreAway)) continue
+    const placarHome = parseInt(home.score, 10)
+    const placarAway = parseInt(away.score, 10)
+    if (isNaN(placarHome) || isNaN(placarAway)) continue
+
+    // Orienta o placar para o mandante/visitante do banco.
+    const scoreHome = invertido ? placarAway : placarHome
+    const scoreAway = invertido ? placarHome : placarAway
 
     // 2) Update the score when it changed (or the game just finished).
     const placarMudou =
