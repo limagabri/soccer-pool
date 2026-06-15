@@ -35,6 +35,7 @@ export function InstalarPWA() {
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [visivel, setVisivel] = useState(false)
   const [modoIOS, setModoIOS] = useState(false)
+  const [modoManual, setModoManual] = useState(false)
 
   useEffect(() => {
     // Já instalado (rodando como app) → não mostra nada
@@ -72,14 +73,25 @@ export function InstalarPWA() {
   }, [])
 
   async function instalar() {
-    if (!prompt) return
-    await prompt.prompt()
-    const { outcome } = await prompt.userChoice
-    if (outcome === 'accepted') {
-      localStorage.setItem(STORAGE_KEY, '1')
-      window.__pwaInstallPrompt = null
+    // Usa o evento do state ou o capturado cedo no index.html.
+    const p = prompt ?? window.__pwaInstallPrompt
+    if (!p) {
+      // Chrome não disponibilizou o prompt nativo (ou já foi usado): em vez de
+      // não fazer nada, mostramos como instalar pelo menu do navegador.
+      setModoManual(true)
+      return
     }
-    setVisivel(false)
+    try {
+      await p.prompt()
+      const choice = await p.userChoice
+      if (choice?.outcome === 'accepted') localStorage.setItem(STORAGE_KEY, '1')
+      window.__pwaInstallPrompt = null
+      setPrompt(null)
+      setVisivel(false)
+    } catch {
+      // prompt() falhou (evento expirado, etc.) → instruções manuais.
+      setModoManual(true)
+    }
   }
 
   function fechar() {
@@ -98,21 +110,29 @@ export function InstalarPWA() {
           className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2"
         >
           <div className="glass px-4 py-3 shadow-lg">
-            {modoIOS ? (
+            {(modoIOS || modoManual) ? (
               <div className="flex items-start gap-3">
                 <span className="text-xl">📱</span>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-800 dark:text-zinc-200">
-                    Instale o BolãoCopa 2026 no seu iPhone
+                    Instale o BolãoCopa 2026 no seu celular
                   </p>
-                  <p className="mt-1 flex flex-wrap items-center gap-1 text-xs text-gray-600 dark:text-zinc-400">
-                    Toque em
-                    <Share className="inline h-3.5 w-3.5 text-blue-500" />
-                    <span className="font-semibold">Compartilhar</span>
-                    e depois
-                    <Plus className="inline h-3.5 w-3.5" />
-                    <span className="font-semibold">Adicionar à Tela de Início</span>
-                  </p>
+                  {modoIOS ? (
+                    <p className="mt-1 flex flex-wrap items-center gap-1 text-xs text-gray-600 dark:text-zinc-400">
+                      Toque em
+                      <Share className="inline h-3.5 w-3.5 text-blue-500" />
+                      <span className="font-semibold">Compartilhar</span>
+                      e depois
+                      <Plus className="inline h-3.5 w-3.5" />
+                      <span className="font-semibold">Adicionar à Tela de Início</span>
+                    </p>
+                  ) : (
+                    <p className="mt-1 text-xs text-gray-600 dark:text-zinc-400">
+                      Abra o menu <span className="font-semibold">⋮</span> do Chrome e toque em{' '}
+                      <span className="font-semibold">Instalar app</span> (ou{' '}
+                      <span className="font-semibold">Adicionar à tela inicial</span>).
+                    </p>
+                  )}
                 </div>
                 <button
                   onClick={fechar}
