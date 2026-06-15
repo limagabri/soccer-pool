@@ -2,10 +2,12 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Loader2, Shield } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 import { APP_FULL_NAME } from '../../config/app'
 
 export function AdminLogin() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -19,7 +21,7 @@ export function AdminLogin() {
 
     const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password })
     if (signInError || !data.user) {
-      setError('E-mail ou senha inválidos.')
+      setError(t('auth.invalidCredentials'))
       setLoading(false)
       return
     }
@@ -32,7 +34,7 @@ export function AdminLogin() {
 
     if (!profile?.is_admin) {
       await supabase.auth.signOut()
-      setError('Acesso negado. Este usuário não tem permissão de administrador.')
+      setError(t('admin.accessDenied'))
       setLoading(false)
       return
     }
@@ -53,7 +55,7 @@ export function AdminLogin() {
             <Shield className="h-7 w-7 text-green-400" />
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-zinc-100">Painel Admin</h1>
+            <h1 className="text-2xl font-bold text-zinc-100">{t('admin.title')}</h1>
             <p className="mt-1 text-sm text-zinc-500">{APP_FULL_NAME}</p>
           </div>
         </div>
@@ -61,7 +63,7 @@ export function AdminLogin() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-400">
-              E-mail
+              {t('auth.email')}
             </label>
             <div className="relative">
               <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-600" />
@@ -79,7 +81,7 @@ export function AdminLogin() {
 
           <div>
             <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-zinc-400">
-              Senha
+              {t('auth.password')}
             </label>
             <div className="relative">
               <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-600" />
@@ -107,7 +109,7 @@ export function AdminLogin() {
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-700 py-3 font-semibold text-white transition hover:bg-green-600 disabled:opacity-60"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            Entrar no painel
+            {t('admin.signin')}
           </button>
         </form>
       </motion.div>

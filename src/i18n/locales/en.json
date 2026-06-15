@@ -238,5 +238,13 @@
     "off": "Enable",
     "denied": "Blocked — enable it in your browser settings",
     "unsupported": "Not supported on this device"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "logout": "Sign out",
+    "signin": "Sign in to panel",
+    "accessDenied": "Access denied. This user is not an administrator.",
+    "nav": { "dashboard": "Dashboard", "jogos": "Matches", "palpites": "Predictions", "usuarios": "Users", "convites": "Invites", "especiais": "Specials", "chat": "Chat", "comentarista": "Pundit", "stories": "Stories" },
+    "common": { "save": "Save", "cancel": "Cancel", "delete": "Delete", "edit": "Edit", "create": "Create", "loading": "Loading…", "search": "Search…", "confirm": "Confirm", "close": "Close", "saved": "Saved!", "error": "Error. Try again." }
   }
 }

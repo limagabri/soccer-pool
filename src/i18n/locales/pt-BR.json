@@ -238,5 +238,13 @@
     "off": "Ativar",
     "denied": "Bloqueado — habilite nas configurações do navegador",
     "unsupported": "Não suportado neste dispositivo"
+  },
+  "admin": {
+    "title": "Painel Admin",
+    "logout": "Sair",
+    "signin": "Entrar no painel",
+    "accessDenied": "Acesso negado. Este usuário não tem permissão de administrador.",
+    "nav": { "dashboard": "Dashboard", "jogos": "Jogos", "palpites": "Palpites", "usuarios": "Usuários", "convites": "Convites", "especiais": "Especiais", "chat": "Chat", "comentarista": "Comentarista", "stories": "Stories" },
+    "common": { "save": "Salvar", "cancel": "Cancelar", "delete": "Excluir", "edit": "Editar", "create": "Criar", "loading": "Carregando…", "search": "Buscar…", "confirm": "Confirmar", "close": "Fechar", "saved": "Salvo!", "error": "Erro. Tente novamente." }
   }
 }

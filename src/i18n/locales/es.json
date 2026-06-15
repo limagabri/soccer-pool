@@ -229,5 +229,13 @@
     "off": "Activar",
     "denied": "Bloqueado — actívalo en la configuración del navegador",
     "unsupported": "No soportado en este dispositivo"
+  },
+  "admin": {
+    "title": "Panel Admin",
+    "logout": "Salir",
+    "signin": "Entrar al panel",
+    "accessDenied": "Acceso denegado. Este usuario no es administrador.",
+    "nav": { "dashboard": "Dashboard", "jogos": "Partidos", "palpites": "Pronósticos", "usuarios": "Usuarios", "convites": "Invitaciones", "especiais": "Especiales", "chat": "Chat", "comentarista": "Comentarista", "stories": "Stories" },
+    "common": { "save": "Guardar", "cancel": "Cancelar", "delete": "Eliminar", "edit": "Editar", "create": "Crear", "loading": "Cargando…", "search": "Buscar…", "confirm": "Confirmar", "close": "Cerrar", "saved": "¡Guardado!", "error": "Error. Inténtalo de nuevo." }
   }
 }

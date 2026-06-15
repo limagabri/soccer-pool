@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { Award, BarChart2, ClipboardList, ImagePlay, LogOut, Mail, Menu, MessageCircle, Mic2, Target, Trophy, Users, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 
 const LINKS = [
-  { to: '/admin/dashboard',     label: 'Dashboard',     icon: BarChart2 },
-  { to: '/admin/jogos',         label: 'Jogos',          icon: ClipboardList },
-  { to: '/admin/palpites',      label: 'Palpites',       icon: Target },
-  { to: '/admin/usuarios',      label: 'Usuários',       icon: Users },
-  { to: '/admin/convites',      label: 'Convites',       icon: Mail },
-  { to: '/admin/especiais',     label: 'Especiais',      icon: Award },
-  { to: '/admin/chat',          label: 'Chat',           icon: MessageCircle },
-  { to: '/admin/comentarista',  label: 'Comentarista',   icon: Mic2 },
-  { to: '/admin/stories',       label: 'Stories',        icon: ImagePlay },
+  { to: '/admin/dashboard',     key: 'dashboard',    icon: BarChart2 },
+  { to: '/admin/jogos',         key: 'jogos',        icon: ClipboardList },
+  { to: '/admin/palpites',      key: 'palpites',     icon: Target },
+  { to: '/admin/usuarios',      key: 'usuarios',     icon: Users },
+  { to: '/admin/convites',      key: 'convites',     icon: Mail },
+  { to: '/admin/especiais',     key: 'especiais',    icon: Award },
+  { to: '/admin/chat',          key: 'chat',         icon: MessageCircle },
+  { to: '/admin/comentarista',  key: 'comentarista', icon: Mic2 },
+  { to: '/admin/stories',       key: 'stories',      icon: ImagePlay },
 ]
 
 export function AdminLayout() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [verificando, setVerificando] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -74,7 +76,7 @@ export function AdminLayout() {
         </div>
 
         <nav className="flex-1 overflow-y-auto p-3">
-          {LINKS.map(({ to, label, icon: Icon }) => (
+          {LINKS.map(({ to, key, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
@@ -88,7 +90,7 @@ export function AdminLayout() {
               }
             >
               <Icon className="h-4 w-4" />
-              {label}
+              {t(`admin.nav.${key}`)}
             </NavLink>
           ))}
         </nav>
@@ -99,7 +101,7 @@ export function AdminLayout() {
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-500 transition hover:bg-zinc-800 hover:text-red-400"
           >
             <LogOut className="h-4 w-4" />
-            Sair
+            {t('admin.logout')}
           </button>
         </div>
       </aside>
@@ -114,7 +116,7 @@ export function AdminLayout() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <span className="font-semibold text-zinc-200">Painel Admin</span>
+          <span className="font-semibold text-zinc-200">{t('admin.title')}</span>
         </header>
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
