@@ -13,6 +13,7 @@ import { calcularPontos, formatarData, jogoComecou } from '../lib/utils'
 import type { Jogo, Palpite } from '../types'
 
 const FILTROS = [
+  { id: 'agora', label: 'Agora' },
   { id: 'todos', label: 'Todos' },
   { id: '1', label: 'Rodada 1' },
   { id: '2', label: 'Rodada 2' },
@@ -48,7 +49,7 @@ export function Palpites() {
   const [inputs, setInputs] = useState<Record<string, InputPlacar>>({})
   const [salvando, setSalvando] = useState<string | null>(null)
   const [loadingPalpites, setLoadingPalpites] = useState(true)
-  const [filtro, setFiltro] = useState('todos')
+  const [filtro, setFiltro] = useState('agora')
   const [toast, setToast] = useState<ToastInfo | null>(null)
 
   // chat
@@ -111,9 +112,24 @@ export function Palpites() {
   }, [toast])
 
   const jogosFiltrados = useMemo(() => {
-    if (filtro === 'meus') return jogos.filter((j) => palpites[j.id])
-    if (filtro === 'todos') return jogos
-    return jogos.filter((j) => j.rodada === Number(filtro))
+    // Sempre cronológico (a coluna numero_jogo não reflete a ordem real).
+    const cron = [...jogos].sort(
+      (a, b) => new Date(a.data_jogo).getTime() - new Date(b.data_jogo).getTime()
+    )
+    if (filtro === 'meus') return cron.filter((j) => palpites[j.id])
+    if (filtro === 'todos') return cron
+    if (filtro === 'agora') {
+      // Janela em torno de hoje: jogos recentes (3 dias) + próximos (5 dias).
+      const ini = Date.now() - 3 * 86_400_000
+      const fim = Date.now() + 5 * 86_400_000
+      const janela = cron.filter((j) => {
+        const t = new Date(j.data_jogo).getTime()
+        return t >= ini && t <= fim
+      })
+      // Fora do período de jogos (janela vazia) → mostra os próximos.
+      return janela.length ? janela : cron.filter((j) => !j.encerrado).slice(0, 10)
+    }
+    return cron.filter((j) => j.rodada === Number(filtro))
   }, [jogos, filtro, palpites])
 
   function setInput(jogoId: string, lado: 'c' | 'f', valor: string) {

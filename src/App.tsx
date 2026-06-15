@@ -7,6 +7,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { ScrollToTop } from './components/ScrollToTop'
 import { InstalarPWA } from './components/InstalarPWA'
 import { AnimacaoGol } from './components/AnimacaoGol'
+import { Footer } from './components/Footer'
 import { Landing } from './pages/Landing'
 import { Login } from './pages/Login'
 import { Cadastro } from './pages/Cadastro'
@@ -109,6 +110,7 @@ function App() {
                 {/* 404 */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <Footer />
             </BrowserRouter>
           </JogosProvider>
         </AuthProvider>
