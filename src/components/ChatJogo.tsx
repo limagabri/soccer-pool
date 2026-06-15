@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Send, Trash2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
@@ -23,6 +23,11 @@ interface Comentario {
   username: string
 }
 
+interface Participante {
+  id: string
+  username: string
+}
+
 interface Props {
   jogo_id: string
 }
@@ -38,6 +43,36 @@ function tempoRelativo(dateStr: string): string {
   return `${Math.floor(h / 24)}d`
 }
 
+// Destaca @menções de usuários conhecidos (nomes podem ter espaço).
+function renderComMencoes(texto: string, nomes: string[]): ReactNode {
+  const ordenados = [...nomes].sort((a, b) => b.length - a.length)
+  const out: ReactNode[] = []
+  let buffer = ''
+  let i = 0
+  const lower = texto.toLowerCase()
+  const flush = () => { if (buffer) { out.push(buffer); buffer = '' } }
+  while (i < texto.length) {
+    if (texto[i] === '@') {
+      const resto = lower.slice(i + 1)
+      const nome = ordenados.find((n) => n && resto.startsWith(n.toLowerCase()))
+      if (nome) {
+        flush()
+        out.push(
+          <span key={i} className="font-semibold text-brasil-green">
+            @{texto.slice(i + 1, i + 1 + nome.length)}
+          </span>
+        )
+        i += 1 + nome.length
+        continue
+      }
+    }
+    buffer += texto[i]
+    i++
+  }
+  flush()
+  return out
+}
+
 export function ChatJogo({ jogo_id }: Props) {
   const { user, profile, isAdmin } = useAuth()
   const [comentarios, setComentarios] = useState<Comentario[]>([])
@@ -45,6 +80,7 @@ export function ChatJogo({ jogo_id }: Props) {
   const [loading, setLoading] = useState(true)
   const [enviando, setEnviando] = useState(false)
   const [reacaoBounce, setReacaoBounce] = useState<string | null>(null)
+  const [participantes, setParticipantes] = useState<Participante[]>([])
   const bottomRef = useRef<HTMLDivElement>(null)
   const ultimasReacoes = useRef<Record<string, number>>({})
 
@@ -70,6 +106,15 @@ export function ChatJogo({ jogo_id }: Props) {
     setComentarios(data.map((c: { id: string; user_id: string; texto: string; created_at: string }) => ({ ...c, username: nomes[c.user_id] ?? 'Anônimo' })))
     setLoading(false)
   }
+
+  // Lista de participantes (não-admin) para autocomplete de @menção.
+  useEffect(() => {
+    supabase
+      .from('profiles')
+      .select('id, username')
+      .eq('is_admin', false)
+      .then(({ data }) => setParticipantes((data as Participante[]) ?? []))
+  }, [])
 
   useEffect(() => {
     carregarComentarios()
@@ -109,16 +154,46 @@ export function ChatJogo({ jogo_id }: Props) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [comentarios])
 
+  // ── Autocomplete de @menção ────────────────────────────────────────────────
+  const mencaoQuery = useMemo(() => {
+    const m = texto.match(/@([^@\n]*)$/)
+    return m ? m[1] : null
+  }, [texto])
+
+  const sugestoes = useMemo(() => {
+    if (mencaoQuery === null) return []
+    const q = mencaoQuery.toLowerCase().trim()
+    return participantes
+      .filter((p) => p.id !== user?.id && p.username.toLowerCase().includes(q))
+      .slice(0, 5)
+  }, [mencaoQuery, participantes, user?.id])
+
+  function escolherMencao(username: string) {
+    setTexto((t) => t.replace(/@([^@\n]*)$/, `@${username} `))
+  }
+
   async function enviar() {
     if (!user || !texto.trim() || enviando) return
     setEnviando(true)
-    await supabase.from('comentarios').insert({
-      jogo_id,
-      user_id: user.id,
-      texto: texto.trim(),
-    })
+    const conteudo = texto.trim()
+    await supabase.from('comentarios').insert({ jogo_id, user_id: user.id, texto: conteudo })
     setTexto('')
     setEnviando(false)
+
+    // Notifica (push) os usuários mencionados que tenham o PWA instalado.
+    const mencionados = participantes
+      .filter((p) => p.id !== user.id && conteudo.toLowerCase().includes(`@${p.username.toLowerCase()}`))
+      .map((p) => p.id)
+    if (mencionados.length) {
+      supabase.functions.invoke('enviar-push', {
+        body: {
+          user_ids: mencionados,
+          titulo: `💬 ${profile?.username ?? 'Alguém'} te marcou`,
+          mensagem: conteudo.slice(0, 120),
+          url: '/soccer-pool/palpites',
+        },
+      }).catch(() => { /* push é best-effort */ })
+    }
   }
 
   async function deletar(id: string) {
@@ -137,6 +212,7 @@ export function ChatJogo({ jogo_id }: Props) {
   }
 
   const restantes = 280 - texto.length
+  const nomes = useMemo(() => participantes.map((p) => p.username), [participantes])
 
   return (
     <div className="flex flex-col">
@@ -179,7 +255,7 @@ export function ChatJogo({ jogo_id }: Props) {
                           {c.username}
                         </span>
                       )}
-                      {c.texto}
+                      {renderComMencoes(c.texto, nomes)}
                     </div>
                     <div className="mt-0.5 flex items-center gap-1.5">
                       <span className="text-[10px] text-zinc-600">{tempoRelativo(c.created_at)}</span>
@@ -220,13 +296,30 @@ export function ChatJogo({ jogo_id }: Props) {
       )}
 
       {/* Input */}
-      <div className="mt-2.5 flex items-end gap-2">
+      <div className="relative mt-2.5 flex items-end gap-2">
+        {/* Dropdown de @menção */}
+        {sugestoes.length > 0 && (
+          <div className="absolute bottom-full left-0 mb-1 w-56 overflow-hidden rounded-xl border border-white/10 bg-zinc-900 shadow-xl">
+            {sugestoes.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => escolherMencao(p.username)}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-zinc-200 transition hover:bg-brasil-green/15"
+              >
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brasil-green to-brasil-yellow text-[9px] font-bold text-black">
+                  {p.username.slice(0, 2).toUpperCase()}
+                </span>
+                {p.username}
+              </button>
+            ))}
+          </div>
+        )}
         <div className="relative flex-1">
           <textarea
             value={texto}
             onChange={(e) => setTexto(e.target.value.slice(0, 280))}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviar() } }}
-            placeholder="Escreva um comentário…"
+            placeholder="Comente… use @ para marcar alguém"
             rows={1}
             className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2 pr-12 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-brasil-green/50"
           />

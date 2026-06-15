@@ -35,6 +35,7 @@ export default defineConfig(({ command }) => ({
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
+        importScripts: ['custom-sw.js'], // handlers de Web Push (notificações)
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         // SPA: serve o app shell em navegações de rota interna (deep links,
         // refresh e o app instalado abrindo em start_url), sem depender do
