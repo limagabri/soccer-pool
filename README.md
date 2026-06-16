@@ -90,6 +90,7 @@ scripts/
 |---|---|
 | `sync-resultados` | Pulls scores, goalscorers and kickoff times from ESPN (cron every 2 min); feeds results, top-scorer chart and keeps the schedule in sync |
 | `gerar-comentarista` | Generates "Seu Zé" AI commentary for a round |
+| `gerar-comentarista-auto` | Detects a finished group-stage round (all groups) and auto-publishes its recap (cron every 15 min) |
 | `gerar-story` | Generates one AI recap story from the **previous day's** results (BRT) |
 | `gerar-stories-diario` | Orchestrator: builds and publishes all 6 daily stories (run by a cron at 08:00 BRT) |
 | `criar-usuario` | Admin-only: creates a participant account |
@@ -197,8 +198,9 @@ Push to `main` — GitHub Actions lints, runs migrations, deploys Edge Functions
 **GitHub Pages setup** (first deploy only):
 - Repository → Settings → Pages → Source: `gh-pages` branch
 
-**Scheduled jobs (cron):** result sync (every 2 min) and the daily story generation
-(08:00 BRT) run via `pg_cron` + `pg_net`. Configure them once with
+**Scheduled jobs (cron):** result sync (every 2 min), the daily story generation
+(08:00 BRT) and the group-stage round recap (every 15 min, fires only when a round
+ends) run via `pg_cron` + `pg_net`. Configure them once with
 [`supabase/functions/cron-config.sql`](supabase/functions/cron-config.sql) in the
 Supabase SQL editor (replace `<PROJECT_REF>` and `<SUPABASE_ANON_KEY>`).
 
