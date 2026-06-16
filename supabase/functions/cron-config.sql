@@ -46,9 +46,29 @@ SELECT cron.schedule(
   $$
 );
 
+-- Check every 15 min whether a group-stage round just finished (all 24 games of
+-- that round, across every group) and, if so, generate + publish Seu Zé's recap.
+-- Idempotent: it only acts once per round. (Knockout phases are not modeled yet.)
+SELECT cron.schedule(
+  'gerar-comentarista-auto-15min',
+  '*/15 * * * *',
+  $$
+    SELECT net.http_post(
+      url := 'https://<PROJECT_REF>.supabase.co/functions/v1/gerar-comentarista-auto',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'Authorization', 'Bearer <SUPABASE_ANON_KEY>'
+      ),
+      body := '{}'::jsonb,
+      timeout_milliseconds := 120000
+    );
+  $$
+);
+
 -- To view scheduled jobs:
 -- SELECT * FROM cron.job;
 
 -- To cancel the jobs:
 -- SELECT cron.unschedule('sync-resultados-every-2min');
 -- SELECT cron.unschedule('gerar-stories-diario-08h-brt');
+-- SELECT cron.unschedule('gerar-comentarista-auto-15min');
