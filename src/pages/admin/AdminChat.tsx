@@ -78,6 +78,7 @@ export function AdminChat() {
       .subscribe()
 
     return () => { supabase.removeChannel(channel) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function deletar(id: string) {

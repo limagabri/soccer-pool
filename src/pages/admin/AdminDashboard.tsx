@@ -53,7 +53,7 @@ export function AdminDashboard() {
 
   const nomeMap = useMemo(
     () => Object.fromEntries(profiles.map(p => [p.id, p.username ?? t('admin.anon')])),
-    [profiles]
+    [profiles, t]
   )
 
   const metrics: MetricsData = useMemo(() => {
@@ -77,7 +77,7 @@ export function AdminDashboard() {
         ? `${proxJogo.time_casa} × ${proxJogo.time_fora}`
         : t('admin.dash.cupOver'),
     }
-  }, [palpites, profiles, jogos, nomeMap])
+  }, [palpites, profiles, jogos, nomeMap, t])
 
   // Chart 1: palpites por rodada
   const palpitesPorRodada = useMemo(() => {
@@ -128,7 +128,7 @@ export function AdminDashboard() {
       }))
       .sort((a, b) => b.pontos - a.pontos)
       .map((u, i) => ({ ...u, posicao: i + 1 }))
-  }, [palpites, nomeMap, jogos])
+  }, [palpites, nomeMap, jogos, t])
 
   if (loading) return (
     <div className="flex h-64 items-center justify-center">
