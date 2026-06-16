@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { Loader2, RefreshCw } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 import { StoriesViewer, type StoryData } from '../../components/StoriesViewer'
 import { StoryHallVergonha } from '../../components/stories/StoryHallVergonha'
@@ -11,12 +12,12 @@ import { StoryCovarde } from '../../components/stories/StoryCovarde'
 import { StoryTelepata } from '../../components/stories/StoryTelepata'
 
 const TEMPLATES = [
-  { value: 'hall_vergonha',      label: 'Hall da Vergonha',       icon: '🏆', desc: 'Pior palpite do dia' },
-  { value: 'zebra_dia',          label: 'Zebra do Dia',            icon: '🦓', desc: 'Quem acertou o resultado mais improvável' },
-  { value: 'vidente_chutometro', label: 'Vidente ou Chutômetro?',  icon: '🔮', desc: 'Comparação de acertos vs erros' },
-  { value: 'subiu_afundou',      label: 'Subiu / Afundou',         icon: '📈', desc: 'Maiores variações no ranking' },
-  { value: 'palpite_covarde',    label: 'Palpite Covarde',         icon: '🐔', desc: 'Quem chutou mais 0x0 e 1x0' },
-  { value: 'telepata_rodada',    label: 'Telepata da Rodada',      icon: '🧠', desc: 'Mais acertos de placar exato' },
+  { value: 'hall_vergonha',      icon: '🏆' },
+  { value: 'zebra_dia',          icon: '🦓' },
+  { value: 'vidente_chutometro', icon: '🔮' },
+  { value: 'subiu_afundou',      icon: '📈' },
+  { value: 'palpite_covarde',    icon: '🐔' },
+  { value: 'telepata_rodada',    icon: '🧠' },
 ]
 
 function PreviewCard({ story }: { story: StoryData }) {
@@ -34,6 +35,7 @@ function PreviewCard({ story }: { story: StoryData }) {
 }
 
 export function AdminStories() {
+  const { t } = useTranslation()
   const [stories, setStories] = useState<StoryData[]>([])
   const [gerando, setGerando] = useState<string | null>(null)
   const [preview, setPreview] = useState<StoryData | null>(null)
@@ -65,13 +67,13 @@ export function AdminStories() {
     })
     if (!res.ok) {
       const err = await res.json().catch(() => ({}))
-      setErro(err.error ?? 'Erro ao gerar story.')
+      setErro(err.error ?? t('admin.stories.genError'))
       setGerando(null)
       return
     }
     const data = await res.json()
     if (!data.conteudo_ia) {
-      setErro('IA retornou texto vazio — tente novamente.')
+      setErro(t('admin.stories.emptyAI'))
       setGerando(null)
       return
     }
@@ -107,26 +109,26 @@ export function AdminStories() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-zinc-100">Stories Cômicos</h1>
+      <h1 className="text-2xl font-bold text-zinc-100">{t('admin.stories.title')}</h1>
 
       {erro && <p className="rounded-lg border border-red-700/40 bg-red-900/20 px-4 py-2 text-sm text-red-400">{erro}</p>}
 
       {/* Template buttons */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {TEMPLATES.map(t => (
+        {TEMPLATES.map(tp => (
           <button
-            key={t.value}
-            onClick={() => gerar(t.value)}
-            disabled={gerando === t.value}
+            key={tp.value}
+            onClick={() => gerar(tp.value)}
+            disabled={gerando === tp.value}
             className="flex flex-col gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4 text-left transition hover:border-green-700/60 hover:bg-zinc-800 disabled:opacity-60"
           >
             <div className="flex items-center justify-between">
-              <span className="text-2xl">{t.icon}</span>
-              {gerando === t.value && <Loader2 className="h-4 w-4 animate-spin text-green-500" />}
-              {gerando !== t.value && <RefreshCw className="h-3.5 w-3.5 text-zinc-600" />}
+              <span className="text-2xl">{tp.icon}</span>
+              {gerando === tp.value && <Loader2 className="h-4 w-4 animate-spin text-green-500" />}
+              {gerando !== tp.value && <RefreshCw className="h-3.5 w-3.5 text-zinc-600" />}
             </div>
-            <p className="text-sm font-semibold text-zinc-200">{t.label}</p>
-            <p className="text-xs text-zinc-500">{t.desc}</p>
+            <p className="text-sm font-semibold text-zinc-200">{t(`admin.stories.types.${tp.value}`)}</p>
+            <p className="text-xs text-zinc-500">{t(`admin.stories.descs.${tp.value}`)}</p>
           </button>
         ))}
       </div>
@@ -134,7 +136,7 @@ export function AdminStories() {
       {/* Preview */}
       {preview && (
         <div className="rounded-xl border border-zinc-700 bg-zinc-900/60 p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-zinc-300">Preview — {preview.titulo}</h2>
+          <h2 className="text-sm font-semibold text-zinc-300">{t('admin.stories.preview')} — {preview.titulo}</h2>
           <div className="flex justify-center">
             <div className="overflow-hidden rounded-2xl" style={{ width: 300, height: 300 }}>
               <div style={{ transform: 'scale(0.75)', transformOrigin: 'top left', width: 400, height: 400 }}>
@@ -143,7 +145,7 @@ export function AdminStories() {
             </div>
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-medium text-zinc-500">Texto gerado (editável antes de publicar)</label>
+            <label className="text-xs font-medium text-zinc-500">{t('admin.stories.editableText')}</label>
             <textarea
               value={editando}
               onChange={e => setEditando(e.target.value)}
@@ -156,13 +158,13 @@ export function AdminStories() {
               onClick={() => publicar(preview.id, editando)}
               className="rounded-lg bg-brasil-green/80 px-4 py-2 text-sm font-semibold text-black hover:bg-brasil-green"
             >
-              Publicar
+              {t('admin.pundit.publish')}
             </button>
             <button onClick={() => gerar(preview.template)} disabled={!!gerando} className="text-sm text-zinc-400 hover:text-zinc-200">
-              Regenerar
+              {t('admin.pundit.regenerate')}
             </button>
             <button onClick={() => setPreview(null)} className="text-sm text-zinc-600 hover:text-zinc-400">
-              Descartar
+              {t('admin.pundit.discard')}
             </button>
           </div>
         </div>
@@ -172,20 +174,20 @@ export function AdminStories() {
       {publishedStories.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold tracking-wider text-zinc-400 uppercase">Publicados</h2>
+            <h2 className="text-sm font-semibold tracking-wider text-zinc-400 uppercase">{t('admin.stories.published')}</h2>
             <button onClick={() => setViewerIdx(0)} className="text-xs text-brasil-green hover:underline">
-              Ver como stories →
+              {t('admin.stories.viewAsStories')}
             </button>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {publishedStories.map(s => {
-              const tpl = TEMPLATES.find(t => t.value === s.template)
+              const tpl = TEMPLATES.find(x => x.value === s.template)
               return (
                 <div key={s.id} className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-3 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">{tpl?.icon} {tpl?.label ?? s.template}</span>
+                    <span className="text-sm">{tpl?.icon} {tpl ? t(`admin.stories.types.${s.template}`) : s.template}</span>
                     <button onClick={() => despublicar(s.id)} className="text-[10px] text-red-500 hover:text-red-400">
-                      Despublicar
+                      {t('admin.pundit.unpublish')}
                     </button>
                   </div>
                   <p className="line-clamp-3 text-xs text-zinc-500">{s.conteudo_ia}</p>

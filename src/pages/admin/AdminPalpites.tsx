@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Loader2, Copy, Save } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 
 interface Profile {
@@ -46,6 +47,7 @@ function pontosBadge(pts: number | null) {
 }
 
 export function AdminPalpites() {
+  const { t } = useTranslation()
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [selectedUser, setSelectedUser] = useState('')
   const [rodada, setRodada] = useState(1)
@@ -109,7 +111,7 @@ export function AdminPalpites() {
       copia[p.jogo_id] = { gols_casa: String(p.gols_casa), gols_fora: String(p.gols_fora) }
     }
     setEdits(copia)
-    setMsg({ ok: true, text: `Palpites copiados de ${profiles.find(p => p.id === copyUser)?.username ?? ''}` })
+    setMsg({ ok: true, text: t('admin.retro.copiedFrom', { name: profiles.find(p => p.id === copyUser)?.username ?? '' }) })
     setTimeout(() => setMsg(null), 3000)
   }
 
@@ -128,7 +130,7 @@ export function AdminPalpites() {
       .filter(p => !isNaN(p.gols_casa) && !isNaN(p.gols_fora))
 
     if (palpites.length === 0) {
-      setMsg({ ok: false, text: 'Nenhum palpite preenchido.' })
+      setMsg({ ok: false, text: t('admin.retro.noneFilled') })
       setSaving(false)
       return
     }
@@ -138,8 +140,8 @@ export function AdminPalpites() {
         body: { user_id: selectedUser, palpites },
       })
       if (error) throw error
-      const username = profiles.find(p => p.id === selectedUser)?.username ?? 'jogador'
-      setMsg({ ok: true, text: `${data.count} palpite(s) salvos para ${username} · ${data.recalculated} jogo(s) recalculado(s)` })
+      const username = profiles.find(p => p.id === selectedUser)?.username ?? t('admin.retro.player')
+      setMsg({ ok: true, text: t('admin.retro.savedCount', { count: data.count, name: username, recalc: data.recalculated }) })
     } catch (err) {
       setMsg({ ok: false, text: String(err) })
     }
@@ -157,12 +159,12 @@ export function AdminPalpites() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-zinc-100">Palpites Retroativos</h1>
+      <h1 className="text-2xl font-bold text-zinc-100">{t('admin.retro.title')}</h1>
 
       {/* Selectors */}
       <div className="flex flex-wrap items-end gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-zinc-500">Jogador</label>
+          <label className="text-xs font-medium text-zinc-500">{t('admin.retro.player')}</label>
           <select
             value={selectedUser}
             onChange={e => setSelectedUser(e.target.value)}
@@ -175,7 +177,7 @@ export function AdminPalpites() {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-zinc-500">Rodada</label>
+          <label className="text-xs font-medium text-zinc-500">{t('common.round')}</label>
           <div className="flex gap-1">
             {[1, 2, 3].map(r => (
               <button
@@ -196,13 +198,13 @@ export function AdminPalpites() {
         {/* Copy from */}
         <div className="ml-auto flex items-end gap-2">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-zinc-500">Copiar palpites de</label>
+            <label className="text-xs font-medium text-zinc-500">{t('admin.retro.copyFrom')}</label>
             <select
               value={copyUser}
               onChange={e => setCopyUser(e.target.value)}
               className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-400 outline-none focus:border-green-600"
             >
-              <option value="">— selecionar —</option>
+              <option value="">{t('admin.retro.selectPlaceholder')}</option>
               {profiles.filter(p => p.id !== selectedUser).map(p => (
                 <option key={p.id} value={p.id}>{p.username}</option>
               ))}
@@ -214,7 +216,7 @@ export function AdminPalpites() {
             className="flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-200 disabled:opacity-40"
           >
             <Copy className="h-3.5 w-3.5" />
-            Copiar
+            {t('admin.invites.copy')}
           </button>
         </div>
       </div>
@@ -231,11 +233,11 @@ export function AdminPalpites() {
 
       {/* Games grid */}
       {jogos.length === 0 ? (
-        <p className="text-sm text-zinc-600">Nenhum jogo encontrado para Rodada {rodada}.</p>
+        <p className="text-sm text-zinc-600">{t('admin.retro.noGamesRound', { round: rodada })}</p>
       ) : (
         <div className="space-y-2">
           <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-            Palpites de <span className="text-zinc-300">{userName}</span> — Rodada {rodada}
+            {t('admin.retro.picksOf')} <span className="text-zinc-300">{userName}</span> — {t('common.round')} {rodada}
           </p>
 
           <div className="overflow-hidden rounded-xl border border-zinc-800">
@@ -311,7 +313,7 @@ export function AdminPalpites() {
           className="flex items-center gap-2 rounded-xl bg-brasil-green/80 px-5 py-2.5 text-sm font-bold text-black transition hover:bg-brasil-green disabled:opacity-60"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          Salvar palpites de {userName}
+          {t('admin.retro.saveFor', { name: userName })}
         </button>
       )}
     </div>
