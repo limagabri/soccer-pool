@@ -29,7 +29,7 @@
 - 🛡️ **Admin panel** — manage matches, users, invites, special results and push
 - 📱 **PWA** — installable on iOS and Android, offline-capable, auto-updates on new deploys
 - 🌙 **Dark / light theme** — system default with manual override
-- 🌐 **i18n** — Portuguese, English & Spanish (i18next) across the participant-facing app; admin console is pt-BR
+- 🌐 **i18n** — full Portuguese, English & Spanish (i18next), across **both** the participant app and the admin console
 - 🔐 **Invite system** — control who can join your pool
 
 ## 🚀 Quick Start (5 minutes)

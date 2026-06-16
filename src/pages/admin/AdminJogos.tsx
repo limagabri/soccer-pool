@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, Clock, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 import { formatarData } from '../../lib/utils'
 import { GRUPOS } from '../../lib/classificacao'
@@ -32,33 +33,28 @@ interface EventoForm {
 }
 
 const FASES_MATAMATA = [
-  { fase: '32-avos de Final', inicio: 73,  count: 16 },
-  { fase: 'Oitavas de Final', inicio: 89,  count: 8  },
-  { fase: 'Quartas de Final', inicio: 97,  count: 4  },
-  { fase: 'Semifinais',       inicio: 101, count: 2  },
-  { fase: '3º Lugar',         inicio: 103, count: 1  },
-  { fase: 'Final',            inicio: 104, count: 1  },
+  { tk: 'r32',      inicio: 73,  count: 16 },
+  { tk: 'r16',      inicio: 89,  count: 8  },
+  { tk: 'quarters', inicio: 97,  count: 4  },
+  { tk: 'semis',    inicio: 101, count: 2  },
+  { tk: 'third',    inicio: 103, count: 1  },
+  { tk: 'final',    inicio: 104, count: 1  },
 ]
 
-const TIPO_LABEL: Record<EventoJogo['tipo'], string> = {
-  gol: '⚽ Gol',
-  gol_contra: '🥅 Gol Contra',
-  assistencia: '🎯 Assistência',
-}
-
-function BadgeStatus({ encerrado }: { encerrado: boolean }) {
+function BadgeStatus({ encerrado, t }: { encerrado: boolean; t: (k: string) => string }) {
   return encerrado ? (
     <span className="inline-flex items-center gap-1 rounded-full bg-green-900/40 px-2 py-0.5 text-xs font-medium text-green-400">
-      <CheckCircle2 className="h-3 w-3" /> Encerrado
+      <CheckCircle2 className="h-3 w-3" /> {t('admin.matches.statusFinished')}
     </span>
   ) : (
     <span className="inline-flex items-center gap-1 rounded-full bg-zinc-800 px-2 py-0.5 text-xs font-medium text-zinc-500">
-      <Clock className="h-3 w-3" /> Pendente
+      <Clock className="h-3 w-3" /> {t('admin.matches.statusPending')}
     </span>
   )
 }
 
 export function AdminJogos() {
+  const { t } = useTranslation()
   const [jogos, setJogos] = useState<Jogo[]>([])
   const [loading, setLoading] = useState(true)
   const [filtro, setFiltro] = useState<Filtro>('todos')
@@ -100,7 +96,7 @@ export function AdminJogos() {
       const { data, error } = await supabase.functions.invoke('sync-resultados')
       if (error) throw error
       const d = data as { updated?: number; errors?: string[] }
-      const txt = `${d.updated ?? 0} jogo(s) atualizado(s)${d.errors?.length ? ` · ${d.errors.length} erro(s)` : ''}`
+      const txt = t('admin.matches.syncResult', { count: d.updated ?? 0 }) + (d.errors?.length ? t('admin.matches.syncErrors', { n: d.errors.length }) : '')
       setSyncMsg({ ok: true, text: txt })
       if ((d.updated ?? 0) > 0) {
         const { data: fresh } = await supabase.from('jogos').select('*').order('numero_jogo')
@@ -186,20 +182,19 @@ export function AdminJogos() {
     setEventos((prev) => prev.filter((e) => e.id !== id))
   }
 
-  const FILTROS: { id: Filtro; label: string }[] = [
-    { id: 'todos', label: 'Todos' },
-    { id: 'pendentes', label: 'Pendentes' },
-    { id: 'encerrados', label: 'Encerrados' },
-    ...GRUPOS.map((g) => ({ id: g as Filtro, label: `Grupo ${g}` })),
+  const FILTROS: { id: Filtro; k: string }[] = [
+    { id: 'todos', k: 'filterAll' },
+    { id: 'pendentes', k: 'filterPending' },
+    { id: 'encerrados', k: 'filterFinished' },
   ]
 
   return (
     <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-100">Jogos</h1>
+          <h1 className="text-2xl font-bold text-zinc-100">{t('admin.matches.title')}</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            {jogos.filter((j) => j.encerrado).length} de {jogos.length} jogos encerrados
+            {t('admin.matches.summary', { done: jogos.filter((j) => j.encerrado).length, total: jogos.length })}
           </p>
         </div>
         <button
@@ -212,7 +207,7 @@ export function AdminJogos() {
           ) : (
             <RefreshCw className="h-4 w-4" />
           )}
-          Sincronizar agora
+          {t('admin.matches.syncNow')}
         </button>
       </div>
 
@@ -228,7 +223,7 @@ export function AdminJogos() {
 
       {/* Filtros */}
       <div className="mb-5 flex flex-wrap gap-2">
-        {FILTROS.slice(0, 3).map((f) => (
+        {FILTROS.map((f) => (
           <button
             key={f.id}
             onClick={() => setFiltro(f.id)}
@@ -238,7 +233,7 @@ export function AdminJogos() {
                 : 'bg-zinc-800 text-zinc-400 hover:text-zinc-100'
             }`}
           >
-            {f.label}
+            {t(`admin.matches.${f.k}`)}
           </button>
         ))}
         <select
@@ -246,9 +241,9 @@ export function AdminJogos() {
           onChange={(e) => setFiltro(e.target.value || 'todos')}
           className="rounded-lg bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 outline-none focus:ring-1 focus:ring-green-600"
         >
-          <option value="">Grupo…</option>
+          <option value="">{t('admin.matches.groupOpt')}</option>
           {GRUPOS.map((g) => (
-            <option key={g} value={g}>Grupo {g}</option>
+            <option key={g} value={g}>{t('common.group')} {g}</option>
           ))}
         </select>
       </div>
@@ -265,11 +260,11 @@ export function AdminJogos() {
             <thead>
               <tr className="border-b border-zinc-800 text-left text-xs tracking-wider text-zinc-500 uppercase">
                 <th className="px-4 py-3">#</th>
-                <th className="py-3">Partida</th>
-                <th className="px-3 py-3 text-center">Resultado</th>
-                <th className="px-3 py-3 text-center">Status</th>
-                <th className="px-4 py-3 text-center">Data</th>
-                <th className="px-4 py-3 text-right">Ação</th>
+                <th className="py-3">{t('admin.matches.colMatch')}</th>
+                <th className="px-3 py-3 text-center">{t('admin.matches.colResult')}</th>
+                <th className="px-3 py-3 text-center">{t('admin.matches.colStatus')}</th>
+                <th className="px-4 py-3 text-center">{t('admin.matches.colDate')}</th>
+                <th className="px-4 py-3 text-right">{t('admin.matches.colAction')}</th>
               </tr>
             </thead>
             <tbody>
@@ -289,13 +284,13 @@ export function AdminJogos() {
                       <span className="hidden sm:inline">{jogo.time_fora}</span>
                       <span>{jogo.emoji_fora}</span>
                     </span>
-                    <span className="mt-0.5 block text-xs text-zinc-600">Grupo {jogo.grupo} · R{jogo.rodada}</span>
+                    <span className="mt-0.5 block text-xs text-zinc-600">{t('common.group')} {jogo.grupo} · R{jogo.rodada}</span>
                   </td>
                   <td className="px-3 py-3 text-center font-mono text-zinc-300">
                     {jogo.gols_casa != null ? `${jogo.gols_casa}–${jogo.gols_fora}` : '–'}
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <BadgeStatus encerrado={jogo.encerrado} />
+                    <BadgeStatus encerrado={jogo.encerrado} t={t} />
                   </td>
                   <td className="px-4 py-3 text-center text-xs text-zinc-500">
                     {formatarData(jogo.data_jogo)}
@@ -306,7 +301,7 @@ export function AdminJogos() {
                       className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-zinc-700 hover:text-zinc-100"
                     >
                       <Pencil className="h-3 w-3" />
-                      Editar
+                      {t('admin.common.edit')}
                     </button>
                   </td>
                 </motion.tr>
@@ -318,13 +313,13 @@ export function AdminJogos() {
 
       {/* Mata-mata — preview placeholders for J73–J104 */}
       <div className="mt-10">
-        <h2 className="mb-5 text-xl font-bold text-zinc-100">Fase Mata-Mata</h2>
+        <h2 className="mb-5 text-xl font-bold text-zinc-100">{t('admin.matches.knockout')}</h2>
         <div className="space-y-8">
-          {FASES_MATAMATA.map(({ fase, inicio, count }) => {
+          {FASES_MATAMATA.map(({ tk, inicio, count }) => {
             const numeros = Array.from({ length: count }, (_, i) => inicio + i)
             return (
-              <div key={fase}>
-                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">{fase}</h3>
+              <div key={tk}>
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">{t(`admin.matches.phases.${tk}`)}</h3>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                   {numeros.map((num) => {
                     const jogo = jogos.find((j) => j.numero_jogo === num)
@@ -344,7 +339,7 @@ export function AdminJogos() {
                               </p>
                               {jogo.encerrado ? (
                                 <p className="text-xs text-green-500">
-                                  {jogo.gols_casa}–{jogo.gols_fora} · Encerrado
+                                  {jogo.gols_casa}–{jogo.gols_fora} · {t('admin.matches.finished')}
                                 </p>
                               ) : (
                                 <p className="text-xs text-zinc-500">{formatarData(jogo.data_jogo)}</p>
@@ -352,8 +347,8 @@ export function AdminJogos() {
                             </>
                           ) : (
                             <>
-                              <p className="text-sm text-zinc-500">A definir × A definir</p>
-                              <p className="text-xs text-zinc-700">Aguardando classificação</p>
+                              <p className="text-sm text-zinc-500">{t('admin.matches.tbd')}</p>
+                              <p className="text-xs text-zinc-700">{t('admin.matches.awaitingQual')}</p>
                             </>
                           )}
                         </div>
@@ -397,7 +392,7 @@ export function AdminJogos() {
                     {modal.jogo.emoji_casa} {modal.jogo.time_casa} × {modal.jogo.time_fora} {modal.jogo.emoji_fora}
                   </h2>
                   <p className="mt-0.5 text-xs text-zinc-500">
-                    Grupo {modal.jogo.grupo} · {formatarData(modal.jogo.data_jogo)}
+                    {t('common.group')} {modal.jogo.grupo} · {formatarData(modal.jogo.data_jogo)}
                   </p>
                 </div>
                 <button onClick={fecharModal} className="text-zinc-600 hover:text-zinc-300">
@@ -408,7 +403,7 @@ export function AdminJogos() {
               <div className="p-5 space-y-5">
                 {/* Resultado */}
                 <div>
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Resultado</p>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">{t('admin.matches.result')}</p>
                   <div className="flex items-center justify-center gap-4">
                     <div className="flex flex-col items-center gap-2">
                       <span className="text-2xl">{modal.jogo.emoji_casa}</span>
@@ -438,8 +433,8 @@ export function AdminJogos() {
                       className="h-4 w-4 rounded accent-green-500"
                     />
                     <div>
-                      <p className="text-sm font-medium text-zinc-200">Marcar como encerrado</p>
-                      <p className="text-xs text-zinc-500">Pontos calculados automaticamente pelo trigger</p>
+                      <p className="text-sm font-medium text-zinc-200">{t('admin.matches.markFinished')}</p>
+                      <p className="text-xs text-zinc-500">{t('admin.matches.autoPoints')}</p>
                     </div>
                   </label>
 
@@ -449,7 +444,7 @@ export function AdminJogos() {
                     className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-green-700 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600 disabled:opacity-60"
                   >
                     {salvando && <Loader2 className="h-4 w-4 animate-spin" />}
-                    Salvar resultado
+                    {t('admin.matches.saveResult')}
                   </button>
                 </div>
 
@@ -458,7 +453,7 @@ export function AdminJogos() {
 
                 {/* Eventos */}
                 <div>
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Eventos do jogo</p>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">{t('admin.matches.events')}</p>
 
                   {carregandoEventos ? (
                     <div className="flex justify-center py-4">
@@ -473,7 +468,7 @@ export function AdminJogos() {
                             <div key={ev.id} className="flex items-center justify-between rounded-lg bg-zinc-800 px-3 py-2 text-sm">
                               <div className="flex items-center gap-2">
                                 <span className="text-xs text-zinc-500">{ev.minuto ? `${ev.minuto}'` : '—'}</span>
-                                <span className="text-zinc-400">{TIPO_LABEL[ev.tipo]}</span>
+                                <span className="text-zinc-400">{t(`admin.matches.evType.${ev.tipo}`)}</span>
                                 <span className="font-medium text-zinc-200">{ev.jogador}</span>
                                 <span className="text-xs text-zinc-500">({ev.selecao})</span>
                               </div>
@@ -490,32 +485,32 @@ export function AdminJogos() {
 
                       {/* Formulário novo evento */}
                       <div className="rounded-lg border border-zinc-700 bg-zinc-800/50 p-3 space-y-2">
-                        <p className="text-xs text-zinc-500">Adicionar evento</p>
+                        <p className="text-xs text-zinc-500">{t('admin.matches.addEvent')}</p>
                         <div className="grid grid-cols-2 gap-2">
                           <select
                             value={eventoForm.tipo}
                             onChange={(e) => setEventoForm((f) => ({ ...f, tipo: e.target.value as EventoJogo['tipo'] }))}
                             className="rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600"
                           >
-                            <option value="gol">⚽ Gol</option>
-                            <option value="gol_contra">🥅 Gol Contra</option>
-                            <option value="assistencia">🎯 Assistência</option>
+                            <option value="gol">{t('admin.matches.evType.gol')}</option>
+                            <option value="gol_contra">{t('admin.matches.evType.gol_contra')}</option>
+                            <option value="assistencia">{t('admin.matches.evType.assistencia')}</option>
                           </select>
                           <input
-                            type="number" min={1} max={120} placeholder="Minuto"
+                            type="number" min={1} max={120} placeholder={t('admin.matches.minute')}
                             value={eventoForm.minuto}
                             onChange={(e) => setEventoForm((f) => ({ ...f, minuto: e.target.value }))}
                             className="rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600 placeholder:text-zinc-600"
                           />
                         </div>
                         <input
-                          type="text" placeholder="Jogador"
+                          type="text" placeholder={t('admin.matches.player')}
                           value={eventoForm.jogador}
                           onChange={(e) => setEventoForm((f) => ({ ...f, jogador: e.target.value }))}
                           className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600 placeholder:text-zinc-600"
                         />
                         <input
-                          type="text" placeholder="Seleção"
+                          type="text" placeholder={t('admin.matches.team')}
                           value={eventoForm.selecao}
                           onChange={(e) => setEventoForm((f) => ({ ...f, selecao: e.target.value }))}
                           className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1.5 text-sm text-zinc-200 outline-none focus:border-green-600 placeholder:text-zinc-600"
@@ -526,7 +521,7 @@ export function AdminJogos() {
                           className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-zinc-600 py-1.5 text-sm font-medium text-zinc-300 transition hover:border-green-600 hover:text-green-400 disabled:opacity-40"
                         >
                           {salvandoEvento ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Plus className="h-3.5 w-3.5" />}
-                          Adicionar
+                          {t('admin.matches.add')}
                         </button>
                       </div>
                     </>
@@ -540,7 +535,7 @@ export function AdminJogos() {
                   onClick={fecharModal}
                   className="w-full rounded-lg border border-zinc-700 py-2 text-sm font-medium text-zinc-400 transition hover:border-zinc-600"
                 >
-                  Fechar
+                  {t('admin.common.close')}
                 </button>
               </div>
             </motion.div>
