@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Loader2, Shield } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { LangToggle } from '../../components/LangToggle'
 import { supabase } from '../../lib/supabase'
 import { APP_FULL_NAME } from '../../config/app'
 
@@ -50,6 +51,9 @@ export function AdminLogin() {
         transition={{ duration: 0.4 }}
         className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900 p-8"
       >
+        <div className="-mt-2 -mr-2 mb-1 flex justify-end">
+          <LangToggle className="text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100" />
+        </div>
         <div className="mb-8 flex flex-col items-center gap-3">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-900/40 ring-2 ring-green-700/50">
             <Shield className="h-7 w-7 text-green-400" />
