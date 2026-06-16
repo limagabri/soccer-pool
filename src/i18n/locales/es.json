@@ -283,7 +283,11 @@
       "exampleIntro": "Partido finalizado",
       "youGuessed": "Pronosticaste",
       "homeWins": "(gana Brasil)",
-      "awayWins": "(gana Argentina)"
+      "awayWins": "(gana Argentina)",
+      "knockout": {
+        "title": "Las eliminatorias valen más",
+        "body": "Desde los dieciseisavos, el marcador exacto vale 15 pts y acertar al ganador 10. Si pronosticas empate en el tiempo normal, elige quién avanza en los penales y suma +5 si aciertas."
+      }
     },
     "s3": {
       "title": "Elecciones especiales",

@@ -87,6 +87,11 @@ export function Regulamento() {
                 <div className="flex justify-between"><span className="text-zinc-400">{t('regulamento.s2.youGuessed')} <strong className="text-zinc-200">0×1</strong> {t('regulamento.s2.awayWins')}</span><span className="text-zinc-500">+0 pts</span></div>
               </div>
             </div>
+
+            <div className="mt-5 rounded-xl border border-brasil-green/20 bg-brasil-green/5 p-4">
+              <p className="mb-1 text-sm font-semibold text-brasil-green">{t('regulamento.s2.knockout.title')}</p>
+              <p className="text-sm text-zinc-400">{t('regulamento.s2.knockout.body')}</p>
+            </div>
           </motion.section>
 
           {/* Seção 3 — Escolhas especiais */}

@@ -283,7 +283,11 @@
       "exampleIntro": "Jogo encerrado",
       "youGuessed": "Você chutou",
       "homeWins": "(Brasil vence)",
-      "awayWins": "(Argentina vence)"
+      "awayWins": "(Argentina vence)",
+      "knockout": {
+        "title": "No mata-mata vale mais",
+        "body": "A partir das 16-avos, placar exato vale 15 pts e acertar o vencedor vale 10. Se você cravar empate no tempo normal, escolha quem avança nos pênaltis e ganhe +5 por acertar."
+      }
     },
     "s3": {
       "title": "Escolhas especiais",

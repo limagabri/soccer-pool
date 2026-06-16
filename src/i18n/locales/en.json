@@ -283,7 +283,11 @@
       "exampleIntro": "Final result",
       "youGuessed": "You guessed",
       "homeWins": "(Brazil wins)",
-      "awayWins": "(Argentina wins)"
+      "awayWins": "(Argentina wins)",
+      "knockout": {
+        "title": "Knockouts are worth more",
+        "body": "From the round of 32 on, an exact score is worth 15 pts and the correct winner 10. If you predict a draw in normal time, pick who advances on penalties for +5 when you get it right."
+      }
     },
     "s3": {
       "title": "Special picks",

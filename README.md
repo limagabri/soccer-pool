@@ -154,13 +154,24 @@ only runs what's new. See [MANUAL_SETUP.md](MANUAL_SETUP.md) for SQL Editor step
 
 ### Points system
 
-**Per match**
+**Per match — group stage**
 
 | Result | Points |
 |---|---|
 | Exact score | **10** |
 | Correct winner / draw | **5** |
 | Wrong | 0 |
+
+**Per match — knockout stage** (round of 32 → final)
+
+| Result | Points |
+|---|---|
+| Exact score | **15** |
+| Correct winner / draw | **10** |
+| Predicted a draw + correct penalty advancer | **+5** |
+| Wrong | 0 |
+
+> Knockout fixtures are built automatically from the real standings; once a match's teams are set, you predict its score (and, on a predicted draw, who goes through on penalties).
 
 **Special picks** (one-off, tournament-long)
 
