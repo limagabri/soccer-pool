@@ -18,6 +18,7 @@ interface EspnTeam {
   team: { displayName: string }
   score: string
   homeAway: 'home' | 'away'
+  winner?: boolean   // ESPN marca quem avançou (inclusive por pênaltis)
 }
 
 interface EspnEvent {
@@ -238,19 +239,19 @@ Deno.serve(async (req) => {
     // ESPN às vezes inverte mandante/visitante em relação ao banco, então
     // tentamos as duas orientações e marcamos se veio invertido — para orientar
     // o placar corretamente.
-    let jogo: { id: string; encerrado: boolean; gols_casa: number | null; gols_fora: number | null; data_jogo: string } | null = null
+    let jogo: { id: string; encerrado: boolean; gols_casa: number | null; gols_fora: number | null; data_jogo: string; vencedor_penaltis: string | null } | null = null
     let invertido = false
     {
       const { data } = await supabase
         .from('jogos')
-        .select('id, encerrado, gols_casa, gols_fora, data_jogo')
+        .select('id, encerrado, gols_casa, gols_fora, data_jogo, vencedor_penaltis')
         .eq('time_casa', espnCasa).eq('time_fora', espnFora).limit(1)
       if (data?.length) jogo = data[0]
     }
     if (!jogo) {
       const { data } = await supabase
         .from('jogos')
-        .select('id, encerrado, gols_casa, gols_fora, data_jogo')
+        .select('id, encerrado, gols_casa, gols_fora, data_jogo, vencedor_penaltis')
         .eq('time_casa', espnFora).eq('time_fora', espnCasa).limit(1)
       if (data?.length) { jogo = data[0]; invertido = true }
     }
@@ -281,13 +282,24 @@ Deno.serve(async (req) => {
     const scoreHome = invertido ? placarAway : placarHome
     const scoreAway = invertido ? placarHome : placarAway
 
-    // 2) Update the score when it changed (or the game just finished).
+    // Em empate de mata-mata, quem avançou nos pênaltis (pela flag da ESPN).
+    // Em grupos / vitória normal não há avanço por pênalti (fica null).
+    const avancou =
+      scoreHome === scoreAway
+        ? (home.winner ? toPT(home.team.displayName)
+          : away.winner ? toPT(away.team.displayName)
+          : null)
+        : null
+
+    // 2) Update the score when it changed (or the game just finished), ou quando
+    //    o avanço por pênalti passou a ser conhecido.
     const placarMudou =
       !jogo.encerrado || jogo.gols_casa !== scoreHome || jogo.gols_fora !== scoreAway
-    if (placarMudou) {
+    const avancoMudou = avancou != null && jogo.vencedor_penaltis !== avancou
+    if (placarMudou || avancoMudou) {
       const { error } = await supabase
         .from('jogos')
-        .update({ gols_casa: scoreHome, gols_fora: scoreAway, encerrado: true })
+        .update({ gols_casa: scoreHome, gols_fora: scoreAway, encerrado: true, vencedor_penaltis: avancou })
         .eq('id', jogo.id)
       if (error) {
         errors.push(`Update error for ${jogo.id}: ${error.message}`)

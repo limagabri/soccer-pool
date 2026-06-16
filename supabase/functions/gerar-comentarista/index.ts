@@ -38,8 +38,18 @@ Deno.serve(async (req) => {
     .select('id, numero_jogo, time_casa, time_fora, emoji_casa, emoji_fora, gols_casa, gols_fora, rodada, grupo')
     .eq('encerrado', true)
 
+  // tipos de mata-mata -> fases correspondentes (final cobre final + 3º lugar)
+  const TIPO_FASE: Record<string, string[]> = {
+    rodada_32avos: ['r32'],
+    rodada_oitavas: ['oitavas'],
+    rodada_quartas: ['quartas'],
+    rodada_semis: ['semis'],
+    rodada_final: ['final', 'terceiro'],
+  }
   if (tipo === 'rodada_grupos' && numero_rodada) {
-    jogosQuery = jogosQuery.eq('rodada', numero_rodada)
+    jogosQuery = jogosQuery.eq('fase', 'grupos').eq('rodada', numero_rodada)
+  } else if (TIPO_FASE[tipo]) {
+    jogosQuery = jogosQuery.in('fase', TIPO_FASE[tipo])
   }
 
   const { data: jogos } = await jogosQuery.order('numero_jogo')

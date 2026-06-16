@@ -65,6 +65,25 @@ SELECT cron.schedule(
   $$
 );
 
+-- Check every 10 min whether the knockout bracket can be built/advanced from the
+-- real standings + results, and create/update the knockout games (J73–J104).
+-- Idempotent: never overwrites games already in progress/finished.
+SELECT cron.schedule(
+  'gerar-mata-mata-10min',
+  '*/10 * * * *',
+  $$
+    SELECT net.http_post(
+      url := 'https://<PROJECT_REF>.supabase.co/functions/v1/gerar-mata-mata',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'Authorization', 'Bearer <SUPABASE_ANON_KEY>'
+      ),
+      body := '{}'::jsonb,
+      timeout_milliseconds := 120000
+    );
+  $$
+);
+
 -- To view scheduled jobs:
 -- SELECT * FROM cron.job;
 
@@ -72,3 +91,4 @@ SELECT cron.schedule(
 -- SELECT cron.unschedule('sync-resultados-every-2min');
 -- SELECT cron.unschedule('gerar-stories-diario-08h-brt');
 -- SELECT cron.unschedule('gerar-comentarista-auto-15min');
+-- SELECT cron.unschedule('gerar-mata-mata-10min');

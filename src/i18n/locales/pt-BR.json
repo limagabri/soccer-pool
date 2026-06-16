@@ -20,9 +20,18 @@
     "howItWorks": "Como funciona",
     "inviteOnly": "Acesso por convite",
     "features": {
-      "predict": { "title": "Palpite", "desc": "Dê seus palpites no placar de cada jogo da Copa antes do apito inicial." },
-      "points":  { "title": "Pontos",  "desc": "Acertou o placar exato? Pontuação máxima. Acertou o vencedor? Também soma." },
-      "ranking": { "title": "Ranking", "desc": "Acompanhe a classificação em tempo real e prove quem entende de futebol." }
+      "predict": {
+        "title": "Palpite",
+        "desc": "Dê seus palpites no placar de cada jogo da Copa antes do apito inicial."
+      },
+      "points": {
+        "title": "Pontos",
+        "desc": "Acertou o placar exato? Pontuação máxima. Acertou o vencedor? Também soma."
+      },
+      "ranking": {
+        "title": "Ranking",
+        "desc": "Acompanhe a classificação em tempo real e prove quem entende de futebol."
+      }
     },
     "footer": "feito com ⚽ e ☕"
   },
@@ -65,7 +74,23 @@
       "round1": "Rodada 1",
       "round2": "Rodada 2",
       "round3": "Rodada 3",
-      "mine": "Meus palpites"
+      "mine": "Meus palpites",
+      "knockout": "Mata-mata"
+    },
+    "phases": {
+      "r32": "32-avos",
+      "oitavas": "Oitavas",
+      "quartas": "Quartas",
+      "semis": "Semifinais",
+      "terceiro": "3º lugar",
+      "final": "Final"
+    },
+    "tbd": "A definir",
+    "awaitingTeams": "Aguardando definição dos times",
+    "advancer": {
+      "question": "Quem avança nos pênaltis?",
+      "bonus": "+5 pts se acertar quem avança",
+      "required": "Escolha quem avança nos pênaltis"
     }
   },
   "ranking": {
@@ -166,7 +191,9 @@
     "iosAdd": "Adicionar à Tela de Início",
     "androidManual": "Abra o menu do Chrome e toque em Instalar app (ou Adicionar à tela inicial)."
   },
-  "footer": { "madeBy": "Feito por" },
+  "footer": {
+    "madeBy": "Feito por"
+  },
   "groups": {
     "title": "Fase de",
     "titleAccent": "Grupos",
@@ -176,14 +203,30 @@
     "qualifyDirect": "Classificados diretos",
     "qualifyThird": "Disputa vaga de melhor 3º",
     "matchesOf": "Jogos do Grupo {{group}}",
-    "std": { "p": "J", "w": "V", "d": "E", "l": "D", "gf": "GP", "ga": "GC", "gd": "SG", "pts": "Pts" }
+    "std": {
+      "p": "J",
+      "w": "V",
+      "d": "E",
+      "l": "D",
+      "gf": "GP",
+      "ga": "GC",
+      "gd": "SG",
+      "pts": "Pts"
+    }
   },
   "chat": {
     "empty": "Nenhuma mensagem ainda. Seja o primeiro a comentar!",
     "placeholder": "Comente… use @ para marcar alguém",
     "mentionedYou": "{{name}} te marcou",
     "delete": "Deletar",
-    "reactions": { "goal": "Gol!", "whatGame": "Que jogo!", "noWay": "Não acredito!", "blunder": "Que vacilo", "nailedIt": "Acertei!", "rip": "Tomei" }
+    "reactions": {
+      "goal": "Gol!",
+      "whatGame": "Que jogo!",
+      "noWay": "Não acredito!",
+      "blunder": "Que vacilo",
+      "nailedIt": "Acertei!",
+      "rip": "Tomei"
+    }
   },
   "matchPicks": {
     "title": "Palpites",
@@ -195,26 +238,85 @@
     "revealed": "placar revelado (jogo já começou)"
   },
   "simulator": {
-    "title": "Simulador da", "titleAccent": "Copa",
+    "title": "Simulador da",
+    "titleAccent": "Copa",
     "subtitle": "Preencha os placares e descubra quem levanta a taça. Resultados reais entram automaticamente e não podem ser alterados.",
-    "simulateRandom": "Simular aleatoriamente", "reset": "Resetar",
-    "s1Pre": "1 · Fase de", "s1Accent": "Grupos",
-    "s2Pre": "2 · Melhores", "s2Accent": "Terceiros",
+    "simulateRandom": "Simular aleatoriamente",
+    "reset": "Resetar",
+    "s1Pre": "1 · Fase de",
+    "s1Accent": "Grupos",
+    "s2Pre": "2 · Melhores",
+    "s2Accent": "Terceiros",
     "thirdsHint": "Preencha os placares de todos os grupos para calcular os 8 melhores terceiros e liberar o chaveamento — ou use o botão",
-    "s3Pre": "3 ·", "s3Accent": "Mata-mata",
+    "s3Pre": "3 ·",
+    "s3Accent": "Mata-mata",
     "koHint": "Empatou? Escolha quem avança nos pênaltis. Arraste para o lado para ver todas as fases.",
-    "penalties": "Pênaltis:", "worldChampion": "Campeão do mundo", "simulateFinal": "Simule a final para conhecer o campeão",
-    "rounds": { "0": "32-avos de final", "1": "Oitavas de final", "2": "Quartas de final", "3": "Semifinais", "4": "Final" }
+    "penalties": "Pênaltis:",
+    "worldChampion": "Campeão do mundo",
+    "simulateFinal": "Simule a final para conhecer o campeão",
+    "rounds": {
+      "0": "32-avos de final",
+      "1": "Oitavas de final",
+      "2": "Quartas de final",
+      "3": "Semifinais",
+      "4": "Final"
+    }
   },
   "regulamento": {
     "titleAccent": "Regulamento",
     "subtitle": "Tudo que você precisa saber para ganhar o bolão.",
     "points": "pontos",
-    "s1": { "title": "Como funciona", "p1": "O {{name}} é um bolão fechado, acessível apenas por convite. Cada participante dá seus palpites de placar para os jogos da Copa do Mundo antes de cada partida começar.", "p2pre": "Acompanhe a classificação em tempo real no", "p2link": "Ranking", "p2post": "e veja quem está dominando.", "p3": "Palpites ficam bloqueados assim que o jogo inicia. Não é possível alterar um palpite já registrado." },
-    "s2": { "title": "Pontuação dos palpites", "exact": "Placar exato", "winner": "Vencedor ou empate correto", "wrong": "Resultado errado", "example": "Exemplo", "exampleIntro": "Jogo encerrado", "youGuessed": "Você chutou", "homeWins": "(Brasil vence)", "awayWins": "(Argentina vence)" },
-    "s3": { "title": "Escolhas especiais", "bonus": "bônus", "intro": "Feitas no primeiro acesso. Não podem ser alteradas após confirmadas.", "colChoice": "Escolha", "colPoints": "Pontos", "champion": "Campeão correto", "topScorer": "Artilheiro correto", "bestPlayer": "Melhor jogador correto", "runnerUp": "Vice-campeão correto", "third": "3º lugar correto", "bestDefense": "Melhor defesa (menos gols sofridos)", "auto": "(calculada automaticamente)" },
-    "s4": { "title": "Classificação final", "total": "Total = Pontos de palpites + Pontos especiais", "tiebreak": "Critérios de desempate (em ordem):", "tb1": "Mais acertos de placar exato", "tb2": "Mais acertos de vencedor/empate", "tb3": "Ordem alfabética do nome" },
-    "s5": { "title": "Regras gerais", "r1": "Palpites são bloqueados automaticamente quando o jogo inicia.", "r2": "Não é possível alterar palpites após o início da partida.", "r3": "Escolhas especiais são feitas no primeiro acesso e não podem ser editadas.", "r4": "Após 27/06/2026 (fim da fase de grupos), as escolhas dos participantes são reveladas para todos.", "r5": "Os resultados finais e pontos especiais são calculados pelo administrador ao término da Copa.", "r6": "O administrador não participa do bolão.", "r7": "O bolão é fechado — acesso exclusivo por convite." }
+    "s1": {
+      "title": "Como funciona",
+      "p1": "O {{name}} é um bolão fechado, acessível apenas por convite. Cada participante dá seus palpites de placar para os jogos da Copa do Mundo antes de cada partida começar.",
+      "p2pre": "Acompanhe a classificação em tempo real no",
+      "p2link": "Ranking",
+      "p2post": "e veja quem está dominando.",
+      "p3": "Palpites ficam bloqueados assim que o jogo inicia. Não é possível alterar um palpite já registrado."
+    },
+    "s2": {
+      "title": "Pontuação dos palpites",
+      "exact": "Placar exato",
+      "winner": "Vencedor ou empate correto",
+      "wrong": "Resultado errado",
+      "example": "Exemplo",
+      "exampleIntro": "Jogo encerrado",
+      "youGuessed": "Você chutou",
+      "homeWins": "(Brasil vence)",
+      "awayWins": "(Argentina vence)"
+    },
+    "s3": {
+      "title": "Escolhas especiais",
+      "bonus": "bônus",
+      "intro": "Feitas no primeiro acesso. Não podem ser alteradas após confirmadas.",
+      "colChoice": "Escolha",
+      "colPoints": "Pontos",
+      "champion": "Campeão correto",
+      "topScorer": "Artilheiro correto",
+      "bestPlayer": "Melhor jogador correto",
+      "runnerUp": "Vice-campeão correto",
+      "third": "3º lugar correto",
+      "bestDefense": "Melhor defesa (menos gols sofridos)",
+      "auto": "(calculada automaticamente)"
+    },
+    "s4": {
+      "title": "Classificação final",
+      "total": "Total = Pontos de palpites + Pontos especiais",
+      "tiebreak": "Critérios de desempate (em ordem):",
+      "tb1": "Mais acertos de placar exato",
+      "tb2": "Mais acertos de vencedor/empate",
+      "tb3": "Ordem alfabética do nome"
+    },
+    "s5": {
+      "title": "Regras gerais",
+      "r1": "Palpites são bloqueados automaticamente quando o jogo inicia.",
+      "r2": "Não é possível alterar palpites após o início da partida.",
+      "r3": "Escolhas especiais são feitas no primeiro acesso e não podem ser editadas.",
+      "r4": "Após 27/06/2026 (fim da fase de grupos), as escolhas dos participantes são reveladas para todos.",
+      "r5": "Os resultados finais e pontos especiais são calculados pelo administrador ao término da Copa.",
+      "r6": "O administrador não participa do bolão.",
+      "r7": "O bolão é fechado — acesso exclusivo por convite."
+    }
   },
   "storiesPage": {
     "title": "Stories do",
@@ -244,19 +346,247 @@
     "logout": "Sair",
     "signin": "Entrar no painel",
     "accessDenied": "Acesso negado. Este usuário não tem permissão de administrador.",
-    "nav": { "dashboard": "Dashboard", "jogos": "Jogos", "palpites": "Palpites", "usuarios": "Usuários", "convites": "Convites", "especiais": "Especiais", "chat": "Chat", "comentarista": "Comentarista", "stories": "Stories" },
-    "common": { "save": "Salvar", "cancel": "Cancelar", "delete": "Excluir", "edit": "Editar", "create": "Criar", "loading": "Carregando…", "search": "Buscar…", "confirm": "Confirmar", "close": "Fechar", "saved": "Salvo!", "error": "Erro. Tente novamente." },
-    "points": "Pontos", "anon": "Anônimo", "user": "Usuário",
-    "dash": { "participants": "Participantes", "predictions": "Palpites", "exactHits": "Acertos exatos", "avgAccuracy": "Acurácia média", "leader": "Líder", "nextMatch": "Próximo jogo", "ofPossible": "de {{n}} possíveis", "pointsSuffix": "{{n}} pontos", "cupOver": "Copa encerrada", "usersByRound": "Usuários por Rodada", "pointsDist": "Distribuição de Pontos", "participation": "Participação" },
+    "nav": {
+      "dashboard": "Dashboard",
+      "jogos": "Jogos",
+      "palpites": "Palpites",
+      "usuarios": "Usuários",
+      "convites": "Convites",
+      "especiais": "Especiais",
+      "chat": "Chat",
+      "comentarista": "Comentarista",
+      "stories": "Stories"
+    },
+    "common": {
+      "save": "Salvar",
+      "cancel": "Cancelar",
+      "delete": "Excluir",
+      "edit": "Editar",
+      "create": "Criar",
+      "loading": "Carregando…",
+      "search": "Buscar…",
+      "confirm": "Confirmar",
+      "close": "Fechar",
+      "saved": "Salvo!",
+      "error": "Erro. Tente novamente."
+    },
+    "points": "Pontos",
+    "anon": "Anônimo",
+    "user": "Usuário",
+    "dash": {
+      "participants": "Participantes",
+      "predictions": "Palpites",
+      "exactHits": "Acertos exatos",
+      "avgAccuracy": "Acurácia média",
+      "leader": "Líder",
+      "nextMatch": "Próximo jogo",
+      "ofPossible": "de {{n}} possíveis",
+      "pointsSuffix": "{{n}} pontos",
+      "cupOver": "Copa encerrada",
+      "usersByRound": "Usuários por Rodada",
+      "pointsDist": "Distribuição de Pontos",
+      "participation": "Participação"
+    },
     "now": "agora",
-    "chat": { "title": "Moderação de Chat", "subtitle": "Comentários das últimas 24h — atualiza em tempo real", "allMatches": "Todos os jogos", "empty": "Nenhum comentário nas últimas 24h.", "colMatch": "Jogo", "colMessage": "Mensagem", "colTime": "Hora", "colAction": "Ação" },
+    "chat": {
+      "title": "Moderação de Chat",
+      "subtitle": "Comentários das últimas 24h — atualiza em tempo real",
+      "allMatches": "Todos os jogos",
+      "empty": "Nenhum comentário nas últimas 24h.",
+      "colMatch": "Jogo",
+      "colMessage": "Mensagem",
+      "colTime": "Hora",
+      "colAction": "Ação"
+    },
     "refresh": "Atualizar",
-    "users": { "title": "Usuários", "count_one": "{{count}} participante cadastrado", "count_other": "{{count}} participantes cadastrados", "create": "Criar usuário", "createTitle": "Criar Usuário", "colFirstAccess": "1º Acesso", "colAdmin": "Admin", "pending": "Pendente", "done": "Concluído", "makeAdmin": "Tornar admin", "removeAdmin": "Remover admin", "labelName": "Nome de usuário", "labelTempPass": "Senha temporária", "hint": "O usuário receberá uma senha temporária e deverá alterá-la no primeiro acesso.", "fillAll": "Preencha todos os campos.", "passMin": "A senha deve ter pelo menos 6 caracteres.", "createError": "Erro ao criar usuário. Verifique se a Edge Function está deployada.", "created": "Usuário \"{{name}}\" criado com sucesso!" },
-    "invites": { "title": "Convites", "subtitle": "Gere links de acesso para novos participantes.", "instr1": "Gere um link de convite abaixo e envie para o seu amigo pelo WhatsApp. Ele acessa o link e se cadastra com o nome de usuário já pré-definido. Cada link é válido por", "validDays": "7 dias", "instrMid": "e pode ser usado", "once": "uma única vez", "newInvite": "Novo convite", "fillNameEmail": "Preencha nome e e-mail.", "dupEmail": "Já existe um convite para este e-mail.", "genError": "Erro ao gerar convite.", "generate": "Gerar convite", "generatedFor": "Convite gerado para", "copy": "Copiar", "copied": "Copiado!", "validFor": "Válido por 7 dias.", "listTitle": "Convites gerados", "empty": "Nenhum convite gerado ainda.", "colName": "Nome", "colStatus": "Status", "colCreated": "Gerado em", "colActions": "Ações", "copyLink": "Copiar link", "shareWa": "Compartilhar no WhatsApp", "deleteInvite": "Excluir convite", "stUsed": "Usado", "stExpired": "Expirado", "stPending": "Pendente", "waMsg": "Você foi convidado para o {{app}}! 🏆⚽\n\nAcesse o link para se cadastrar:\n{{url}}" },
-    "specials": { "title": "Escolhas Especiais", "subtitle": "Resultados finais da Copa — define pontos bônus dos participantes", "cupFinalized": "Copa Finalizada", "results": "Resultados", "champion": "Campeão", "runnerUp": "Vice-campeão", "third": "3º lugar", "topScorer": "Artilheiro", "bestPlayer": "Melhor jogador", "playerName": "Nome do jogador", "teamName": "Nome da seleção", "bestDefense": "Melhor defesa", "autoCalc": "calculada automaticamente", "basedOn": "Baseado nos jogos:", "goalsConceded": "{{n}} gols sofridos", "confirmAdjust": "Confirmar / ajustar seleção", "saveDraft": "Salvar rascunho", "finalizeCup": "Finalizar Copa", "confirmFinalize": "Finalizar a Copa? Isso calcula os pontos especiais de todos os participantes.", "saveError": "Erro ao salvar.", "saveOk": "Salvo com sucesso!", "calcError": "Erro ao calcular pontos: {{msg}}", "finalizedOk": "Copa finalizada! Pontos especiais calculados.", "pointsTable": "Tabela de pontuação", "tableHint": "Clique em \"Finalizar Copa\" após preencher todos os campos. Isso recalcula os pontos especiais de todos os participantes automaticamente.", "refChampion": "Campeão correto", "refTopScorer": "Artilheiro correto", "refBestPlayer": "Melhor jogador correto", "refRunnerUp": "Vice-campeão correto", "refThird": "3º lugar correto" },
-    "pundit": { "title": "Comentarista IA — Seu Zé", "generateComment": "Gerar Comentário", "regenerate": "Regenerar", "generateAI": "Gerar com IA", "genError": "Erro ao gerar comentário.", "adjustText": "✏️ Ajustar texto manualmente", "editPlaceholder": "Edite o texto antes de publicar…", "publish": "Publicar", "discard": "Descartar", "history": "Histórico", "empty": "Nenhum comentário gerado ainda.", "published": "Publicado", "draft": "Rascunho", "unpublish": "Despublicar", "types": { "rodada_grupos": "Fase de Grupos", "rodada_32avos": "32-avos de Final", "rodada_oitavas": "Oitavas de Final", "rodada_quartas": "Quartas de Final", "rodada_semis": "Semifinais", "rodada_final": "Final da Copa" } },
-    "stories": { "title": "Stories Cômicos", "genError": "Erro ao gerar story.", "emptyAI": "IA retornou texto vazio — tente novamente.", "preview": "Preview", "editableText": "Texto gerado (editável antes de publicar)", "published": "Publicados", "viewAsStories": "Ver como stories →", "types": { "hall_vergonha": "Hall da Vergonha", "zebra_dia": "Zebra do Dia", "vidente_chutometro": "Vidente ou Chutômetro?", "subiu_afundou": "Subiu / Afundou", "palpite_covarde": "Palpite Covarde", "telepata_rodada": "Telepata da Rodada" }, "descs": { "hall_vergonha": "Pior palpite do dia", "zebra_dia": "Quem acertou o resultado mais improvável", "vidente_chutometro": "Comparação de acertos vs erros", "subiu_afundou": "Maiores variações no ranking", "palpite_covarde": "Quem chutou mais 0x0 e 1x0", "telepata_rodada": "Mais acertos de placar exato" } },
-    "retro": { "title": "Palpites Retroativos", "player": "Jogador", "copyFrom": "Copiar palpites de", "selectPlaceholder": "— selecionar —", "copiedFrom": "Palpites copiados de {{name}}", "noneFilled": "Nenhum palpite preenchido.", "savedCount": "{{count}} palpite(s) salvos para {{name}} · {{recalc}} jogo(s) recalculado(s)", "noGamesRound": "Nenhum jogo encontrado para Rodada {{round}}.", "picksOf": "Palpites de", "saveFor": "Salvar palpites de {{name}}" },
-    "matches": { "title": "Jogos", "summary": "{{done}} de {{total}} jogos encerrados", "syncNow": "Sincronizar agora", "syncResult": "{{count}} jogo(s) atualizado(s)", "syncErrors": " · {{n}} erro(s)", "filterAll": "Todos", "filterPending": "Pendentes", "filterFinished": "Encerrados", "groupOpt": "Grupo…", "colMatch": "Partida", "colResult": "Resultado", "colStatus": "Status", "colDate": "Data", "colAction": "Ação", "statusFinished": "Encerrado", "statusPending": "Pendente", "knockout": "Fase Mata-Mata", "tbd": "A definir × A definir", "awaitingQual": "Aguardando classificação", "finished": "Encerrado", "result": "Resultado", "markFinished": "Marcar como encerrado", "autoPoints": "Pontos calculados automaticamente pelo trigger", "saveResult": "Salvar resultado", "events": "Eventos do jogo", "addEvent": "Adicionar evento", "minute": "Minuto", "player": "Jogador", "team": "Seleção", "add": "Adicionar", "evType": { "gol": "⚽ Gol", "gol_contra": "🥅 Gol Contra", "assistencia": "🎯 Assistência" }, "phases": { "r32": "32-avos de Final", "r16": "Oitavas de Final", "quarters": "Quartas de Final", "semis": "Semifinais", "third": "3º Lugar", "final": "Final" } }
+    "users": {
+      "title": "Usuários",
+      "count_one": "{{count}} participante cadastrado",
+      "count_other": "{{count}} participantes cadastrados",
+      "create": "Criar usuário",
+      "createTitle": "Criar Usuário",
+      "colFirstAccess": "1º Acesso",
+      "colAdmin": "Admin",
+      "pending": "Pendente",
+      "done": "Concluído",
+      "makeAdmin": "Tornar admin",
+      "removeAdmin": "Remover admin",
+      "labelName": "Nome de usuário",
+      "labelTempPass": "Senha temporária",
+      "hint": "O usuário receberá uma senha temporária e deverá alterá-la no primeiro acesso.",
+      "fillAll": "Preencha todos os campos.",
+      "passMin": "A senha deve ter pelo menos 6 caracteres.",
+      "createError": "Erro ao criar usuário. Verifique se a Edge Function está deployada.",
+      "created": "Usuário \"{{name}}\" criado com sucesso!"
+    },
+    "invites": {
+      "title": "Convites",
+      "subtitle": "Gere links de acesso para novos participantes.",
+      "instr1": "Gere um link de convite abaixo e envie para o seu amigo pelo WhatsApp. Ele acessa o link e se cadastra com o nome de usuário já pré-definido. Cada link é válido por",
+      "validDays": "7 dias",
+      "instrMid": "e pode ser usado",
+      "once": "uma única vez",
+      "newInvite": "Novo convite",
+      "fillNameEmail": "Preencha nome e e-mail.",
+      "dupEmail": "Já existe um convite para este e-mail.",
+      "genError": "Erro ao gerar convite.",
+      "generate": "Gerar convite",
+      "generatedFor": "Convite gerado para",
+      "copy": "Copiar",
+      "copied": "Copiado!",
+      "validFor": "Válido por 7 dias.",
+      "listTitle": "Convites gerados",
+      "empty": "Nenhum convite gerado ainda.",
+      "colName": "Nome",
+      "colStatus": "Status",
+      "colCreated": "Gerado em",
+      "colActions": "Ações",
+      "copyLink": "Copiar link",
+      "shareWa": "Compartilhar no WhatsApp",
+      "deleteInvite": "Excluir convite",
+      "stUsed": "Usado",
+      "stExpired": "Expirado",
+      "stPending": "Pendente",
+      "waMsg": "Você foi convidado para o {{app}}! 🏆⚽\n\nAcesse o link para se cadastrar:\n{{url}}"
+    },
+    "specials": {
+      "title": "Escolhas Especiais",
+      "subtitle": "Resultados finais da Copa — define pontos bônus dos participantes",
+      "cupFinalized": "Copa Finalizada",
+      "results": "Resultados",
+      "champion": "Campeão",
+      "runnerUp": "Vice-campeão",
+      "third": "3º lugar",
+      "topScorer": "Artilheiro",
+      "bestPlayer": "Melhor jogador",
+      "playerName": "Nome do jogador",
+      "teamName": "Nome da seleção",
+      "bestDefense": "Melhor defesa",
+      "autoCalc": "calculada automaticamente",
+      "basedOn": "Baseado nos jogos:",
+      "goalsConceded": "{{n}} gols sofridos",
+      "confirmAdjust": "Confirmar / ajustar seleção",
+      "saveDraft": "Salvar rascunho",
+      "finalizeCup": "Finalizar Copa",
+      "confirmFinalize": "Finalizar a Copa? Isso calcula os pontos especiais de todos os participantes.",
+      "saveError": "Erro ao salvar.",
+      "saveOk": "Salvo com sucesso!",
+      "calcError": "Erro ao calcular pontos: {{msg}}",
+      "finalizedOk": "Copa finalizada! Pontos especiais calculados.",
+      "pointsTable": "Tabela de pontuação",
+      "tableHint": "Clique em \"Finalizar Copa\" após preencher todos os campos. Isso recalcula os pontos especiais de todos os participantes automaticamente.",
+      "refChampion": "Campeão correto",
+      "refTopScorer": "Artilheiro correto",
+      "refBestPlayer": "Melhor jogador correto",
+      "refRunnerUp": "Vice-campeão correto",
+      "refThird": "3º lugar correto"
+    },
+    "pundit": {
+      "title": "Comentarista IA — Seu Zé",
+      "generateComment": "Gerar Comentário",
+      "regenerate": "Regenerar",
+      "generateAI": "Gerar com IA",
+      "genError": "Erro ao gerar comentário.",
+      "adjustText": "✏️ Ajustar texto manualmente",
+      "editPlaceholder": "Edite o texto antes de publicar…",
+      "publish": "Publicar",
+      "discard": "Descartar",
+      "history": "Histórico",
+      "empty": "Nenhum comentário gerado ainda.",
+      "published": "Publicado",
+      "draft": "Rascunho",
+      "unpublish": "Despublicar",
+      "types": {
+        "rodada_grupos": "Fase de Grupos",
+        "rodada_32avos": "32-avos de Final",
+        "rodada_oitavas": "Oitavas de Final",
+        "rodada_quartas": "Quartas de Final",
+        "rodada_semis": "Semifinais",
+        "rodada_final": "Final da Copa"
+      }
+    },
+    "stories": {
+      "title": "Stories Cômicos",
+      "genError": "Erro ao gerar story.",
+      "emptyAI": "IA retornou texto vazio — tente novamente.",
+      "preview": "Preview",
+      "editableText": "Texto gerado (editável antes de publicar)",
+      "published": "Publicados",
+      "viewAsStories": "Ver como stories →",
+      "types": {
+        "hall_vergonha": "Hall da Vergonha",
+        "zebra_dia": "Zebra do Dia",
+        "vidente_chutometro": "Vidente ou Chutômetro?",
+        "subiu_afundou": "Subiu / Afundou",
+        "palpite_covarde": "Palpite Covarde",
+        "telepata_rodada": "Telepata da Rodada"
+      },
+      "descs": {
+        "hall_vergonha": "Pior palpite do dia",
+        "zebra_dia": "Quem acertou o resultado mais improvável",
+        "vidente_chutometro": "Comparação de acertos vs erros",
+        "subiu_afundou": "Maiores variações no ranking",
+        "palpite_covarde": "Quem chutou mais 0x0 e 1x0",
+        "telepata_rodada": "Mais acertos de placar exato"
+      }
+    },
+    "retro": {
+      "title": "Palpites Retroativos",
+      "player": "Jogador",
+      "copyFrom": "Copiar palpites de",
+      "selectPlaceholder": "— selecionar —",
+      "copiedFrom": "Palpites copiados de {{name}}",
+      "noneFilled": "Nenhum palpite preenchido.",
+      "savedCount": "{{count}} palpite(s) salvos para {{name}} · {{recalc}} jogo(s) recalculado(s)",
+      "noGamesRound": "Nenhum jogo encontrado para Rodada {{round}}.",
+      "picksOf": "Palpites de",
+      "saveFor": "Salvar palpites de {{name}}"
+    },
+    "matches": {
+      "title": "Jogos",
+      "summary": "{{done}} de {{total}} jogos encerrados",
+      "syncNow": "Sincronizar agora",
+      "syncResult": "{{count}} jogo(s) atualizado(s)",
+      "syncErrors": " · {{n}} erro(s)",
+      "filterAll": "Todos",
+      "filterPending": "Pendentes",
+      "filterFinished": "Encerrados",
+      "groupOpt": "Grupo…",
+      "colMatch": "Partida",
+      "colResult": "Resultado",
+      "colStatus": "Status",
+      "colDate": "Data",
+      "colAction": "Ação",
+      "statusFinished": "Encerrado",
+      "statusPending": "Pendente",
+      "knockout": "Fase Mata-Mata",
+      "tbd": "A definir × A definir",
+      "awaitingQual": "Aguardando classificação",
+      "finished": "Encerrado",
+      "result": "Resultado",
+      "markFinished": "Marcar como encerrado",
+      "autoPoints": "Pontos calculados automaticamente pelo trigger",
+      "saveResult": "Salvar resultado",
+      "events": "Eventos do jogo",
+      "addEvent": "Adicionar evento",
+      "minute": "Minuto",
+      "player": "Jogador",
+      "team": "Seleção",
+      "add": "Adicionar",
+      "evType": {
+        "gol": "⚽ Gol",
+        "gol_contra": "🥅 Gol Contra",
+        "assistencia": "🎯 Assistência"
+      },
+      "phases": {
+        "r32": "32-avos de Final",
+        "r16": "Oitavas de Final",
+        "quarters": "Quartas de Final",
+        "semis": "Semifinais",
+        "third": "3º Lugar",
+        "final": "Final"
+      },
+      "advancer": "Quem avançou (pênaltis)"
+    }
   }
 }

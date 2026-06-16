@@ -116,6 +116,7 @@ export const SCORING = {
   correctWinner:   5,
   knockoutExact:  15,
   knockoutResult: 10,
+  advancerBonus:   5,  // mata-mata: acertar quem avança nos pênaltis
 } as const
 
 export function getTeam(code: TeamCode): Team | undefined {

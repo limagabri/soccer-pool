@@ -1,7 +1,9 @@
+export type Fase = 'grupos' | 'r32' | 'oitavas' | 'quartas' | 'semis' | 'terceiro' | 'final'
+
 export interface Jogo {
   id: string
   numero_jogo: number
-  grupo: string
+  grupo: string | null
   time_casa: string
   time_fora: string
   emoji_casa: string
@@ -10,8 +12,10 @@ export interface Jogo {
   estadio: string | null
   cidade: string | null
   rodada: number
+  fase: Fase
   gols_casa: number | null
   gols_fora: number | null
+  vencedor_penaltis: string | null
   encerrado: boolean
 }
 
@@ -21,6 +25,7 @@ export interface Palpite {
   jogo_id: string
   gols_casa: number
   gols_fora: number
+  avanca: string | null
   pontos: number
   created_at: string
 }

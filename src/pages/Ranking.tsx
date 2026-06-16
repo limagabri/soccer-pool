@@ -38,7 +38,7 @@ export function Ranking() {
 
   const carregar = useCallback(async () => {
     const [{ data: dataPalpites }, { data: dataProfiles }] = await Promise.all([
-      supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora'),
+      supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora, avanca'),
       supabase.from('profiles').select('id, username, pontos_especiais').eq('is_admin', false),
     ])
     setPalpites((dataPalpites as PalpiteResumo[]) ?? [])

@@ -20,9 +20,18 @@
     "howItWorks": "How it works",
     "inviteOnly": "Invite only",
     "features": {
-      "predict": { "title": "Predict", "desc": "Submit your score predictions for every group stage match before kick-off." },
-      "points":  { "title": "Points",  "desc": "Exact score? Maximum points. Correct winner or draw? Still earns points." },
-      "ranking": { "title": "Ranking", "desc": "Follow the standings in real time and prove who really knows football." }
+      "predict": {
+        "title": "Predict",
+        "desc": "Submit your score predictions for every group stage match before kick-off."
+      },
+      "points": {
+        "title": "Points",
+        "desc": "Exact score? Maximum points. Correct winner or draw? Still earns points."
+      },
+      "ranking": {
+        "title": "Ranking",
+        "desc": "Follow the standings in real time and prove who really knows football."
+      }
     },
     "footer": "made with ⚽ and ☕"
   },
@@ -65,7 +74,23 @@
       "round1": "Round 1",
       "round2": "Round 2",
       "round3": "Round 3",
-      "mine": "My predictions"
+      "mine": "My predictions",
+      "knockout": "Knockouts"
+    },
+    "phases": {
+      "r32": "Round of 32",
+      "oitavas": "Round of 16",
+      "quartas": "Quarterfinals",
+      "semis": "Semifinals",
+      "terceiro": "Third place",
+      "final": "Final"
+    },
+    "tbd": "TBD",
+    "awaitingTeams": "Waiting for teams",
+    "advancer": {
+      "question": "Who advances on penalties?",
+      "bonus": "+5 pts for the right advancer",
+      "required": "Pick who advances on penalties"
     }
   },
   "ranking": {
@@ -166,7 +191,9 @@
     "iosAdd": "Add to Home Screen",
     "androidManual": "Open the Chrome menu and tap Install app (or Add to home screen)."
   },
-  "footer": { "madeBy": "Made by" },
+  "footer": {
+    "madeBy": "Made by"
+  },
   "groups": {
     "title": "Group",
     "titleAccent": "Stage",
@@ -176,14 +203,30 @@
     "qualifyDirect": "Direct qualifiers",
     "qualifyThird": "Best-third contention",
     "matchesOf": "Group {{group}} matches",
-    "std": { "p": "P", "w": "W", "d": "D", "l": "L", "gf": "GF", "ga": "GA", "gd": "GD", "pts": "Pts" }
+    "std": {
+      "p": "P",
+      "w": "W",
+      "d": "D",
+      "l": "L",
+      "gf": "GF",
+      "ga": "GA",
+      "gd": "GD",
+      "pts": "Pts"
+    }
   },
   "chat": {
     "empty": "No messages yet. Be the first to comment!",
     "placeholder": "Comment… use @ to mention someone",
     "mentionedYou": "{{name}} mentioned you",
     "delete": "Delete",
-    "reactions": { "goal": "Goal!", "whatGame": "What a game!", "noWay": "No way!", "blunder": "What a blunder", "nailedIt": "Nailed it!", "rip": "Got smashed" }
+    "reactions": {
+      "goal": "Goal!",
+      "whatGame": "What a game!",
+      "noWay": "No way!",
+      "blunder": "What a blunder",
+      "nailedIt": "Nailed it!",
+      "rip": "Got smashed"
+    }
   },
   "matchPicks": {
     "title": "Picks",
@@ -195,26 +238,85 @@
     "revealed": "scores revealed (match has started)"
   },
   "simulator": {
-    "title": "World Cup", "titleAccent": "Simulator",
+    "title": "World Cup",
+    "titleAccent": "Simulator",
     "subtitle": "Fill in the scores and find out who lifts the trophy. Real results are applied automatically and can't be changed.",
-    "simulateRandom": "Simulate randomly", "reset": "Reset",
-    "s1Pre": "1 · Group", "s1Accent": "Stage",
-    "s2Pre": "2 · Best", "s2Accent": "Third-placed",
+    "simulateRandom": "Simulate randomly",
+    "reset": "Reset",
+    "s1Pre": "1 · Group",
+    "s1Accent": "Stage",
+    "s2Pre": "2 · Best",
+    "s2Accent": "Third-placed",
     "thirdsHint": "Fill in the scores of every group to compute the 8 best third-placed teams and unlock the bracket — or use the",
-    "s3Pre": "3 ·", "s3Accent": "Knockouts",
+    "s3Pre": "3 ·",
+    "s3Accent": "Knockouts",
     "koHint": "Tied? Choose who advances on penalties. Swipe sideways to see all rounds.",
-    "penalties": "Penalties:", "worldChampion": "World champion", "simulateFinal": "Simulate the final to crown the champion",
-    "rounds": { "0": "Round of 32", "1": "Round of 16", "2": "Quarter-finals", "3": "Semi-finals", "4": "Final" }
+    "penalties": "Penalties:",
+    "worldChampion": "World champion",
+    "simulateFinal": "Simulate the final to crown the champion",
+    "rounds": {
+      "0": "Round of 32",
+      "1": "Round of 16",
+      "2": "Quarter-finals",
+      "3": "Semi-finals",
+      "4": "Final"
+    }
   },
   "regulamento": {
     "titleAccent": "Rules",
     "subtitle": "Everything you need to know to win the pool.",
     "points": "points",
-    "s1": { "title": "How it works", "p1": "{{name}} is a private, invite-only pool. Each participant submits score predictions for the World Cup matches before each game kicks off.", "p2pre": "Follow the live standings on the", "p2link": "Ranking", "p2post": "and see who's on top.", "p3": "Predictions lock the moment a match starts. You can't change a prediction once it's saved." },
-    "s2": { "title": "Match scoring", "exact": "Exact score", "winner": "Correct winner or draw", "wrong": "Wrong result", "example": "Example", "exampleIntro": "Final result", "youGuessed": "You guessed", "homeWins": "(Brazil wins)", "awayWins": "(Argentina wins)" },
-    "s3": { "title": "Special picks", "bonus": "bonus", "intro": "Made on first login. They can't be changed once confirmed.", "colChoice": "Pick", "colPoints": "Points", "champion": "Correct champion", "topScorer": "Correct top scorer", "bestPlayer": "Correct best player", "runnerUp": "Correct runner-up", "third": "Correct third place", "bestDefense": "Best defense (fewest goals conceded)", "auto": "(calculated automatically)" },
-    "s4": { "title": "Final standings", "total": "Total = Match points + Special points", "tiebreak": "Tiebreakers (in order):", "tb1": "Most exact scores", "tb2": "Most correct winners/draws", "tb3": "Alphabetical order of name" },
-    "s5": { "title": "General rules", "r1": "Predictions lock automatically when a match starts.", "r2": "Predictions can't be changed after kick-off.", "r3": "Special picks are made on first login and can't be edited.", "r4": "After 06/27/2026 (end of the group stage), participants' picks are revealed to everyone.", "r5": "Final results and special points are computed by the admin at the end of the World Cup.", "r6": "The admin does not participate in the pool.", "r7": "The pool is private — invite-only access." }
+    "s1": {
+      "title": "How it works",
+      "p1": "{{name}} is a private, invite-only pool. Each participant submits score predictions for the World Cup matches before each game kicks off.",
+      "p2pre": "Follow the live standings on the",
+      "p2link": "Ranking",
+      "p2post": "and see who's on top.",
+      "p3": "Predictions lock the moment a match starts. You can't change a prediction once it's saved."
+    },
+    "s2": {
+      "title": "Match scoring",
+      "exact": "Exact score",
+      "winner": "Correct winner or draw",
+      "wrong": "Wrong result",
+      "example": "Example",
+      "exampleIntro": "Final result",
+      "youGuessed": "You guessed",
+      "homeWins": "(Brazil wins)",
+      "awayWins": "(Argentina wins)"
+    },
+    "s3": {
+      "title": "Special picks",
+      "bonus": "bonus",
+      "intro": "Made on first login. They can't be changed once confirmed.",
+      "colChoice": "Pick",
+      "colPoints": "Points",
+      "champion": "Correct champion",
+      "topScorer": "Correct top scorer",
+      "bestPlayer": "Correct best player",
+      "runnerUp": "Correct runner-up",
+      "third": "Correct third place",
+      "bestDefense": "Best defense (fewest goals conceded)",
+      "auto": "(calculated automatically)"
+    },
+    "s4": {
+      "title": "Final standings",
+      "total": "Total = Match points + Special points",
+      "tiebreak": "Tiebreakers (in order):",
+      "tb1": "Most exact scores",
+      "tb2": "Most correct winners/draws",
+      "tb3": "Alphabetical order of name"
+    },
+    "s5": {
+      "title": "General rules",
+      "r1": "Predictions lock automatically when a match starts.",
+      "r2": "Predictions can't be changed after kick-off.",
+      "r3": "Special picks are made on first login and can't be edited.",
+      "r4": "After 06/27/2026 (end of the group stage), participants' picks are revealed to everyone.",
+      "r5": "Final results and special points are computed by the admin at the end of the World Cup.",
+      "r6": "The admin does not participate in the pool.",
+      "r7": "The pool is private — invite-only access."
+    }
   },
   "storiesPage": {
     "title": "Pool",
@@ -244,19 +346,247 @@
     "logout": "Sign out",
     "signin": "Sign in to panel",
     "accessDenied": "Access denied. This user is not an administrator.",
-    "nav": { "dashboard": "Dashboard", "jogos": "Matches", "palpites": "Predictions", "usuarios": "Users", "convites": "Invites", "especiais": "Specials", "chat": "Chat", "comentarista": "Pundit", "stories": "Stories" },
-    "common": { "save": "Save", "cancel": "Cancel", "delete": "Delete", "edit": "Edit", "create": "Create", "loading": "Loading…", "search": "Search…", "confirm": "Confirm", "close": "Close", "saved": "Saved!", "error": "Error. Try again." },
-    "points": "Points", "anon": "Anonymous", "user": "User",
-    "dash": { "participants": "Participants", "predictions": "Predictions", "exactHits": "Exact hits", "avgAccuracy": "Avg. accuracy", "leader": "Leader", "nextMatch": "Next match", "ofPossible": "of {{n}} possible", "pointsSuffix": "{{n}} points", "cupOver": "Cup over", "usersByRound": "Users per Round", "pointsDist": "Points Distribution", "participation": "Participation" },
+    "nav": {
+      "dashboard": "Dashboard",
+      "jogos": "Matches",
+      "palpites": "Predictions",
+      "usuarios": "Users",
+      "convites": "Invites",
+      "especiais": "Specials",
+      "chat": "Chat",
+      "comentarista": "Pundit",
+      "stories": "Stories"
+    },
+    "common": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "create": "Create",
+      "loading": "Loading…",
+      "search": "Search…",
+      "confirm": "Confirm",
+      "close": "Close",
+      "saved": "Saved!",
+      "error": "Error. Try again."
+    },
+    "points": "Points",
+    "anon": "Anonymous",
+    "user": "User",
+    "dash": {
+      "participants": "Participants",
+      "predictions": "Predictions",
+      "exactHits": "Exact hits",
+      "avgAccuracy": "Avg. accuracy",
+      "leader": "Leader",
+      "nextMatch": "Next match",
+      "ofPossible": "of {{n}} possible",
+      "pointsSuffix": "{{n}} points",
+      "cupOver": "Cup over",
+      "usersByRound": "Users per Round",
+      "pointsDist": "Points Distribution",
+      "participation": "Participation"
+    },
     "now": "now",
-    "chat": { "title": "Chat moderation", "subtitle": "Comments from the last 24h — updates in real time", "allMatches": "All matches", "empty": "No comments in the last 24h.", "colMatch": "Match", "colMessage": "Message", "colTime": "Time", "colAction": "Action" },
+    "chat": {
+      "title": "Chat moderation",
+      "subtitle": "Comments from the last 24h — updates in real time",
+      "allMatches": "All matches",
+      "empty": "No comments in the last 24h.",
+      "colMatch": "Match",
+      "colMessage": "Message",
+      "colTime": "Time",
+      "colAction": "Action"
+    },
     "refresh": "Refresh",
-    "users": { "title": "Users", "count_one": "{{count}} registered participant", "count_other": "{{count}} registered participants", "create": "Create user", "createTitle": "Create User", "colFirstAccess": "First login", "colAdmin": "Admin", "pending": "Pending", "done": "Done", "makeAdmin": "Make admin", "removeAdmin": "Remove admin", "labelName": "Username", "labelTempPass": "Temporary password", "hint": "The user gets a temporary password and must change it on first login.", "fillAll": "Fill in all fields.", "passMin": "Password must be at least 6 characters.", "createError": "Error creating user. Check the Edge Function is deployed.", "created": "User \"{{name}}\" created successfully!" },
-    "invites": { "title": "Invites", "subtitle": "Generate access links for new participants.", "instr1": "Generate an invite link below and send it to your friend on WhatsApp. They open the link and sign up with the pre-set username. Each link is valid for", "validDays": "7 days", "instrMid": "and can be used", "once": "only once", "newInvite": "New invite", "fillNameEmail": "Fill in name and email.", "dupEmail": "An invite for this email already exists.", "genError": "Error generating invite.", "generate": "Generate invite", "generatedFor": "Invite generated for", "copy": "Copy", "copied": "Copied!", "validFor": "Valid for 7 days.", "listTitle": "Generated invites", "empty": "No invites generated yet.", "colName": "Name", "colStatus": "Status", "colCreated": "Created on", "colActions": "Actions", "copyLink": "Copy link", "shareWa": "Share on WhatsApp", "deleteInvite": "Delete invite", "stUsed": "Used", "stExpired": "Expired", "stPending": "Pending", "waMsg": "You have been invited to {{app}}! 🏆⚽\n\nOpen the link to sign up:\n{{url}}" },
-    "specials": { "title": "Special Picks", "subtitle": "Final World Cup results — sets participants\u2019 bonus points", "cupFinalized": "Cup Finalized", "results": "Results", "champion": "Champion", "runnerUp": "Runner-up", "third": "Third place", "topScorer": "Top scorer", "bestPlayer": "Best player", "playerName": "Player name", "teamName": "Team name", "bestDefense": "Best defense", "autoCalc": "calculated automatically", "basedOn": "Based on matches:", "goalsConceded": "{{n}} goals conceded", "confirmAdjust": "Confirm / adjust team", "saveDraft": "Save draft", "finalizeCup": "Finalize Cup", "confirmFinalize": "Finalize the Cup? This computes the special points of all participants.", "saveError": "Error saving.", "saveOk": "Saved successfully!", "calcError": "Error computing points: {{msg}}", "finalizedOk": "Cup finalized! Special points computed.", "pointsTable": "Points table", "tableHint": "Click \"Finalize Cup\" after filling all fields. This recomputes everyone\u2019s special points automatically.", "refChampion": "Correct champion", "refTopScorer": "Correct top scorer", "refBestPlayer": "Correct best player", "refRunnerUp": "Correct runner-up", "refThird": "Correct third place" },
-    "pundit": { "title": "AI Pundit — Seu Zé", "generateComment": "Generate Comment", "regenerate": "Regenerate", "generateAI": "Generate with AI", "genError": "Error generating comment.", "adjustText": "✏️ Adjust text manually", "editPlaceholder": "Edit the text before publishing…", "publish": "Publish", "discard": "Discard", "history": "History", "empty": "No comments generated yet.", "published": "Published", "draft": "Draft", "unpublish": "Unpublish", "types": { "rodada_grupos": "Group Stage", "rodada_32avos": "Round of 32", "rodada_oitavas": "Round of 16", "rodada_quartas": "Quarter-finals", "rodada_semis": "Semi-finals", "rodada_final": "World Cup Final" } },
-    "stories": { "title": "Comic Stories", "genError": "Error generating story.", "emptyAI": "AI returned empty text — try again.", "preview": "Preview", "editableText": "Generated text (editable before publishing)", "published": "Published", "viewAsStories": "View as stories →", "types": { "hall_vergonha": "Hall of Shame", "zebra_dia": "Upset of the Day", "vidente_chutometro": "Psychic or Guesser?", "subiu_afundou": "Up / Down", "palpite_covarde": "Cowardly Pick", "telepata_rodada": "Round Telepath" }, "descs": { "hall_vergonha": "Worst pick of the day", "zebra_dia": "Who nailed the unlikeliest result", "vidente_chutometro": "Hits vs misses comparison", "subiu_afundou": "Biggest ranking swings", "palpite_covarde": "Who picked the most 0-0 and 1-0", "telepata_rodada": "Most exact scores" } },
-    "retro": { "title": "Retroactive Predictions", "player": "Player", "copyFrom": "Copy predictions from", "selectPlaceholder": "— select —", "copiedFrom": "Predictions copied from {{name}}", "noneFilled": "No prediction filled in.", "savedCount": "{{count}} prediction(s) saved for {{name}} · {{recalc}} match(es) recalculated", "noGamesRound": "No matches found for Round {{round}}.", "picksOf": "Predictions of", "saveFor": "Save {{name}}\u2019s predictions" },
-    "matches": { "title": "Matches", "summary": "{{done}} of {{total}} matches finished", "syncNow": "Sync now", "syncResult": "{{count}} match(es) updated", "syncErrors": " · {{n}} error(s)", "filterAll": "All", "filterPending": "Pending", "filterFinished": "Finished", "groupOpt": "Group…", "colMatch": "Match", "colResult": "Result", "colStatus": "Status", "colDate": "Date", "colAction": "Action", "statusFinished": "Finished", "statusPending": "Pending", "knockout": "Knockout Stage", "tbd": "TBD × TBD", "awaitingQual": "Awaiting qualification", "finished": "Finished", "result": "Result", "markFinished": "Mark as finished", "autoPoints": "Points computed automatically by the trigger", "saveResult": "Save result", "events": "Match events", "addEvent": "Add event", "minute": "Minute", "player": "Player", "team": "Team", "add": "Add", "evType": { "gol": "⚽ Goal", "gol_contra": "🥅 Own Goal", "assistencia": "🎯 Assist" }, "phases": { "r32": "Round of 32", "r16": "Round of 16", "quarters": "Quarter-finals", "semis": "Semi-finals", "third": "Third place", "final": "Final" } }
+    "users": {
+      "title": "Users",
+      "count_one": "{{count}} registered participant",
+      "count_other": "{{count}} registered participants",
+      "create": "Create user",
+      "createTitle": "Create User",
+      "colFirstAccess": "First login",
+      "colAdmin": "Admin",
+      "pending": "Pending",
+      "done": "Done",
+      "makeAdmin": "Make admin",
+      "removeAdmin": "Remove admin",
+      "labelName": "Username",
+      "labelTempPass": "Temporary password",
+      "hint": "The user gets a temporary password and must change it on first login.",
+      "fillAll": "Fill in all fields.",
+      "passMin": "Password must be at least 6 characters.",
+      "createError": "Error creating user. Check the Edge Function is deployed.",
+      "created": "User \"{{name}}\" created successfully!"
+    },
+    "invites": {
+      "title": "Invites",
+      "subtitle": "Generate access links for new participants.",
+      "instr1": "Generate an invite link below and send it to your friend on WhatsApp. They open the link and sign up with the pre-set username. Each link is valid for",
+      "validDays": "7 days",
+      "instrMid": "and can be used",
+      "once": "only once",
+      "newInvite": "New invite",
+      "fillNameEmail": "Fill in name and email.",
+      "dupEmail": "An invite for this email already exists.",
+      "genError": "Error generating invite.",
+      "generate": "Generate invite",
+      "generatedFor": "Invite generated for",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "validFor": "Valid for 7 days.",
+      "listTitle": "Generated invites",
+      "empty": "No invites generated yet.",
+      "colName": "Name",
+      "colStatus": "Status",
+      "colCreated": "Created on",
+      "colActions": "Actions",
+      "copyLink": "Copy link",
+      "shareWa": "Share on WhatsApp",
+      "deleteInvite": "Delete invite",
+      "stUsed": "Used",
+      "stExpired": "Expired",
+      "stPending": "Pending",
+      "waMsg": "You have been invited to {{app}}! 🏆⚽\n\nOpen the link to sign up:\n{{url}}"
+    },
+    "specials": {
+      "title": "Special Picks",
+      "subtitle": "Final World Cup results — sets participants’ bonus points",
+      "cupFinalized": "Cup Finalized",
+      "results": "Results",
+      "champion": "Champion",
+      "runnerUp": "Runner-up",
+      "third": "Third place",
+      "topScorer": "Top scorer",
+      "bestPlayer": "Best player",
+      "playerName": "Player name",
+      "teamName": "Team name",
+      "bestDefense": "Best defense",
+      "autoCalc": "calculated automatically",
+      "basedOn": "Based on matches:",
+      "goalsConceded": "{{n}} goals conceded",
+      "confirmAdjust": "Confirm / adjust team",
+      "saveDraft": "Save draft",
+      "finalizeCup": "Finalize Cup",
+      "confirmFinalize": "Finalize the Cup? This computes the special points of all participants.",
+      "saveError": "Error saving.",
+      "saveOk": "Saved successfully!",
+      "calcError": "Error computing points: {{msg}}",
+      "finalizedOk": "Cup finalized! Special points computed.",
+      "pointsTable": "Points table",
+      "tableHint": "Click \"Finalize Cup\" after filling all fields. This recomputes everyone’s special points automatically.",
+      "refChampion": "Correct champion",
+      "refTopScorer": "Correct top scorer",
+      "refBestPlayer": "Correct best player",
+      "refRunnerUp": "Correct runner-up",
+      "refThird": "Correct third place"
+    },
+    "pundit": {
+      "title": "AI Pundit — Seu Zé",
+      "generateComment": "Generate Comment",
+      "regenerate": "Regenerate",
+      "generateAI": "Generate with AI",
+      "genError": "Error generating comment.",
+      "adjustText": "✏️ Adjust text manually",
+      "editPlaceholder": "Edit the text before publishing…",
+      "publish": "Publish",
+      "discard": "Discard",
+      "history": "History",
+      "empty": "No comments generated yet.",
+      "published": "Published",
+      "draft": "Draft",
+      "unpublish": "Unpublish",
+      "types": {
+        "rodada_grupos": "Group Stage",
+        "rodada_32avos": "Round of 32",
+        "rodada_oitavas": "Round of 16",
+        "rodada_quartas": "Quarter-finals",
+        "rodada_semis": "Semi-finals",
+        "rodada_final": "World Cup Final"
+      }
+    },
+    "stories": {
+      "title": "Comic Stories",
+      "genError": "Error generating story.",
+      "emptyAI": "AI returned empty text — try again.",
+      "preview": "Preview",
+      "editableText": "Generated text (editable before publishing)",
+      "published": "Published",
+      "viewAsStories": "View as stories →",
+      "types": {
+        "hall_vergonha": "Hall of Shame",
+        "zebra_dia": "Upset of the Day",
+        "vidente_chutometro": "Psychic or Guesser?",
+        "subiu_afundou": "Up / Down",
+        "palpite_covarde": "Cowardly Pick",
+        "telepata_rodada": "Round Telepath"
+      },
+      "descs": {
+        "hall_vergonha": "Worst pick of the day",
+        "zebra_dia": "Who nailed the unlikeliest result",
+        "vidente_chutometro": "Hits vs misses comparison",
+        "subiu_afundou": "Biggest ranking swings",
+        "palpite_covarde": "Who picked the most 0-0 and 1-0",
+        "telepata_rodada": "Most exact scores"
+      }
+    },
+    "retro": {
+      "title": "Retroactive Predictions",
+      "player": "Player",
+      "copyFrom": "Copy predictions from",
+      "selectPlaceholder": "— select —",
+      "copiedFrom": "Predictions copied from {{name}}",
+      "noneFilled": "No prediction filled in.",
+      "savedCount": "{{count}} prediction(s) saved for {{name}} · {{recalc}} match(es) recalculated",
+      "noGamesRound": "No matches found for Round {{round}}.",
+      "picksOf": "Predictions of",
+      "saveFor": "Save {{name}}’s predictions"
+    },
+    "matches": {
+      "title": "Matches",
+      "summary": "{{done}} of {{total}} matches finished",
+      "syncNow": "Sync now",
+      "syncResult": "{{count}} match(es) updated",
+      "syncErrors": " · {{n}} error(s)",
+      "filterAll": "All",
+      "filterPending": "Pending",
+      "filterFinished": "Finished",
+      "groupOpt": "Group…",
+      "colMatch": "Match",
+      "colResult": "Result",
+      "colStatus": "Status",
+      "colDate": "Date",
+      "colAction": "Action",
+      "statusFinished": "Finished",
+      "statusPending": "Pending",
+      "knockout": "Knockout Stage",
+      "tbd": "TBD × TBD",
+      "awaitingQual": "Awaiting qualification",
+      "finished": "Finished",
+      "result": "Result",
+      "markFinished": "Mark as finished",
+      "autoPoints": "Points computed automatically by the trigger",
+      "saveResult": "Save result",
+      "events": "Match events",
+      "addEvent": "Add event",
+      "minute": "Minute",
+      "player": "Player",
+      "team": "Team",
+      "add": "Add",
+      "evType": {
+        "gol": "⚽ Goal",
+        "gol_contra": "🥅 Own Goal",
+        "assistencia": "🎯 Assist"
+      },
+      "phases": {
+        "r32": "Round of 32",
+        "r16": "Round of 16",
+        "quarters": "Quarter-finals",
+        "semis": "Semi-finals",
+        "third": "Third place",
+        "final": "Final"
+      },
+      "advancer": "Who advanced (penalties)"
+    }
   }
 }

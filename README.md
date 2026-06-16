@@ -76,7 +76,7 @@ src/
 
 supabase/
 ├── functions/      Edge Functions (see table below)
-└── migrations/     000_seed … 016_stories_expiram_24h
+└── migrations/     000_seed … 017_mata_mata
 
 scripts/
 ├── setup.ts        Interactive project setup wizard
@@ -90,7 +90,8 @@ scripts/
 |---|---|
 | `sync-resultados` | Pulls scores, goalscorers and kickoff times from ESPN (cron every 2 min); feeds results, top-scorer chart and keeps the schedule in sync |
 | `gerar-comentarista` | Generates "Seu Zé" AI commentary for a round |
-| `gerar-comentarista-auto` | Detects a finished group-stage round (all groups) and auto-publishes its recap (cron every 15 min) |
+| `gerar-comentarista-auto` | Detects a finished group round / knockout phase and auto-publishes its recap (cron every 15 min) |
+| `gerar-mata-mata` | Builds & advances the knockout bracket (J73–J104) from real standings + results (cron every 10 min) |
 | `gerar-story` | Generates one AI recap story from the **previous day's** results (BRT) |
 | `gerar-stories-diario` | Orchestrator: builds and publishes all 6 daily stories (run by a cron at 08:00 BRT) |
 | `criar-usuario` | Admin-only: creates a participant account |
@@ -127,7 +128,7 @@ npm run setup           # runs migrations + seed automatically
 ### Manual
 
 ```bash
-npm run migrate            # schema only (001–016)
+npm run migrate            # schema only (001–017)
 npm run migrate -- --seed  # schema + 72 World Cup 2026 matches
 ```
 
@@ -199,8 +200,8 @@ Push to `main` — GitHub Actions lints, runs migrations, deploys Edge Functions
 - Repository → Settings → Pages → Source: `gh-pages` branch
 
 **Scheduled jobs (cron):** result sync (every 2 min), the daily story generation
-(08:00 BRT) and the group-stage round recap (every 15 min, fires only when a round
-ends) run via `pg_cron` + `pg_net`. Configure them once with
+(08:00 BRT), the round/phase recap (every 15 min) and the knockout-bracket builder
+(every 10 min) run via `pg_cron` + `pg_net`. Configure them once with
 [`supabase/functions/cron-config.sql`](supabase/functions/cron-config.sql) in the
 Supabase SQL editor (replace `<PROJECT_REF>` and `<SUPABASE_ANON_KEY>`).
 

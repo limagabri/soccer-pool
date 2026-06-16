@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { calcularPontos } from './utils'
+import { calcularPontosJogo } from './utils'
 import type { Jogo } from '../types'
 
 export interface PalpiteResumo {
@@ -7,6 +7,7 @@ export interface PalpiteResumo {
   jogo_id: string
   gols_casa: number
   gols_fora: number
+  avanca?: string | null
 }
 
 export interface EstatisticasUsuario {
@@ -42,10 +43,15 @@ export function agregarEstatisticas(
 
     const jogo = encerrados.get(p.jogo_id)
     if (!jogo) continue
-    const pts = calcularPontos(p.gols_casa, p.gols_fora, jogo.gols_casa!, jogo.gols_fora!)
+    const pts = calcularPontosJogo(
+      { gols_casa: p.gols_casa, gols_fora: p.gols_fora, avanca: p.avanca },
+      jogo
+    )
     s.pontos += pts
-    if (pts === 10) s.exatos++
-    else if (pts === 5) s.vencedor++
+    const exato = p.gols_casa === jogo.gols_casa && p.gols_fora === jogo.gols_fora
+    const resultado = Math.sign(p.gols_casa - p.gols_fora) === Math.sign(jogo.gols_casa! - jogo.gols_fora!)
+    if (exato) s.exatos++
+    else if (resultado) s.vencedor++
   }
 
   return stats
@@ -71,13 +77,16 @@ export async function recalcularPontosJogo(jogoId: string): Promise<void> {
 
   const { data: palpites } = await supabase
     .from('palpites')
-    .select('id, gols_casa, gols_fora, pontos')
+    .select('id, gols_casa, gols_fora, pontos, avanca')
     .eq('jogo_id', jogoId)
   if (!palpites) return
 
   await Promise.all(
     palpites.map((p) => {
-      const pontos = calcularPontos(p.gols_casa, p.gols_fora, j.gols_casa!, j.gols_fora!)
+      const pontos = calcularPontosJogo(
+        { gols_casa: p.gols_casa, gols_fora: p.gols_fora, avanca: p.avanca },
+        j
+      )
       if (pontos === p.pontos) return Promise.resolve(null)
       return supabase.from('palpites').update({ pontos }).eq('id', p.id)
     })

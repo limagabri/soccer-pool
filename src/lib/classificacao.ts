@@ -1,3 +1,6 @@
+// ⚠️ calcularTabela/calcularTodasTabelas/gruposCompletos/melhoresTerceiros e os
+// critérios de desempate são duplicados em supabase/functions/_shared/bracket.ts
+// (edge function gerar-mata-mata). Mudou aqui? Mude lá também.
 import type { Jogo } from '../types'
 
 export const GRUPOS = [...'ABCDEFGHIJKL']
@@ -106,9 +109,9 @@ export function calcularTabela(
   const linhas = new Map<string, LinhaTabela>()
   for (const j of jogosGrupo) {
     if (!linhas.has(j.time_casa))
-      linhas.set(j.time_casa, novaLinha(j.time_casa, j.emoji_casa, j.grupo))
+      linhas.set(j.time_casa, novaLinha(j.time_casa, j.emoji_casa, j.grupo ?? ''))
     if (!linhas.has(j.time_fora))
-      linhas.set(j.time_fora, novaLinha(j.time_fora, j.emoji_fora, j.grupo))
+      linhas.set(j.time_fora, novaLinha(j.time_fora, j.emoji_fora, j.grupo ?? ''))
   }
 
   for (const j of jogosGrupo) {
@@ -147,7 +150,10 @@ export function calcularTodasTabelas(
   placares?: Placares
 ): Record<string, LinhaTabela[]> {
   const porGrupo: Record<string, Jogo[]> = {}
-  for (const j of jogos) (porGrupo[j.grupo] ??= []).push(j)
+  for (const j of jogos) {
+    if (!j.grupo) continue
+    ;(porGrupo[j.grupo] ??= []).push(j)
+  }
   const tabelas: Record<string, LinhaTabela[]> = {}
   for (const [g, js] of Object.entries(porGrupo))
     tabelas[g] = calcularTabela(js, placares)
@@ -161,6 +167,7 @@ export function gruposCompletos(
 ): Record<string, boolean> {
   const map: Record<string, boolean> = {}
   for (const j of jogos) {
+    if (!j.grupo) continue
     const ok = getPlacar(j, placares) != null
     map[j.grupo] = (map[j.grupo] ?? true) && ok
   }

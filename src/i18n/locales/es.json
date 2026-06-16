@@ -20,9 +20,18 @@
     "howItWorks": "Cómo funciona",
     "inviteOnly": "Solo por invitación",
     "features": {
-      "predict": { "title": "Pronosticar", "desc": "Da tus pronósticos del marcador para cada partido antes del pitido inicial." },
-      "points":  { "title": "Puntos",      "desc": "¿Marcador exacto? Puntuación máxima. ¿Acertaste el ganador? También suma." },
-      "ranking": { "title": "Ranking",     "desc": "Sigue la clasificación en tiempo real y demuestra que entiendes de fútbol." }
+      "predict": {
+        "title": "Pronosticar",
+        "desc": "Da tus pronósticos del marcador para cada partido antes del pitido inicial."
+      },
+      "points": {
+        "title": "Puntos",
+        "desc": "¿Marcador exacto? Puntuación máxima. ¿Acertaste el ganador? También suma."
+      },
+      "ranking": {
+        "title": "Ranking",
+        "desc": "Sigue la clasificación en tiempo real y demuestra que entiendes de fútbol."
+      }
     },
     "footer": "hecho con ⚽ y ☕"
   },
@@ -65,7 +74,23 @@
       "round1": "Jornada 1",
       "round2": "Jornada 2",
       "round3": "Jornada 3",
-      "mine": "Mis pronósticos"
+      "mine": "Mis pronósticos",
+      "knockout": "Eliminatorias"
+    },
+    "phases": {
+      "r32": "Dieciseisavos",
+      "oitavas": "Octavos",
+      "quartas": "Cuartos",
+      "semis": "Semifinales",
+      "terceiro": "Tercer lugar",
+      "final": "Final"
+    },
+    "tbd": "Por definir",
+    "awaitingTeams": "Esperando equipos",
+    "advancer": {
+      "question": "¿Quién avanza en los penales?",
+      "bonus": "+5 pts si aciertas quién avanza",
+      "required": "Elige quién avanza en los penales"
     }
   },
   "ranking": {
@@ -126,7 +151,16 @@
     "inOf": "en {{done}}/{{total}} pronósticos",
     "outOf": "de {{count}} participante{{s}}"
   },
-  "statistics": { "title": "Estadísticas", "subtitle": "Goleadores, defensas y elecciones especiales.", "tabs": { "scorers": "Goleadores", "teams": "Por selección", "picks": "Elecciones", "myPicks": "Mis elecciones" } },
+  "statistics": {
+    "title": "Estadísticas",
+    "subtitle": "Goleadores, defensas y elecciones especiales.",
+    "tabs": {
+      "scorers": "Goleadores",
+      "teams": "Por selección",
+      "picks": "Elecciones",
+      "myPicks": "Mis elecciones"
+    }
+  },
   "notFound": {
     "title": "404",
     "headline": "Ese balón salió por la línea de fondo",
@@ -157,7 +191,9 @@
     "iosAdd": "Añadir a pantalla de inicio",
     "androidManual": "Abre el menú de Chrome y toca Instalar app (o Añadir a pantalla de inicio)."
   },
-  "footer": { "madeBy": "Hecho por" },
+  "footer": {
+    "madeBy": "Hecho por"
+  },
   "groups": {
     "title": "Fase de",
     "titleAccent": "Grupos",
@@ -167,14 +203,30 @@
     "qualifyDirect": "Clasificados directos",
     "qualifyThird": "Disputa de mejor 3º",
     "matchesOf": "Partidos del Grupo {{group}}",
-    "std": { "p": "PJ", "w": "G", "d": "E", "l": "P", "gf": "GF", "ga": "GC", "gd": "DG", "pts": "Pts" }
+    "std": {
+      "p": "PJ",
+      "w": "G",
+      "d": "E",
+      "l": "P",
+      "gf": "GF",
+      "ga": "GC",
+      "gd": "DG",
+      "pts": "Pts"
+    }
   },
   "chat": {
     "empty": "Aún no hay mensajes. ¡Sé el primero en comentar!",
     "placeholder": "Comenta… usa @ para mencionar a alguien",
     "mentionedYou": "{{name}} te mencionó",
     "delete": "Eliminar",
-    "reactions": { "goal": "¡Gol!", "whatGame": "¡Qué partido!", "noWay": "¡No me lo creo!", "blunder": "Qué cagada", "nailedIt": "¡Acerté!", "rip": "Me metieron" }
+    "reactions": {
+      "goal": "¡Gol!",
+      "whatGame": "¡Qué partido!",
+      "noWay": "¡No me lo creo!",
+      "blunder": "Qué cagada",
+      "nailedIt": "¡Acerté!",
+      "rip": "Me metieron"
+    }
   },
   "matchPicks": {
     "title": "Pronósticos",
@@ -186,26 +238,85 @@
     "revealed": "marcadores revelados (el partido ya empezó)"
   },
   "simulator": {
-    "title": "Simulador del", "titleAccent": "Mundial",
+    "title": "Simulador del",
+    "titleAccent": "Mundial",
     "subtitle": "Completa los marcadores y descubre quién levanta la copa. Los resultados reales se aplican automáticamente y no se pueden cambiar.",
-    "simulateRandom": "Simular al azar", "reset": "Reiniciar",
-    "s1Pre": "1 · Fase de", "s1Accent": "Grupos",
-    "s2Pre": "2 · Mejores", "s2Accent": "Terceros",
+    "simulateRandom": "Simular al azar",
+    "reset": "Reiniciar",
+    "s1Pre": "1 · Fase de",
+    "s1Accent": "Grupos",
+    "s2Pre": "2 · Mejores",
+    "s2Accent": "Terceros",
     "thirdsHint": "Completa los marcadores de todos los grupos para calcular los 8 mejores terceros y desbloquear el cuadro — o usa el botón",
-    "s3Pre": "3 ·", "s3Accent": "Eliminatorias",
+    "s3Pre": "3 ·",
+    "s3Accent": "Eliminatorias",
     "koHint": "¿Empate? Elige quién avanza en los penales. Desliza para ver todas las fases.",
-    "penalties": "Penales:", "worldChampion": "Campeón del mundo", "simulateFinal": "Simula la final para conocer al campeón",
-    "rounds": { "0": "Dieciseisavos", "1": "Octavos de final", "2": "Cuartos de final", "3": "Semifinales", "4": "Final" }
+    "penalties": "Penales:",
+    "worldChampion": "Campeón del mundo",
+    "simulateFinal": "Simula la final para conocer al campeón",
+    "rounds": {
+      "0": "Dieciseisavos",
+      "1": "Octavos de final",
+      "2": "Cuartos de final",
+      "3": "Semifinales",
+      "4": "Final"
+    }
   },
   "regulamento": {
     "titleAccent": "Reglamento",
     "subtitle": "Todo lo que necesitas saber para ganar el bolão.",
     "points": "puntos",
-    "s1": { "title": "Cómo funciona", "p1": "{{name}} es un juego cerrado, solo por invitación. Cada participante envía sus pronósticos de marcador para los partidos del Mundial antes de que empiece cada juego.", "p2pre": "Sigue la clasificación en vivo en el", "p2link": "Ranking", "p2post": "y mira quién manda.", "p3": "Los pronósticos se bloquean en cuanto empieza el partido. No se puede cambiar un pronóstico ya guardado." },
-    "s2": { "title": "Puntuación de pronósticos", "exact": "Marcador exacto", "winner": "Ganador o empate correcto", "wrong": "Resultado incorrecto", "example": "Ejemplo", "exampleIntro": "Partido finalizado", "youGuessed": "Pronosticaste", "homeWins": "(gana Brasil)", "awayWins": "(gana Argentina)" },
-    "s3": { "title": "Elecciones especiales", "bonus": "bono", "intro": "Se hacen en el primer acceso. No se pueden cambiar una vez confirmadas.", "colChoice": "Elección", "colPoints": "Puntos", "champion": "Campeón correcto", "topScorer": "Goleador correcto", "bestPlayer": "Mejor jugador correcto", "runnerUp": "Subcampeón correcto", "third": "Tercer lugar correcto", "bestDefense": "Mejor defensa (menos goles recibidos)", "auto": "(calculada automáticamente)" },
-    "s4": { "title": "Clasificación final", "total": "Total = Puntos de pronósticos + Puntos especiales", "tiebreak": "Criterios de desempate (en orden):", "tb1": "Más marcadores exactos", "tb2": "Más aciertos de ganador/empate", "tb3": "Orden alfabético del nombre" },
-    "s5": { "title": "Reglas generales", "r1": "Los pronósticos se bloquean automáticamente al empezar el partido.", "r2": "No se pueden cambiar pronósticos tras el inicio del partido.", "r3": "Las elecciones especiales se hacen en el primer acceso y no se pueden editar.", "r4": "Tras el 27/06/2026 (fin de la fase de grupos), las elecciones de los participantes se revelan a todos.", "r5": "Los resultados finales y puntos especiales los calcula el administrador al terminar el Mundial.", "r6": "El administrador no participa en el juego.", "r7": "El juego es cerrado — acceso solo por invitación." }
+    "s1": {
+      "title": "Cómo funciona",
+      "p1": "{{name}} es un juego cerrado, solo por invitación. Cada participante envía sus pronósticos de marcador para los partidos del Mundial antes de que empiece cada juego.",
+      "p2pre": "Sigue la clasificación en vivo en el",
+      "p2link": "Ranking",
+      "p2post": "y mira quién manda.",
+      "p3": "Los pronósticos se bloquean en cuanto empieza el partido. No se puede cambiar un pronóstico ya guardado."
+    },
+    "s2": {
+      "title": "Puntuación de pronósticos",
+      "exact": "Marcador exacto",
+      "winner": "Ganador o empate correcto",
+      "wrong": "Resultado incorrecto",
+      "example": "Ejemplo",
+      "exampleIntro": "Partido finalizado",
+      "youGuessed": "Pronosticaste",
+      "homeWins": "(gana Brasil)",
+      "awayWins": "(gana Argentina)"
+    },
+    "s3": {
+      "title": "Elecciones especiales",
+      "bonus": "bono",
+      "intro": "Se hacen en el primer acceso. No se pueden cambiar una vez confirmadas.",
+      "colChoice": "Elección",
+      "colPoints": "Puntos",
+      "champion": "Campeón correcto",
+      "topScorer": "Goleador correcto",
+      "bestPlayer": "Mejor jugador correcto",
+      "runnerUp": "Subcampeón correcto",
+      "third": "Tercer lugar correcto",
+      "bestDefense": "Mejor defensa (menos goles recibidos)",
+      "auto": "(calculada automáticamente)"
+    },
+    "s4": {
+      "title": "Clasificación final",
+      "total": "Total = Puntos de pronósticos + Puntos especiales",
+      "tiebreak": "Criterios de desempate (en orden):",
+      "tb1": "Más marcadores exactos",
+      "tb2": "Más aciertos de ganador/empate",
+      "tb3": "Orden alfabético del nombre"
+    },
+    "s5": {
+      "title": "Reglas generales",
+      "r1": "Los pronósticos se bloquean automáticamente al empezar el partido.",
+      "r2": "No se pueden cambiar pronósticos tras el inicio del partido.",
+      "r3": "Las elecciones especiales se hacen en el primer acceso y no se pueden editar.",
+      "r4": "Tras el 27/06/2026 (fin de la fase de grupos), las elecciones de los participantes se revelan a todos.",
+      "r5": "Los resultados finales y puntos especiales los calcula el administrador al terminar el Mundial.",
+      "r6": "El administrador no participa en el juego.",
+      "r7": "El juego es cerrado — acceso solo por invitación."
+    }
   },
   "storiesPage": {
     "title": "Stories del",
@@ -235,19 +346,247 @@
     "logout": "Salir",
     "signin": "Entrar al panel",
     "accessDenied": "Acceso denegado. Este usuario no es administrador.",
-    "nav": { "dashboard": "Dashboard", "jogos": "Partidos", "palpites": "Pronósticos", "usuarios": "Usuarios", "convites": "Invitaciones", "especiais": "Especiales", "chat": "Chat", "comentarista": "Comentarista", "stories": "Stories" },
-    "common": { "save": "Guardar", "cancel": "Cancelar", "delete": "Eliminar", "edit": "Editar", "create": "Crear", "loading": "Cargando…", "search": "Buscar…", "confirm": "Confirmar", "close": "Cerrar", "saved": "¡Guardado!", "error": "Error. Inténtalo de nuevo." },
-    "points": "Puntos", "anon": "Anónimo", "user": "Usuario",
-    "dash": { "participants": "Participantes", "predictions": "Pronósticos", "exactHits": "Aciertos exactos", "avgAccuracy": "Precisión media", "leader": "Líder", "nextMatch": "Próximo partido", "ofPossible": "de {{n}} posibles", "pointsSuffix": "{{n}} puntos", "cupOver": "Mundial finalizado", "usersByRound": "Usuarios por Jornada", "pointsDist": "Distribución de Puntos", "participation": "Participación" },
+    "nav": {
+      "dashboard": "Dashboard",
+      "jogos": "Partidos",
+      "palpites": "Pronósticos",
+      "usuarios": "Usuarios",
+      "convites": "Invitaciones",
+      "especiais": "Especiales",
+      "chat": "Chat",
+      "comentarista": "Comentarista",
+      "stories": "Stories"
+    },
+    "common": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "create": "Crear",
+      "loading": "Cargando…",
+      "search": "Buscar…",
+      "confirm": "Confirmar",
+      "close": "Cerrar",
+      "saved": "¡Guardado!",
+      "error": "Error. Inténtalo de nuevo."
+    },
+    "points": "Puntos",
+    "anon": "Anónimo",
+    "user": "Usuario",
+    "dash": {
+      "participants": "Participantes",
+      "predictions": "Pronósticos",
+      "exactHits": "Aciertos exactos",
+      "avgAccuracy": "Precisión media",
+      "leader": "Líder",
+      "nextMatch": "Próximo partido",
+      "ofPossible": "de {{n}} posibles",
+      "pointsSuffix": "{{n}} puntos",
+      "cupOver": "Mundial finalizado",
+      "usersByRound": "Usuarios por Jornada",
+      "pointsDist": "Distribución de Puntos",
+      "participation": "Participación"
+    },
     "now": "ahora",
-    "chat": { "title": "Moderación de Chat", "subtitle": "Comentarios de las últimas 24h — se actualiza en tiempo real", "allMatches": "Todos los partidos", "empty": "Sin comentarios en las últimas 24h.", "colMatch": "Partido", "colMessage": "Mensaje", "colTime": "Hora", "colAction": "Acción" },
+    "chat": {
+      "title": "Moderación de Chat",
+      "subtitle": "Comentarios de las últimas 24h — se actualiza en tiempo real",
+      "allMatches": "Todos los partidos",
+      "empty": "Sin comentarios en las últimas 24h.",
+      "colMatch": "Partido",
+      "colMessage": "Mensaje",
+      "colTime": "Hora",
+      "colAction": "Acción"
+    },
     "refresh": "Actualizar",
-    "users": { "title": "Usuarios", "count_one": "{{count}} participante registrado", "count_other": "{{count}} participantes registrados", "create": "Crear usuario", "createTitle": "Crear Usuario", "colFirstAccess": "Primer acceso", "colAdmin": "Admin", "pending": "Pendiente", "done": "Completado", "makeAdmin": "Hacer admin", "removeAdmin": "Quitar admin", "labelName": "Nombre de usuario", "labelTempPass": "Contraseña temporal", "hint": "El usuario recibe una contraseña temporal y debe cambiarla en el primer acceso.", "fillAll": "Completa todos los campos.", "passMin": "La contraseña debe tener al menos 6 caracteres.", "createError": "Error al crear usuario. Verifica que la Edge Function esté desplegada.", "created": "¡Usuario \"{{name}}\" creado con éxito!" },
-    "invites": { "title": "Invitaciones", "subtitle": "Genera enlaces de acceso para nuevos participantes.", "instr1": "Genera un enlace de invitación abajo y envíalo a tu amigo por WhatsApp. Él abre el enlace y se registra con el nombre de usuario predefinido. Cada enlace es válido por", "validDays": "7 días", "instrMid": "y se puede usar", "once": "una sola vez", "newInvite": "Nueva invitación", "fillNameEmail": "Completa nombre y correo.", "dupEmail": "Ya existe una invitación para este correo.", "genError": "Error al generar la invitación.", "generate": "Generar invitación", "generatedFor": "Invitación generada para", "copy": "Copiar", "copied": "¡Copiado!", "validFor": "Válido por 7 días.", "listTitle": "Invitaciones generadas", "empty": "Aún no hay invitaciones generadas.", "colName": "Nombre", "colStatus": "Estado", "colCreated": "Generado el", "colActions": "Acciones", "copyLink": "Copiar enlace", "shareWa": "Compartir en WhatsApp", "deleteInvite": "Eliminar invitación", "stUsed": "Usada", "stExpired": "Expirada", "stPending": "Pendiente", "waMsg": "¡Has sido invitado a {{app}}! 🏆⚽\n\nAbre el enlace para registrarte:\n{{url}}" },
-    "specials": { "title": "Elecciones Especiales", "subtitle": "Resultados finales del Mundial — define los puntos bono de los participantes", "cupFinalized": "Mundial Finalizado", "results": "Resultados", "champion": "Campeón", "runnerUp": "Subcampeón", "third": "Tercer lugar", "topScorer": "Goleador", "bestPlayer": "Mejor jugador", "playerName": "Nombre del jugador", "teamName": "Nombre de la selección", "bestDefense": "Mejor defensa", "autoCalc": "calculada automáticamente", "basedOn": "Basado en los partidos:", "goalsConceded": "{{n}} goles recibidos", "confirmAdjust": "Confirmar / ajustar selección", "saveDraft": "Guardar borrador", "finalizeCup": "Finalizar Mundial", "confirmFinalize": "¿Finalizar el Mundial? Esto calcula los puntos especiales de todos los participantes.", "saveError": "Error al guardar.", "saveOk": "¡Guardado con éxito!", "calcError": "Error al calcular puntos: {{msg}}", "finalizedOk": "¡Mundial finalizado! Puntos especiales calculados.", "pointsTable": "Tabla de puntuación", "tableHint": "Haz clic en \"Finalizar Mundial\" tras completar todos los campos. Esto recalcula los puntos especiales de todos automáticamente.", "refChampion": "Campeón correcto", "refTopScorer": "Goleador correcto", "refBestPlayer": "Mejor jugador correcto", "refRunnerUp": "Subcampeón correcto", "refThird": "Tercer lugar correcto" },
-    "pundit": { "title": "Comentarista IA — Seu Zé", "generateComment": "Generar Comentario", "regenerate": "Regenerar", "generateAI": "Generar con IA", "genError": "Error al generar el comentario.", "adjustText": "✏️ Ajustar texto manualmente", "editPlaceholder": "Edita el texto antes de publicar…", "publish": "Publicar", "discard": "Descartar", "history": "Historial", "empty": "Aún no hay comentarios generados.", "published": "Publicado", "draft": "Borrador", "unpublish": "Despublicar", "types": { "rodada_grupos": "Fase de Grupos", "rodada_32avos": "Dieciseisavos", "rodada_oitavas": "Octavos de final", "rodada_quartas": "Cuartos de final", "rodada_semis": "Semifinales", "rodada_final": "Final del Mundial" } },
-    "stories": { "title": "Stories Cómicos", "genError": "Error al generar la story.", "emptyAI": "La IA devolvió texto vacío — inténtalo de nuevo.", "preview": "Vista previa", "editableText": "Texto generado (editable antes de publicar)", "published": "Publicados", "viewAsStories": "Ver como stories →", "types": { "hall_vergonha": "Salón de la Vergüenza", "zebra_dia": "Sorpresa del Día", "vidente_chutometro": "¿Vidente o Adivino?", "subiu_afundou": "Subió / Bajó", "palpite_covarde": "Pronóstico Cobarde", "telepata_rodada": "Telépata de la Jornada" }, "descs": { "hall_vergonha": "Peor pronóstico del día", "zebra_dia": "Quién acertó el resultado más improbable", "vidente_chutometro": "Comparación de aciertos vs errores", "subiu_afundou": "Mayores variaciones en el ranking", "palpite_covarde": "Quién pronosticó más 0-0 y 1-0", "telepata_rodada": "Más marcadores exactos" } },
-    "retro": { "title": "Pronósticos Retroactivos", "player": "Jugador", "copyFrom": "Copiar pronósticos de", "selectPlaceholder": "— seleccionar —", "copiedFrom": "Pronósticos copiados de {{name}}", "noneFilled": "Ningún pronóstico completado.", "savedCount": "{{count}} pronóstico(s) guardados para {{name}} · {{recalc}} partido(s) recalculados", "noGamesRound": "No se encontraron partidos para la Jornada {{round}}.", "picksOf": "Pronósticos de", "saveFor": "Guardar pronósticos de {{name}}" },
-    "matches": { "title": "Partidos", "summary": "{{done}} de {{total}} partidos finalizados", "syncNow": "Sincronizar ahora", "syncResult": "{{count}} partido(s) actualizados", "syncErrors": " · {{n}} error(es)", "filterAll": "Todos", "filterPending": "Pendientes", "filterFinished": "Finalizados", "groupOpt": "Grupo…", "colMatch": "Partido", "colResult": "Resultado", "colStatus": "Estado", "colDate": "Fecha", "colAction": "Acción", "statusFinished": "Finalizado", "statusPending": "Pendiente", "knockout": "Fase Eliminatoria", "tbd": "Por definir × Por definir", "awaitingQual": "Esperando clasificación", "finished": "Finalizado", "result": "Resultado", "markFinished": "Marcar como finalizado", "autoPoints": "Puntos calculados automáticamente por el trigger", "saveResult": "Guardar resultado", "events": "Eventos del partido", "addEvent": "Añadir evento", "minute": "Minuto", "player": "Jugador", "team": "Selección", "add": "Añadir", "evType": { "gol": "⚽ Gol", "gol_contra": "🥅 Gol en propia", "assistencia": "🎯 Asistencia" }, "phases": { "r32": "Dieciseisavos", "r16": "Octavos de final", "quarters": "Cuartos de final", "semis": "Semifinales", "third": "Tercer puesto", "final": "Final" } }
+    "users": {
+      "title": "Usuarios",
+      "count_one": "{{count}} participante registrado",
+      "count_other": "{{count}} participantes registrados",
+      "create": "Crear usuario",
+      "createTitle": "Crear Usuario",
+      "colFirstAccess": "Primer acceso",
+      "colAdmin": "Admin",
+      "pending": "Pendiente",
+      "done": "Completado",
+      "makeAdmin": "Hacer admin",
+      "removeAdmin": "Quitar admin",
+      "labelName": "Nombre de usuario",
+      "labelTempPass": "Contraseña temporal",
+      "hint": "El usuario recibe una contraseña temporal y debe cambiarla en el primer acceso.",
+      "fillAll": "Completa todos los campos.",
+      "passMin": "La contraseña debe tener al menos 6 caracteres.",
+      "createError": "Error al crear usuario. Verifica que la Edge Function esté desplegada.",
+      "created": "¡Usuario \"{{name}}\" creado con éxito!"
+    },
+    "invites": {
+      "title": "Invitaciones",
+      "subtitle": "Genera enlaces de acceso para nuevos participantes.",
+      "instr1": "Genera un enlace de invitación abajo y envíalo a tu amigo por WhatsApp. Él abre el enlace y se registra con el nombre de usuario predefinido. Cada enlace es válido por",
+      "validDays": "7 días",
+      "instrMid": "y se puede usar",
+      "once": "una sola vez",
+      "newInvite": "Nueva invitación",
+      "fillNameEmail": "Completa nombre y correo.",
+      "dupEmail": "Ya existe una invitación para este correo.",
+      "genError": "Error al generar la invitación.",
+      "generate": "Generar invitación",
+      "generatedFor": "Invitación generada para",
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "validFor": "Válido por 7 días.",
+      "listTitle": "Invitaciones generadas",
+      "empty": "Aún no hay invitaciones generadas.",
+      "colName": "Nombre",
+      "colStatus": "Estado",
+      "colCreated": "Generado el",
+      "colActions": "Acciones",
+      "copyLink": "Copiar enlace",
+      "shareWa": "Compartir en WhatsApp",
+      "deleteInvite": "Eliminar invitación",
+      "stUsed": "Usada",
+      "stExpired": "Expirada",
+      "stPending": "Pendiente",
+      "waMsg": "¡Has sido invitado a {{app}}! 🏆⚽\n\nAbre el enlace para registrarte:\n{{url}}"
+    },
+    "specials": {
+      "title": "Elecciones Especiales",
+      "subtitle": "Resultados finales del Mundial — define los puntos bono de los participantes",
+      "cupFinalized": "Mundial Finalizado",
+      "results": "Resultados",
+      "champion": "Campeón",
+      "runnerUp": "Subcampeón",
+      "third": "Tercer lugar",
+      "topScorer": "Goleador",
+      "bestPlayer": "Mejor jugador",
+      "playerName": "Nombre del jugador",
+      "teamName": "Nombre de la selección",
+      "bestDefense": "Mejor defensa",
+      "autoCalc": "calculada automáticamente",
+      "basedOn": "Basado en los partidos:",
+      "goalsConceded": "{{n}} goles recibidos",
+      "confirmAdjust": "Confirmar / ajustar selección",
+      "saveDraft": "Guardar borrador",
+      "finalizeCup": "Finalizar Mundial",
+      "confirmFinalize": "¿Finalizar el Mundial? Esto calcula los puntos especiales de todos los participantes.",
+      "saveError": "Error al guardar.",
+      "saveOk": "¡Guardado con éxito!",
+      "calcError": "Error al calcular puntos: {{msg}}",
+      "finalizedOk": "¡Mundial finalizado! Puntos especiales calculados.",
+      "pointsTable": "Tabla de puntuación",
+      "tableHint": "Haz clic en \"Finalizar Mundial\" tras completar todos los campos. Esto recalcula los puntos especiales de todos automáticamente.",
+      "refChampion": "Campeón correcto",
+      "refTopScorer": "Goleador correcto",
+      "refBestPlayer": "Mejor jugador correcto",
+      "refRunnerUp": "Subcampeón correcto",
+      "refThird": "Tercer lugar correcto"
+    },
+    "pundit": {
+      "title": "Comentarista IA — Seu Zé",
+      "generateComment": "Generar Comentario",
+      "regenerate": "Regenerar",
+      "generateAI": "Generar con IA",
+      "genError": "Error al generar el comentario.",
+      "adjustText": "✏️ Ajustar texto manualmente",
+      "editPlaceholder": "Edita el texto antes de publicar…",
+      "publish": "Publicar",
+      "discard": "Descartar",
+      "history": "Historial",
+      "empty": "Aún no hay comentarios generados.",
+      "published": "Publicado",
+      "draft": "Borrador",
+      "unpublish": "Despublicar",
+      "types": {
+        "rodada_grupos": "Fase de Grupos",
+        "rodada_32avos": "Dieciseisavos",
+        "rodada_oitavas": "Octavos de final",
+        "rodada_quartas": "Cuartos de final",
+        "rodada_semis": "Semifinales",
+        "rodada_final": "Final del Mundial"
+      }
+    },
+    "stories": {
+      "title": "Stories Cómicos",
+      "genError": "Error al generar la story.",
+      "emptyAI": "La IA devolvió texto vacío — inténtalo de nuevo.",
+      "preview": "Vista previa",
+      "editableText": "Texto generado (editable antes de publicar)",
+      "published": "Publicados",
+      "viewAsStories": "Ver como stories →",
+      "types": {
+        "hall_vergonha": "Salón de la Vergüenza",
+        "zebra_dia": "Sorpresa del Día",
+        "vidente_chutometro": "¿Vidente o Adivino?",
+        "subiu_afundou": "Subió / Bajó",
+        "palpite_covarde": "Pronóstico Cobarde",
+        "telepata_rodada": "Telépata de la Jornada"
+      },
+      "descs": {
+        "hall_vergonha": "Peor pronóstico del día",
+        "zebra_dia": "Quién acertó el resultado más improbable",
+        "vidente_chutometro": "Comparación de aciertos vs errores",
+        "subiu_afundou": "Mayores variaciones en el ranking",
+        "palpite_covarde": "Quién pronosticó más 0-0 y 1-0",
+        "telepata_rodada": "Más marcadores exactos"
+      }
+    },
+    "retro": {
+      "title": "Pronósticos Retroactivos",
+      "player": "Jugador",
+      "copyFrom": "Copiar pronósticos de",
+      "selectPlaceholder": "— seleccionar —",
+      "copiedFrom": "Pronósticos copiados de {{name}}",
+      "noneFilled": "Ningún pronóstico completado.",
+      "savedCount": "{{count}} pronóstico(s) guardados para {{name}} · {{recalc}} partido(s) recalculados",
+      "noGamesRound": "No se encontraron partidos para la Jornada {{round}}.",
+      "picksOf": "Pronósticos de",
+      "saveFor": "Guardar pronósticos de {{name}}"
+    },
+    "matches": {
+      "title": "Partidos",
+      "summary": "{{done}} de {{total}} partidos finalizados",
+      "syncNow": "Sincronizar ahora",
+      "syncResult": "{{count}} partido(s) actualizados",
+      "syncErrors": " · {{n}} error(es)",
+      "filterAll": "Todos",
+      "filterPending": "Pendientes",
+      "filterFinished": "Finalizados",
+      "groupOpt": "Grupo…",
+      "colMatch": "Partido",
+      "colResult": "Resultado",
+      "colStatus": "Estado",
+      "colDate": "Fecha",
+      "colAction": "Acción",
+      "statusFinished": "Finalizado",
+      "statusPending": "Pendiente",
+      "knockout": "Fase Eliminatoria",
+      "tbd": "Por definir × Por definir",
+      "awaitingQual": "Esperando clasificación",
+      "finished": "Finalizado",
+      "result": "Resultado",
+      "markFinished": "Marcar como finalizado",
+      "autoPoints": "Puntos calculados automáticamente por el trigger",
+      "saveResult": "Guardar resultado",
+      "events": "Eventos del partido",
+      "addEvent": "Añadir evento",
+      "minute": "Minuto",
+      "player": "Jugador",
+      "team": "Selección",
+      "add": "Añadir",
+      "evType": {
+        "gol": "⚽ Gol",
+        "gol_contra": "🥅 Gol en propia",
+        "assistencia": "🎯 Asistencia"
+      },
+      "phases": {
+        "r32": "Dieciseisavos",
+        "r16": "Octavos de final",
+        "quarters": "Cuartos de final",
+        "semis": "Semifinales",
+        "third": "Tercer puesto",
+        "final": "Final"
+      },
+      "advancer": "Quién avanzó (penales)"
+    }
   }
 }

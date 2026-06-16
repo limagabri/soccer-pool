@@ -10,7 +10,7 @@ import { CompartilharCard } from '../components/CompartilharCard'
 import { useAuth } from '../contexts/AuthContext'
 import { useJogos } from '../hooks/useJogos'
 import { supabase } from '../lib/supabase'
-import { calcularPontos, formatarData, jogoComecou } from '../lib/utils'
+import { calcularPontosJogo, formatarData, jogoComecou } from '../lib/utils'
 import type { Jogo, Palpite } from '../types'
 
 const FILTROS = [
@@ -19,22 +19,27 @@ const FILTROS = [
   { id: '1', key: 'round1' },
   { id: '2', key: 'round2' },
   { id: '3', key: 'round3' },
+  { id: 'mata', key: 'knockout' },
   { id: 'meus', key: 'mine' },
 ]
+
+const FASE_PLACEHOLDER = '⏳'
 
 interface InputPlacar {
   c: string
   f: string
 }
 
-function BadgePontos({ pontos, t }: { pontos: number; t: (k: string) => string }) {
-  const estilo =
-    pontos === 10
-      ? 'bg-brasil-green/20 text-brasil-green'
-      : pontos === 5
-        ? 'bg-brasil-yellow/20 text-brasil-yellow'
-        : 'bg-red-500/10 text-red-400'
-  const rotulo = pontos === 10 ? t('predictions.exactScore') : pontos === 5 ? t('predictions.correctWinner') : t('predictions.wrong')
+function BadgePontos(
+  { pontos, exato, resultado, t }:
+  { pontos: number; exato: boolean; resultado: boolean; t: (k: string) => string }
+) {
+  const estilo = exato
+    ? 'bg-brasil-green/20 text-brasil-green'
+    : resultado
+      ? 'bg-brasil-yellow/20 text-brasil-yellow'
+      : 'bg-red-500/10 text-red-400'
+  const rotulo = exato ? t('predictions.exactScore') : resultado ? t('predictions.correctWinner') : t('predictions.wrong')
   return (
     <span className={`rounded-full px-3 py-1 text-xs font-semibold ${estilo}`}>
       {rotulo} · +{pontos} pts
@@ -49,6 +54,7 @@ export function Palpites() {
 
   const [palpites, setPalpites] = useState<Record<string, Palpite>>({})
   const [inputs, setInputs] = useState<Record<string, InputPlacar>>({})
+  const [avancaInputs, setAvancaInputs] = useState<Record<string, string>>({})
   const [salvando, setSalvando] = useState<string | null>(null)
   const [loadingPalpites, setLoadingPalpites] = useState(true)
   const [filtro, setFiltro] = useState('agora')
@@ -73,12 +79,15 @@ export function Palpites() {
       .then(({ data }) => {
         const map: Record<string, Palpite> = {}
         const ins: Record<string, InputPlacar> = {}
+        const av: Record<string, string> = {}
         for (const p of (data as Palpite[]) ?? []) {
           map[p.jogo_id] = p
           ins[p.jogo_id] = { c: String(p.gols_casa), f: String(p.gols_fora) }
+          if (p.avanca) av[p.jogo_id] = p.avanca
         }
         setPalpites(map)
         setInputs(ins)
+        setAvancaInputs(av)
         setLoadingPalpites(false)
       })
   }, [user])
@@ -123,7 +132,8 @@ export function Palpites() {
     // "Próximos": apenas jogos que ainda não terminaram (em andamento + futuros).
     // Para ver os já encerrados, usar Rodadas ou Todos.
     if (filtro === 'agora') return cron.filter((j) => !j.encerrado)
-    return cron.filter((j) => j.rodada === Number(filtro))
+    if (filtro === 'mata') return cron.filter((j) => (j.fase ?? 'grupos') !== 'grupos')
+    return cron.filter((j) => (j.fase ?? 'grupos') === 'grupos' && j.rodada === Number(filtro))
   }, [jogos, filtro, palpites])
 
   function setInput(jogoId: string, lado: 'c' | 'f', valor: string) {
@@ -131,6 +141,10 @@ export function Palpites() {
       const atual = prev[jogoId] ?? { c: '', f: '' }
       return { ...prev, [jogoId]: { ...atual, [lado]: valor } }
     })
+  }
+
+  function setAvanca(jogoId: string, time: string) {
+    setAvancaInputs((prev) => ({ ...prev, [jogoId]: time }))
   }
 
   function toggleChat(jogoId: string) {
@@ -161,11 +175,22 @@ export function Palpites() {
       return
     }
 
+    // Mata-mata: se o palpite for empate, precisa escolher quem avança nos pênaltis.
+    const isKnockout = (jogo.fase ?? 'grupos') !== 'grupos'
+    let avanca: string | null = null
+    if (isKnockout && gc === gf) {
+      avanca = avancaInputs[jogo.id] ?? null
+      if (!avanca) {
+        setToast({ mensagem: t('predictions.advancer.required'), tipo: 'erro' })
+        return
+      }
+    }
+
     setSalvando(jogo.id)
     const { data, error } = await supabase
       .from('palpites')
       .upsert(
-        { user_id: user.id, jogo_id: jogo.id, gols_casa: gc, gols_fora: gf },
+        { user_id: user.id, jogo_id: jogo.id, gols_casa: gc, gols_fora: gf, avanca },
         { onConflict: 'user_id,jogo_id' }
       )
       .select()
@@ -238,6 +263,12 @@ export function Palpites() {
               const qtdComentarios = contagemComentarios[jogo.id] ?? 0
               const palpitesEstaAberto = palpitesAbertos.has(jogo.id)
               const qtdPalpites = contagemPalpites[jogo.id] ?? 0
+              const isKnockout = (jogo.fase ?? 'grupos') !== 'grupos'
+              // Mata-mata com times ainda indefinidos (placeholder ⏳) não aceita palpite.
+              const indefinido = isKnockout && (jogo.emoji_casa === FASE_PLACEHOLDER || jogo.emoji_fora === FASE_PLACEHOLDER)
+              const cNum = Number.parseInt(input?.c ?? '', 10)
+              const fNum = Number.parseInt(input?.f ?? '', 10)
+              const empatePalpite = !Number.isNaN(cNum) && cNum === fNum
 
               return (
                 <motion.div
@@ -249,11 +280,14 @@ export function Palpites() {
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-500">
                     <span>
-                      {t('common.match')} {jogo.numero_jogo} · {t('common.group')} {jogo.grupo} · {t('common.round')} {jogo.rodada}
+                      {t('common.match')} {jogo.numero_jogo}
+                      {isKnockout
+                        ? ` · ${t(`predictions.phases.${jogo.fase}`)}`
+                        : ` · ${t('common.group')} ${jogo.grupo} · ${t('common.round')} ${jogo.rodada}`}
                     </span>
                     <span className="flex items-center gap-1">
                       <MapPin className="h-3 w-3" />
-                      {jogo.estadio}, {jogo.cidade} · {formatarData(jogo.data_jogo)}
+                      {jogo.estadio ? `${jogo.estadio}, ${jogo.cidade} · ` : ''}{formatarData(jogo.data_jogo)}
                     </span>
                   </div>
 
@@ -266,6 +300,10 @@ export function Palpites() {
                     {jogo.encerrado ? (
                       <span className="font-display text-3xl tracking-widest text-brasil-yellow">
                         {jogo.gols_casa} x {jogo.gols_fora}
+                      </span>
+                    ) : indefinido ? (
+                      <span className="text-center text-xs text-zinc-500">
+                        {t('predictions.tbd')}
                       </span>
                     ) : comecou ? (
                       <span className="flex items-center gap-1 text-sm text-zinc-500">
@@ -293,6 +331,30 @@ export function Palpites() {
                     </div>
                   </div>
 
+                  {/* Mata-mata: quem avança nos pênaltis (quando o palpite é empate) */}
+                  {!comecou && !indefinido && isKnockout && empatePalpite && (
+                    <div className="mt-4 flex flex-col items-center gap-2">
+                      <p className="text-xs text-zinc-400">{t('predictions.advancer.question')}</p>
+                      <div className="flex gap-2">
+                        {[[jogo.time_casa, jogo.emoji_casa], [jogo.time_fora, jogo.emoji_fora]].map(([nome, emoji]) => (
+                          <button
+                            key={nome}
+                            type="button"
+                            onClick={() => setAvanca(jogo.id, nome)}
+                            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                              avancaInputs[jogo.id] === nome
+                                ? 'bg-brasil-green/20 text-brasil-green'
+                                : 'glass text-zinc-400 hover:text-zinc-100'
+                            }`}
+                          >
+                            <span>{emoji}</span> {nome}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-zinc-600">{t('predictions.advancer.bonus')}</p>
+                    </div>
+                  )}
+
                   {/* Resultado e palpite */}
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
                     {jogo.encerrado && palpite && (
@@ -300,10 +362,15 @@ export function Palpites() {
                         <span className="text-sm text-zinc-400">
                           {t('predictions.yourPick')} <strong>{palpite.gols_casa} x {palpite.gols_fora}</strong>
                         </span>
-                        <BadgePontos
-                          t={t}
-                          pontos={calcularPontos(palpite.gols_casa, palpite.gols_fora, jogo.gols_casa!, jogo.gols_fora!)}
-                        />
+                        {(() => {
+                          const exato = palpite.gols_casa === jogo.gols_casa && palpite.gols_fora === jogo.gols_fora
+                          const resultado = Math.sign(palpite.gols_casa - palpite.gols_fora) === Math.sign(jogo.gols_casa! - jogo.gols_fora!)
+                          const pts = calcularPontosJogo(
+                            { gols_casa: palpite.gols_casa, gols_fora: palpite.gols_fora, avanca: palpite.avanca },
+                            jogo,
+                          )
+                          return <BadgePontos t={t} pontos={pts} exato={exato} resultado={resultado} />
+                        })()}
                       </>
                     )}
                     {jogo.encerrado && !palpite && (
@@ -314,7 +381,7 @@ export function Palpites() {
                         {t('predictions.yourPick')} <strong>{palpite.gols_casa} x {palpite.gols_fora}</strong> · {t('predictions.awaiting')}
                       </span>
                     )}
-                    {!comecou && (
+                    {!comecou && !indefinido && (
                       <button
                         onClick={() => salvar(jogo)}
                         disabled={salvando === jogo.id}
@@ -323,6 +390,9 @@ export function Palpites() {
                         {salvando === jogo.id && <Loader2 className="h-4 w-4 animate-spin" />}
                         {palpite ? t('predictions.update') : t('predictions.save')}
                       </button>
+                    )}
+                    {!comecou && indefinido && (
+                      <span className="text-sm text-zinc-600">{t('predictions.awaitingTeams')}</span>
                     )}
                   </div>
 

@@ -1,3 +1,6 @@
+// ⚠️ A lógica de chaveamento (CHAVE_32, montarChaveamento, vencedor/loserMataMata)
+// é duplicada em supabase/functions/_shared/bracket.ts (usada pela edge function
+// gerar-mata-mata). Mudou aqui? Mude lá também.
 import type { LinhaTabela } from './classificacao'
 
 /** Força aproximada por ranking FIFA (0-100) para a simulação aleatória */

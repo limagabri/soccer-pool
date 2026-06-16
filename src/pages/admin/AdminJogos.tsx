@@ -14,6 +14,7 @@ interface ModalState {
   gols_casa: string
   gols_fora: string
   encerrado: boolean
+  vencedor_penaltis: string  // '' = nenhum; só usado em empate de mata-mata
 }
 
 interface EventoJogo {
@@ -115,6 +116,7 @@ export function AdminJogos() {
       gols_casa: jogo.gols_casa != null ? String(jogo.gols_casa) : '',
       gols_fora: jogo.gols_fora != null ? String(jogo.gols_fora) : '',
       encerrado: jogo.encerrado,
+      vencedor_penaltis: jogo.vencedor_penaltis ?? '',
     })
     setCarregandoEventos(true)
     setEventos([])
@@ -140,10 +142,14 @@ export function AdminJogos() {
     const gf = Number.parseInt(modal.gols_fora, 10)
     if (Number.isNaN(gc) || Number.isNaN(gf) || gc < 0 || gf < 0) return
 
+    // Em empate de mata-mata, grava quem avançou nos pênaltis (senão null).
+    const isKnockout = (modal.jogo.fase ?? 'grupos') !== 'grupos'
+    const venc = isKnockout && gc === gf && modal.vencedor_penaltis ? modal.vencedor_penaltis : null
+
     setSalvando(true)
     const { data, error } = await supabase
       .from('jogos')
-      .update({ gols_casa: gc, gols_fora: gf, encerrado: modal.encerrado })
+      .update({ gols_casa: gc, gols_fora: gf, encerrado: modal.encerrado, vencedor_penaltis: venc })
       .eq('id', modal.jogo.id)
       .select()
       .single()
@@ -425,6 +431,28 @@ export function AdminJogos() {
                       />
                     </div>
                   </div>
+
+                  {(modal.jogo.fase ?? 'grupos') !== 'grupos' && modal.gols_casa !== '' && modal.gols_casa === modal.gols_fora && (
+                    <div className="mt-3 rounded-lg bg-zinc-800 px-4 py-2.5">
+                      <p className="mb-2 text-xs font-medium text-zinc-300">{t('admin.matches.advancer')}</p>
+                      <div className="flex gap-2">
+                        {['', modal.jogo.time_casa, modal.jogo.time_fora].map((nome) => (
+                          <button
+                            key={nome || 'none'}
+                            type="button"
+                            onClick={() => setModal((m) => m && { ...m, vencedor_penaltis: nome })}
+                            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                              modal.vencedor_penaltis === nome
+                                ? 'bg-green-700 text-white'
+                                : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
+                            }`}
+                          >
+                            {nome || '—'}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <label className="mt-3 flex cursor-pointer items-center gap-3 rounded-lg bg-zinc-800 px-4 py-2.5">
                     <input

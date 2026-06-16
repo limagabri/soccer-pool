@@ -50,7 +50,7 @@ export function Dashboard() {
   useEffect(() => {
     supabase
       .from('palpites')
-      .select('user_id, jogo_id, gols_casa, gols_fora')
+      .select('user_id, jogo_id, gols_casa, gols_fora, avanca')
       .then(({ data }) => setTodosPalpites((data as PalpiteResumo[]) ?? []))
   }, [])
 
