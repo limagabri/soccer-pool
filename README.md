@@ -23,7 +23,7 @@
 - 💬 **Real-time chat** — per-game comments with quick reactions and `@mentions`
 - 🔔 **Push notifications** — Web Push (aes128gcm via `web-push`); get pinged when someone `@mentions` you
 - 🤖 **AI comic commentary** — GPT-powered "Seu Zé" reacts to every goal
-- 📸 **Stories** — AI-generated tournament recap stories, Instagram-style (hold to pause)
+- 📸 **Stories** — AI-generated recap stories, Instagram-style (hold to pause); auto-refreshed daily and expire after 24h
 - 🎉 **Goal animation** — confetti + sound when a goal drops in real time
 - 📤 **Share card** — generate a PNG of your predictions for WhatsApp
 - 🛡️ **Admin panel** — manage matches, users, invites, special results and push
@@ -76,7 +76,7 @@ src/
 
 supabase/
 ├── functions/      Edge Functions (see table below)
-└── migrations/     000_seed … 015_fix_missing_tables
+└── migrations/     000_seed … 016_stories_expiram_24h
 
 scripts/
 ├── setup.ts        Interactive project setup wizard
@@ -90,7 +90,8 @@ scripts/
 |---|---|
 | `sync-resultados` | Pulls scores, goalscorers and kickoff times from ESPN (cron every 2 min); feeds results, top-scorer chart and keeps the schedule in sync |
 | `gerar-comentarista` | Generates "Seu Zé" AI commentary for a round |
-| `gerar-story` | Generates AI recap stories |
+| `gerar-story` | Generates one AI recap story from the **previous day's** results (BRT) |
+| `gerar-stories-diario` | Orchestrator: builds and publishes all 6 daily stories (run by a cron at 08:00 BRT) |
 | `criar-usuario` | Admin-only: creates a participant account |
 | `enviar-push` | Sends Web Push notifications |
 | `admin-upsert-palpites` | Admin-only: bulk-edit predictions |
@@ -125,7 +126,7 @@ npm run setup           # runs migrations + seed automatically
 ### Manual
 
 ```bash
-npm run migrate            # schema only (001–015)
+npm run migrate            # schema only (001–016)
 npm run migrate -- --seed  # schema + 72 World Cup 2026 matches
 ```
 
@@ -195,6 +196,15 @@ Push to `main` — GitHub Actions lints, runs migrations, deploys Edge Functions
 
 **GitHub Pages setup** (first deploy only):
 - Repository → Settings → Pages → Source: `gh-pages` branch
+
+**Scheduled jobs (cron):** result sync (every 2 min) and the daily story generation
+(08:00 BRT) run via `pg_cron` + `pg_net`. Configure them once with
+[`supabase/functions/cron-config.sql`](supabase/functions/cron-config.sql) in the
+Supabase SQL editor (replace `<PROJECT_REF>` and `<SUPABASE_ANON_KEY>`).
+
+> ⚠️ Edge Functions only auto-deploy when the `SUPABASE_ACCESS_TOKEN` secret is set.
+> Without it the CI step is skipped — deploy manually with
+> `npx supabase functions deploy --project-ref <PROJECT_REF>`.
 
 ## 🤝 Contributing
 
