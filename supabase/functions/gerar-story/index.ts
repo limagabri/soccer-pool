@@ -33,11 +33,50 @@ Deno.serve(async (req) => {
   const openaiKey   = Deno.env.get('OPENAI_API_KEY')!
 
   const supabase = createClient(supabaseUrl, serviceKey)
-  const { template } = await req.json() as { template: Template }
+  // `dia` opcional (YYYY-MM-DD, em BRT). Sem ele, usa o dia anterior.
+  const { template, dia: diaParam } = await req.json() as { template: Template; dia?: string }
+
+  // BRT = UTC-3 (sem horário de verão). Um dia BRT vai de 03:00Z a 03:00Z do dia seguinte.
+  const BRT_OFFSET_MS = 3 * 60 * 60 * 1000
+  const brtYMD = (d: Date) => new Date(d.getTime() - BRT_OFFSET_MS).toISOString().slice(0, 10)
+  const brtDayRange = (ymd: string) => {
+    const start = new Date(`${ymd}T03:00:00.000Z`)            // 00:00 BRT
+    const end = new Date(start.getTime() + 24 * 60 * 60 * 1000) // 00:00 BRT do dia seguinte
+    return { startISO: start.toISOString(), endISO: end.toISOString() }
+  }
+
+  // Dia-alvo: o informado, senão ontem (BRT).
+  let dia = diaParam ?? brtYMD(new Date(Date.now() - 24 * 60 * 60 * 1000))
+
+  const jogosCols = 'id, time_casa, time_fora, gols_casa, gols_fora, rodada, data_jogo'
+  const fetchJogosDoDia = async (ymd: string) => {
+    const { startISO, endISO } = brtDayRange(ymd)
+    const { data } = await supabase
+      .from('jogos').select(jogosCols)
+      .eq('encerrado', true)
+      .gte('data_jogo', startISO).lt('data_jogo', endISO)
+    return data ?? []
+  }
+
+  let jogos = await fetchJogosDoDia(dia)
+
+  // Fallback: se o dia anterior não teve jogos encerrados, usa o último dia que teve.
+  if (jogos.length === 0) {
+    const { data: ult } = await supabase
+      .from('jogos').select('data_jogo')
+      .eq('encerrado', true)
+      .order('data_jogo', { ascending: false }).limit(1)
+    if (ult?.[0]) {
+      dia = brtYMD(new Date(ult[0].data_jogo))
+      jogos = await fetchJogosDoDia(dia)
+    }
+  }
 
   const { data: profiles } = await supabase.from('profiles').select('id, username')
-  const { data: jogos }    = await supabase.from('jogos').select('id, time_casa, time_fora, gols_casa, gols_fora, rodada').eq('encerrado', true)
-  const { data: palpites } = await supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora, pontos')
+  const jogoIds = jogos.map((j) => j.id)
+  const { data: palpites } = jogoIds.length
+    ? await supabase.from('palpites').select('user_id, jogo_id, gols_casa, gols_fora, pontos').in('jogo_id', jogoIds)
+    : { data: [] as Array<{ user_id: string; jogo_id: string; gols_casa: number; gols_fora: number; pontos: number }> }
   const { data: ranking }  = await supabase.from('ranking_historico').select('user_id, posicao, pontos, snapshot_em').order('snapshot_em', { ascending: false }).limit(100)
 
   const nomeMap = Object.fromEntries((profiles ?? []).map(p => [p.id, p.username ?? 'Anônimo']))
@@ -153,6 +192,19 @@ Deno.serve(async (req) => {
     dados = { telepata: { nome: nomeMap[top?.[0]] ?? '—', acertos: top?.[1] ?? 0 } }
     userPrompt = `${nomeMap[top?.[0]] ?? 'Alguém'} acertou ${top?.[1] ?? 0} placares exatos. É vidência ou sorte? Comente exageradamente.`
   }
+
+  // Templates baseados em jogos precisam de partidas no dia; subiu_afundou usa o ranking.
+  if (template !== 'subiu_afundou' && jogos.length === 0) {
+    return new Response(
+      JSON.stringify({ error: `Nenhum jogo encerrado em ${dia} para gerar este story.` }),
+      { status: 422, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } },
+    )
+  }
+
+  // Carimbo do dia (dd/mm) no título e nos dados, pra cada dia render um story novo.
+  const [, mm, dd] = dia.split('-')
+  titulo = `${titulo} · ${dd}/${mm}`
+  dados = { ...dados, dia }
 
   // ── Call OpenAI ─────────────────────────────────────────────────────────────
   const aiRes = await fetch(OPENAI_API, {
