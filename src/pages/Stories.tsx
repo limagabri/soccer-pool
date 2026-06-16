@@ -46,10 +46,13 @@ export function Stories() {
   const [viewerIdx, setViewerIdx] = useState<number | null>(null)
 
   useEffect(() => {
+    // Stories expiram 24h após a publicação, igual ao Instagram.
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     supabase
       .from('stories')
       .select('id, template, titulo, conteudo_ia, dados, publicado_em')
       .eq('publicado', true)
+      .gte('publicado_em', cutoff)
       .order('publicado_em', { ascending: false })
       .then(({ data }) => {
         setStories((data as StoryData[]) ?? [])

@@ -64,10 +64,13 @@ export function Dashboard() {
       .single()
       .then(({ data }) => { if (data) setUltimoComentario(data as ComentarioIA) })
 
+    // Stories expiram 24h após a publicação, igual ao Instagram.
+    const cutoffStories = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     supabase
       .from('stories')
       .select('id, template, titulo, conteudo_ia, dados, publicado_em')
       .eq('publicado', true)
+      .gte('publicado_em', cutoffStories)
       .order('publicado_em', { ascending: false })
       .then(({ data }) => setStories((data as StoryData[]) ?? []))
   }, [])
