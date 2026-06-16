@@ -268,7 +268,7 @@
     "points": "points",
     "s1": {
       "title": "How it works",
-      "p1": "{{name}} is a private, invite-only pool. Each participant submits score predictions for the World Cup matches before each game kicks off.",
+      "p1": "{{name}} is a private, invite-only pool. Each participant submits score predictions for the World Cup matches, from the group stage all the way to the final, before each game kicks off.",
       "p2pre": "Follow the live standings on the",
       "p2link": "Ranking",
       "p2post": "and see who's on top.",
