@@ -1,6 +1,7 @@
 // ⚠️ A lógica de chaveamento (CHAVE_32, montarChaveamento, vencedor/loserMataMata)
 // é duplicada em supabase/functions/_shared/bracket.ts (usada pela edge function
 // gerar-mata-mata). Mudou aqui? Mude lá também.
+import { ANNEX_C_LOOKUP, type AnnexCSlot } from './annex-c'
 import type { LinhaTabela } from './classificacao'
 
 /** Força aproximada por ranking FIFA (0-100) para a simulação aleatória */
@@ -87,30 +88,32 @@ export function probVitoria(casa: string, fora: string): number {
 
 export type Seed =
   | { tipo: '1º' | '2º'; grupo: string }
-  | { tipo: '3º'; indice: number }
+  | { tipo: '3º'; slot: AnnexCSlot }
 
-/**
- * Rodada de 32 (simplificada): 8 cabeças de grupo enfrentam os 8
- * melhores 3ºs, os demais 1ºs e 2ºs se cruzam sem repetir grupo.
- */
+/** J73–J88 na ordem do regulamento FIFA (M73–M88). */
 export const CHAVE_32: [Seed, Seed][] = [
-  [{ tipo: '1º', grupo: 'A' }, { tipo: '3º', indice: 7 }],
-  [{ tipo: '2º', grupo: 'B' }, { tipo: '2º', grupo: 'C' }],
-  [{ tipo: '1º', grupo: 'F' }, { tipo: '2º', grupo: 'L' }],
-  [{ tipo: '1º', grupo: 'E' }, { tipo: '3º', indice: 4 }],
-  [{ tipo: '1º', grupo: 'I' }, { tipo: '3º', indice: 2 }],
-  [{ tipo: '2º', grupo: 'D' }, { tipo: '2º', grupo: 'G' }],
-  [{ tipo: '1º', grupo: 'K' }, { tipo: '2º', grupo: 'J' }],
-  [{ tipo: '1º', grupo: 'B' }, { tipo: '3º', indice: 6 }],
-  [{ tipo: '1º', grupo: 'C' }, { tipo: '3º', indice: 5 }],
-  [{ tipo: '2º', grupo: 'A' }, { tipo: '2º', grupo: 'F' }],
-  [{ tipo: '1º', grupo: 'G' }, { tipo: '2º', grupo: 'H' }],
-  [{ tipo: '1º', grupo: 'D' }, { tipo: '3º', indice: 3 }],
-  [{ tipo: '1º', grupo: 'J' }, { tipo: '3º', indice: 1 }],
-  [{ tipo: '2º', grupo: 'E' }, { tipo: '2º', grupo: 'I' }],
-  [{ tipo: '1º', grupo: 'L' }, { tipo: '2º', grupo: 'K' }],
-  [{ tipo: '1º', grupo: 'H' }, { tipo: '3º', indice: 0 }],
+  [{ tipo: '2º', grupo: 'A' }, { tipo: '2º', grupo: 'B' }],       // M73
+  [{ tipo: '1º', grupo: 'E' }, { tipo: '3º', slot: 'E' }],        // M74
+  [{ tipo: '1º', grupo: 'F' }, { tipo: '2º', grupo: 'C' }],       // M75
+  [{ tipo: '1º', grupo: 'C' }, { tipo: '2º', grupo: 'F' }],       // M76
+  [{ tipo: '1º', grupo: 'I' }, { tipo: '3º', slot: 'I' }],        // M77
+  [{ tipo: '2º', grupo: 'E' }, { tipo: '2º', grupo: 'I' }],       // M78
+  [{ tipo: '1º', grupo: 'A' }, { tipo: '3º', slot: 'A' }],        // M79
+  [{ tipo: '1º', grupo: 'L' }, { tipo: '3º', slot: 'L' }],        // M80
+  [{ tipo: '1º', grupo: 'D' }, { tipo: '3º', slot: 'D' }],        // M81
+  [{ tipo: '1º', grupo: 'G' }, { tipo: '3º', slot: 'G' }],        // M82
+  [{ tipo: '2º', grupo: 'K' }, { tipo: '2º', grupo: 'L' }],       // M83
+  [{ tipo: '1º', grupo: 'H' }, { tipo: '2º', grupo: 'J' }],       // M84
+  [{ tipo: '1º', grupo: 'B' }, { tipo: '3º', slot: 'B' }],        // M85
+  [{ tipo: '1º', grupo: 'J' }, { tipo: '2º', grupo: 'H' }],       // M86
+  [{ tipo: '1º', grupo: 'K' }, { tipo: '3º', slot: 'K' }],        // M87
+  [{ tipo: '2º', grupo: 'D' }, { tipo: '2º', grupo: 'G' }],       // M88
 ]
+
+function chaveAnexC(terceiros: LinhaTabela[]): Record<AnnexCSlot, string> | null {
+  const key = [...new Set(terceiros.map((t) => t.grupo))].sort().join('')
+  return ANNEX_C_LOOKUP[key] ?? null
+}
 
 export const NOMES_RODADAS = [
   '32-avos de final',
@@ -181,7 +184,7 @@ export function loserMataMata(
 }
 
 function rotuloSeed(seed: Seed): string {
-  if (seed.tipo === '3º') return `${seed.indice + 1}º melhor 3º`
+  if (seed.tipo === '3º') return `Melhor 3º vs 1º do Grupo ${seed.slot}`
   return `${seed.tipo} do Grupo ${seed.grupo}`
 }
 
@@ -202,7 +205,12 @@ export function montarChaveamento(
 ): JogoMataMata[][] {
   function resolve(seed: Seed): TimeChave | null {
     if (seed.tipo === '3º') {
-      const t = terceiros?.[seed.indice]
+      if (!terceiros || terceiros.length < 8) return null
+      const mapa = chaveAnexC(terceiros)
+      if (!mapa) return null
+      const grupo = mapa[seed.slot]
+      if (!completos[grupo]) return null
+      const t = tabelas[grupo]?.[2]
       return t ? paraTime(t) : null
     }
     if (!completos[seed.grupo]) return null
